@@ -1,8 +1,8 @@
-package preguntas.controller
+package appPregunta3.controller
 
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class PreguntasController {
+class PreguntaController {
 	
 }

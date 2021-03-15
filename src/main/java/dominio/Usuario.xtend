@@ -13,14 +13,14 @@ class Usuario {
 	String userName
 	String password
 	Set<Usuario> amigos = new HashSet<Usuario>
-	Double puntaje
+	int puntaje
 	
-	def Pregunta crearPregunta(String _pregunta , Set<Opcion> _opciones) {
-		new Pregunta => [
-			pregunta = _pregunta
-			autor = this
-			fechaHoraCreacion = LocalDateTime.now()
-			opciones = _opciones
-		]
+	def sumarPuntaje(int puntos) {
+		puntaje += puntos
 	}
+	
+	def restarPuntaje(int puntos) {
+		puntaje -= puntos
+	}
+	
 }
