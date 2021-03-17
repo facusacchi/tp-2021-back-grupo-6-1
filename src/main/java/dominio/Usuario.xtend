@@ -3,9 +3,10 @@ package dominio
 import java.util.HashSet
 import java.util.Set
 import java.time.LocalDate
-import java.time.LocalDateTime
+import org.eclipse.xtend.lib.annotations.Accessors
 
-class Usuario {
+@Accessors
+class Usuario extends Entity {
 	
 	String nombre
 	String apellido
@@ -21,6 +22,10 @@ class Usuario {
 	
 	def restarPuntaje(int puntos) {
 		puntaje -= puntos
+	}
+	
+	override cumpleCondicionDeBusqueda(String valorBusqueda) {
+		nombre.toLowerCase.contains(valorBusqueda.toLowerCase) || apellido.toLowerCase.equals(valorBusqueda.toLowerCase)
 	}
 	
 }
