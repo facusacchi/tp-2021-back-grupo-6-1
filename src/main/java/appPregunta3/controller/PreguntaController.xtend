@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import dominio.Pregunta
+import org.springframework.web.bind.annotation.PostMapping
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -51,6 +52,16 @@ class PreguntaController {
 		}
 		RepoPregunta.instance.update(actualizado)
 		ResponseEntity.ok(mapper.writeValueAsString(actualizado))
+	}
+	
+	@PostMapping(value="/pregunta")
+	def buscarUsuario(@RequestBody String body) {
+		val pregunta = mapper.readValue(body, Pregunta)
+		if(pregunta === null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''Error al construir el recurso''')
+		}
+		RepoPregunta.instance.create(pregunta)
+		ResponseEntity.ok(mapper.writeValueAsString(pregunta))
 	}
 	
 	static def mapper() {
