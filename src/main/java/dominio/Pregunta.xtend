@@ -4,14 +4,32 @@ import java.time.LocalDateTime
 import java.util.HashSet
 import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
+import java.time.format.DateTimeFormatter
 
 @Accessors
 abstract class Pregunta extends Entity{
 	
 	String descripcion
 	Usuario autor
-	LocalDateTime fechaHoraCreacion
+	@JsonIgnore LocalDateTime fechaHoraCreacion
 	Set<Opcion> respuestas = new HashSet<Opcion>
+	static String DATE_PATTERN = "yyyy-MM-dd h:mm a"
+	
+	@JsonProperty("fechaHoraCreacion")
+	def setFecha(String fecha) {
+		this.fechaHoraCreacion = LocalDateTime.parse(fecha, formatter)
+	}
+	
+	@JsonProperty("fechaHoraCreacion")
+	def getFechaAsString() {
+		formatter.format(this.fechaHoraCreacion)
+	}
+	
+	def formatter() {
+		DateTimeFormatter.ofPattern(DATE_PATTERN)
+	}
 
 	def estaActiva() {
 		fechaHoraCreacion.plusMinutes(5) > LocalDateTime.now()
@@ -55,7 +73,7 @@ class DeRiesgo extends Pregunta {
 }
 
 class Solidaria extends Pregunta {
-	
+	@Accessors
 	int donacion
 
 	override gestionarRespuesta(Opcion opcion, Usuario usuario) {
