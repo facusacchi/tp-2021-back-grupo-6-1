@@ -3,6 +3,11 @@ package appPregunta3
 import dominio.Usuario
 import repos.RepoUsuario
 import java.time.LocalDate
+import dominio.Simple
+import java.time.LocalDateTime
+import repos.RepoPregunta
+import dominio.DeRiesgo
+import dominio.Solidaria
 
 class Bootstrap {
 
@@ -16,6 +21,7 @@ class Bootstrap {
 
 	def void run() {
 		crearUsuarios
+		crearPreguntas
 	}
 
 	def crearUsuarios() {
@@ -81,6 +87,46 @@ class Bootstrap {
 			fechaDeNacimiento = LocalDate.of(1985, 5, 7)
 		]
 		RepoUsuario.instance.create(elena)
+	}
+	
+	def crearPreguntas() {		
+		RepoPregunta.instance.create(new Simple => [
+			descripcion = "¿Por que sibarita es tan rica?"
+			autor = pepe
+			fechaHoraCreacion = LocalDateTime.now
+		])
+		
+		RepoPregunta.instance.create(new Simple => [
+			descripcion = "¿Cual es la masa del sol?"
+			autor = pancho
+			fechaHoraCreacion = LocalDateTime.now
+		])
+		
+		RepoPregunta.instance.create(new DeRiesgo => [
+			descripcion = "¿Que es mas lento que un piropo de tartamudo?"
+			autor = manolo
+			fechaHoraCreacion = LocalDateTime.now
+		])
+		
+		RepoPregunta.instance.create(new DeRiesgo => [
+			descripcion = "Cocodrilo que durmio es..."
+			autor = pancho
+			fechaHoraCreacion = LocalDateTime.now
+		])
+		
+		RepoPregunta.instance.create(new Solidaria => [
+			descripcion = "Nombre del director de la Historia sin Fin"
+			autor = casandra
+			fechaHoraCreacion = LocalDateTime.now
+			donacion = 15
+		])
+		
+		RepoPregunta.instance.create(new Solidaria => [
+			descripcion = "Mas vale pajaro en mano que..."
+			autor = pepe
+			fechaHoraCreacion = LocalDateTime.now
+			donacion = 30
+		])
 	}
 
 }

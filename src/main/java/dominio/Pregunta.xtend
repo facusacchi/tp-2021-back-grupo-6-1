@@ -8,11 +8,10 @@ import org.eclipse.xtend.lib.annotations.Accessors
 @Accessors
 abstract class Pregunta extends Entity{
 	
-	int id
-	String pregunta
+	String descripcion
 	Usuario autor
 	LocalDateTime fechaHoraCreacion
-	Set<Opcion> opciones = new HashSet<Opcion>
+	Set<Opcion> respuestas = new HashSet<Opcion>
 
 	def estaActiva() {
 		fechaHoraCreacion.plusMinutes(5) > LocalDateTime.now()
@@ -21,7 +20,11 @@ abstract class Pregunta extends Entity{
 	def void gestionarRespuesta(Opcion opcion, Usuario usuario)
 	
 	override cumpleCondicionDeBusqueda(String valorBusqueda) {
-		pregunta.equals(valorBusqueda)
+		descripcion.equals(valorBusqueda)
+	}
+	
+	def agregarRespuesta(Opcion respuesta) {
+		respuestas.add(respuesta)
 	}
 
 }
