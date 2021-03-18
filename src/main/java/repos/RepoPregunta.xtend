@@ -15,7 +15,5 @@ class RepoPregunta extends Repositorio<Pregunta>{
 	
 	static def restartInstance() {
 		instance = new RepoPregunta
-	}
-	
-	
+	}	
 }
