@@ -58,7 +58,7 @@ class PreguntaController {
 	}
 	
 	@PostMapping(value="/pregunta")
-	def buscarPregunta(@RequestBody String body) {
+	def crearPregunta(@RequestBody String body) {
 		val pregunta = mapper.readValue(body, Pregunta)
 		if(pregunta === null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''Error al construir el recurso''')

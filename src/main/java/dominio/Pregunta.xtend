@@ -15,7 +15,8 @@ abstract class Pregunta extends Entity{
 	Usuario autor
 	@JsonIgnore LocalDateTime fechaHoraCreacion
 	Set<Opcion> respuestas = new HashSet<Opcion>
-	static String DATE_PATTERN = "dd-MM-yyyy h:mm a"
+	//static String DATE_PATTERN = "dd-MM-yyyy h:mm a"
+	static String DATE_PATTERN = "yyyy-MM-dd h:mm a"
 	
 	@JsonProperty("fechaHoraCreacion")
 	def setFecha(String fecha) {
@@ -38,7 +39,7 @@ abstract class Pregunta extends Entity{
 	def void gestionarRespuesta(Opcion opcion, Usuario usuario)
 	
 	override cumpleCondicionDeBusqueda(String valorBusqueda) {
-		descripcion.equals(valorBusqueda)
+		descripcion.contains(valorBusqueda)
 	}
 	
 	def agregarRespuesta(Opcion respuesta) {
