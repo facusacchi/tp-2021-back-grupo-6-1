@@ -25,17 +25,20 @@ class PreguntaController {
 			return ResponseEntity.badRequest.body('''Parametro de busqueda incorrecto''')
 		}
 		val preguntas = RepoPregunta.instance.search(valorBusqueda)
+		if(preguntas === null) {
+						return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontraron preguntas que coincidan con el valor de busqueda''')
+		}
 		ResponseEntity.ok(preguntas)
 	}
 	
 	@GetMapping("/pregunta/{id}")
-	def usuarioPorId(@PathVariable Integer id) {
+	def preguntaPorId(@PathVariable Integer id) {
 		if (id === 0) {
 			return ResponseEntity.badRequest.body('''Debe ingresar el parámetro id''')
 		}
 		val pregunta = RepoPregunta.instance.getById(id.toString)
 		if (pregunta === null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontró el usuario con id <«id»>''')
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontró la pregunta con id <«id»>''')
 		}
 		ResponseEntity.ok(pregunta)
 	}
@@ -55,7 +58,7 @@ class PreguntaController {
 	}
 	
 	@PostMapping(value="/pregunta")
-	def buscarUsuario(@RequestBody String body) {
+	def buscarPregunta(@RequestBody String body) {
 		val pregunta = mapper.readValue(body, Pregunta)
 		if(pregunta === null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''Error al construir el recurso''')
