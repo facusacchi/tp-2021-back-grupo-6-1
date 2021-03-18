@@ -6,8 +6,9 @@ import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
 
 @Accessors
-abstract class Pregunta {
-
+abstract class Pregunta extends Entity{
+	
+	int id
 	String pregunta
 	Usuario autor
 	LocalDateTime fechaHoraCreacion
@@ -18,6 +19,10 @@ abstract class Pregunta {
 	}
 
 	def void gestionarRespuesta(Opcion opcion, Usuario usuario)
+	
+	override cumpleCondicionDeBusqueda(String valorBusqueda) {
+		pregunta.equals(valorBusqueda)
+	}
 
 }
 
