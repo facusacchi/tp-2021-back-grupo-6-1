@@ -89,36 +89,59 @@ class Bootstrap {
 		RepoUsuario.instance.create(elena)
 	}
 	
-	def crearPreguntas() {		
+	def crearPreguntas() {
 		RepoPregunta.instance.create(new Simple => [
 			descripcion = "¿Por que sibarita es tan rica?"
 			autor = pepe
 			fechaHoraCreacion = LocalDateTime.now
+			agregarOpcion("Por la muzza")
+			agregarOpcion("Por la salsa")
+			agregarOpcion("por la masa")
+			agregarOpcion("No hay motivo")
+			agregarOpcion("Es existencial")
 		])
 		
 		RepoPregunta.instance.create(new Simple => [
 			descripcion = "¿Cual es la masa del sol?"
 			autor = pancho
 			fechaHoraCreacion = LocalDateTime.now
+			agregarOpcion("Mucha")
+			agregarOpcion("Poca")
+			agregarOpcion("Maso")
+			agregarOpcion("No se sabe")
 		])
 		
 		RepoPregunta.instance.create(new DeRiesgo => [
 			descripcion = "¿Que es mas lento que un piropo de tartamudo?"
 			autor = manolo
 			fechaHoraCreacion = LocalDateTime.now
+			agregarOpcion("Un caracol")
+			agregarOpcion("Higuain")
+			agregarOpcion("Una babosa")
+			agregarOpcion("Nada")
 		])
 		
 		RepoPregunta.instance.create(new DeRiesgo => [
 			descripcion = "Cocodrilo que durmio es..."
 			autor = pancho
 			fechaHoraCreacion = LocalDateTime.now
+			agregarOpcion("Feroz")
+			agregarOpcion("Anfibio")
+			agregarOpcion("Cartera")
+			agregarOpcion("Yacare")
+			agregarOpcion("No existe el dicho")
 		])
 		
 		RepoPregunta.instance.create(new Solidaria => [
-			descripcion = "Nombre del director de la Historia sin Fin"
+			descripcion = "Hamlet es una obra de..."
 			autor = casandra
 			fechaHoraCreacion = LocalDateTime.now
 			donacion = 15
+			agregarOpcion("Pato donald")
+			agregarOpcion("Micky Mouse")
+			agregarOpcion("Gallo Claudio")
+			agregarOpcion("Coyote")
+			agregarOpcion("Shakespare")
 		])
 		
 		RepoPregunta.instance.create(new Solidaria => [
@@ -126,6 +149,11 @@ class Bootstrap {
 			autor = pepe
 			fechaHoraCreacion = LocalDateTime.now
 			donacion = 30
+			agregarOpcion("Pajaro perdido")
+			agregarOpcion("Cien volando")
+			agregarOpcion("Una avestrus")
+			agregarOpcion("Se te escape")
+			agregarOpcion("Mano sin pajaro")
 		])
 	}
 

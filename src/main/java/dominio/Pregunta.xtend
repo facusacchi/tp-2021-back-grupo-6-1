@@ -7,7 +7,18 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.format.DateTimeFormatter
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.fasterxml.jackson.annotation.JsonTypeName
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes(
+    @JsonSubTypes.Type(value = Simple, name = "simple"),
+    @JsonSubTypes.Type(value = DeRiesgo, name = "deRiesgo"),
+    @JsonSubTypes.Type(value = Solidaria, name = "solidaria")
+)
 @Accessors
 abstract class Pregunta extends Entity {
 
@@ -58,6 +69,7 @@ abstract class Pregunta extends Entity {
 	}
 }
 
+@JsonTypeName("simple")
 class Simple extends Pregunta {
 
 	val puntos = 10
@@ -67,6 +79,7 @@ class Simple extends Pregunta {
 	}
 }
 
+@JsonTypeName("deRiesgo")
 class DeRiesgo extends Pregunta {
 
 	val puntos = 100
@@ -84,6 +97,7 @@ class DeRiesgo extends Pregunta {
 	}
 }
 
+@JsonTypeName("solidaria")
 class Solidaria extends Pregunta {
 	@Accessors
 	int puntosDonados
