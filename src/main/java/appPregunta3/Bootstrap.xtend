@@ -136,7 +136,7 @@ class Bootstrap {
 			descripcion = "Hamlet es una obra de..."
 			autor = casandra
 			fechaHoraCreacion = LocalDateTime.now
-			donacion = 15
+			puntosDonados = 15
 			agregarOpcion("Pato donald")
 			agregarOpcion("Micky Mouse")
 			agregarOpcion("Gallo Claudio")
@@ -148,7 +148,7 @@ class Bootstrap {
 			descripcion = "Mas vale pajaro en mano que..."
 			autor = pepe
 			fechaHoraCreacion = LocalDateTime.now
-			donacion = 30
+			puntosDonados = 30
 			agregarOpcion("Pajaro perdido")
 			agregarOpcion("Cien volando")
 			agregarOpcion("Una avestrus")

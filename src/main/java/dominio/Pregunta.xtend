@@ -102,7 +102,7 @@ class Solidaria extends Pregunta {
 	@Accessors
 	int puntosDonados
 
-	override gestionarRespuesta(String opcionElegida, Usuario usuario){
+	override gestionarRespuesta(String opcionElegida, Usuario usuario) {
 		this.sumarPuntosSiEsCorrecta(opcionElegida, usuario, puntosDonados)
 	}
 }
