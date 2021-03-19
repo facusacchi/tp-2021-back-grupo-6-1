@@ -43,6 +43,15 @@ class PreguntaController {
 		ResponseEntity.ok(pregunta)
 	}
 	
+	@GetMapping("/preguntasAll")
+	def todasLasPreguntas() {
+		val preguntas = RepoPregunta.instance.allInstances
+		if (preguntas === null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontraron preguntas''')
+		}
+		ResponseEntity.ok(preguntas)
+	}
+	
 	@PutMapping(value="/pregunta/{id}")
 	def actualizar(@RequestBody String body, @PathVariable Integer id) {
 		if (id === null || id === 0) {
