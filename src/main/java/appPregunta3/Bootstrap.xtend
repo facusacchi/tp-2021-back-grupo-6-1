@@ -96,9 +96,10 @@ class Bootstrap {
 			fechaHoraCreacion = LocalDateTime.now
 			agregarOpcion("Por la muzza")
 			agregarOpcion("Por la salsa")
-			agregarOpcion("por la masa")
+			agregarOpcion("Por la masa")
 			agregarOpcion("No hay motivo")
 			agregarOpcion("Es existencial")
+			respuestaCorrecta = "Es existencial" 
 		])
 		
 		RepoPregunta.instance.create(new Simple => [
@@ -109,6 +110,7 @@ class Bootstrap {
 			agregarOpcion("Poca")
 			agregarOpcion("Maso")
 			agregarOpcion("No se sabe")
+			respuestaCorrecta = "Mucha" 
 		])
 		
 		RepoPregunta.instance.create(new DeRiesgo => [
@@ -119,6 +121,7 @@ class Bootstrap {
 			agregarOpcion("Higuain")
 			agregarOpcion("Una babosa")
 			agregarOpcion("Nada")
+			respuestaCorrecta = "Higuain" 
 		])
 		
 		RepoPregunta.instance.create(new DeRiesgo => [
@@ -130,6 +133,7 @@ class Bootstrap {
 			agregarOpcion("Cartera")
 			agregarOpcion("Yacare")
 			agregarOpcion("No existe el dicho")
+			respuestaCorrecta = "Cartera" 
 		])
 		
 		RepoPregunta.instance.create(new Solidaria => [
@@ -142,6 +146,7 @@ class Bootstrap {
 			agregarOpcion("Gallo Claudio")
 			agregarOpcion("Coyote")
 			agregarOpcion("Shakespare")
+			respuestaCorrecta = "Shakespare"
 		])
 		
 		RepoPregunta.instance.create(new Solidaria => [
@@ -154,6 +159,7 @@ class Bootstrap {
 			agregarOpcion("Una avestrus")
 			agregarOpcion("Se te escape")
 			agregarOpcion("Mano sin pajaro")
+			respuestaCorrecta = "Cien volando"
 		])
 	}
 
