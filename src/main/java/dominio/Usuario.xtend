@@ -18,7 +18,7 @@ class Usuario extends Entity {
 	@JsonIgnore LocalDate fechaDeNacimiento
 	String userName
 	String password
-	Set<Usuario> amigos = new HashSet<Usuario>
+	@JsonIgnore Set<Usuario> amigos = new HashSet<Usuario>
 	int puntaje
 	List<Pregunta> preguntasRespondidas = new ArrayList<Pregunta>
 	static String DATE_PATTERN = "yyyy-MM-dd"
@@ -31,6 +31,11 @@ class Usuario extends Entity {
 	@JsonProperty("fechaDeNacimiento")
 	def setFecha(String fecha) {
 		this.fechaDeNacimiento = LocalDate.parse(fecha, formatter)
+	}
+	
+	@JsonProperty("amigos")
+	def getAmigos() {
+		amigos.map[amigo|amigo.nombre +" "+ amigo.apellido].toSet
 	}
 
 	def formatter() {
