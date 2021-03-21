@@ -52,4 +52,8 @@ class Usuario extends Entity {
 	def agregarPreguntaRespondida(Pregunta pregunta) {
 		preguntasRespondidas.add(pregunta)
 	}
+	
+	def agregarAmigo(Usuario usuario){
+		amigos.add(usuario)
+	}
 }

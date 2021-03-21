@@ -30,6 +30,7 @@ class Bootstrap {
 			apellido = "Palala"
 			userName = "pepito"
 			password = "123"
+			puntaje = 1098
 			fechaDeNacimiento = LocalDate.of(1990, 7, 28)
 		]
 		RepoUsuario.instance.create(pepe)
@@ -39,8 +40,12 @@ class Bootstrap {
 			apellido = "Palala"
 			userName = "manolito"
 			password = "456"
+			puntaje = 304
 			fechaDeNacimiento = LocalDate.of(1995, 10, 4)
 		]
+		
+		manolo.agregarAmigo(pepe) 
+		
 		RepoUsuario.instance.create(manolo)
 
 		nancy = new Usuario => [
@@ -48,8 +53,13 @@ class Bootstrap {
 			apellido = "Vargas"
 			userName = "nan"
 			password = "123"
+			puntaje = 4089
 			fechaDeNacimiento = LocalDate.of(1985, 5, 7)
 		]
+		
+		nancy.agregarAmigo(manolo)
+		nancy.agregarAmigo(pepe)
+		
 		RepoUsuario.instance.create(nancy)
 
 		casandra = new Usuario => [
@@ -57,8 +67,14 @@ class Bootstrap {
 			apellido = "Malandra"
 			userName = "casalandra"
 			password = "774"
+			puntaje = 100
 			fechaDeNacimiento = LocalDate.of(1985, 5, 7)
 		]
+		
+		casandra.agregarAmigo(nancy)
+		casandra.agregarAmigo(manolo)
+		casandra.agregarAmigo(pepe)
+		
 		RepoUsuario.instance.create(casandra)
 
 		lucrecia = new Usuario => [
@@ -66,8 +82,16 @@ class Bootstrap {
 			apellido = "Magnesia"
 			userName = "lugenesia"
 			password = "122"
+			puntaje = 0
 			fechaDeNacimiento = LocalDate.of(1985, 5, 7)
 		]
+		
+		lucrecia.agregarAmigo(casandra)
+		lucrecia.agregarAmigo(nancy)
+		lucrecia.agregarAmigo(manolo)
+		lucrecia.agregarAmigo(pepe)
+		
+		
 		RepoUsuario.instance.create(lucrecia)
 
 		pancho = new Usuario => [
@@ -75,8 +99,15 @@ class Bootstrap {
 			apellido = "Rancho"
 			userName = "zafarancho"
 			password = "999"
+			puntaje = 904
 			fechaDeNacimiento = LocalDate.of(1985, 5, 7)
 		]
+		
+		pancho.agregarAmigo(lucrecia)
+		pancho.agregarAmigo(casandra)
+		pancho.agregarAmigo(nancy)
+		pancho.agregarAmigo(manolo)
+		
 		RepoUsuario.instance.create(pancho)
 
 		elena = new Usuario => [
@@ -84,9 +115,17 @@ class Bootstrap {
 			apellido = "Melena"
 			userName = "melinena"
 			password = "364"
+			puntaje = 3457
 			fechaDeNacimiento = LocalDate.of(1985, 5, 7)
 		]
+		
+		elena.agregarAmigo(pancho)
+		elena.agregarAmigo(lucrecia)
+		elena.agregarAmigo(casandra)
+		elena.agregarAmigo(manolo)
+		
 		RepoUsuario.instance.create(elena)
+		
 	}
 	
 	def crearPreguntas() {
