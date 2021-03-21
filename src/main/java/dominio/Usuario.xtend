@@ -20,7 +20,7 @@ class Usuario extends Entity {
 	String password
 	@JsonIgnore Set<Usuario> amigos = new HashSet<Usuario>
 	int puntaje
-	List<Pregunta> preguntasRespondidas = new ArrayList<Pregunta>
+	List<Respuesta> preguntasRespondidas = new ArrayList<Respuesta>
 	static String DATE_PATTERN = "yyyy-MM-dd"
 	
 	@JsonProperty("fechaDeNacimiento")
@@ -54,8 +54,8 @@ class Usuario extends Entity {
 		nombre.toLowerCase.contains(valorBusqueda.toLowerCase) || apellido.toLowerCase.equals(valorBusqueda.toLowerCase)
 	}
 	
-	def agregarPreguntaRespondida(Pregunta pregunta) {
-		preguntasRespondidas.add(pregunta)
+	def agregarPreguntaRespondida(Respuesta respuesta) {
+		preguntasRespondidas.add(respuesta)
 	}
 	
 	def agregarAmigo(Usuario usuario){

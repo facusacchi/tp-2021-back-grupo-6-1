@@ -4,6 +4,7 @@ import java.time.LocalDateTime
 import java.util.HashSet
 import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtend.lib.annotations.Data
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.format.DateTimeFormatter
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.JsonTypeName
+import java.time.LocalDate
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
@@ -45,7 +47,7 @@ abstract class Pregunta extends Entity {
 	}
 
 	def estaActiva() {
-		fechaHoraCreacion.plusMinutes(5).isBefore(LocalDateTime.now())
+		fechaHoraCreacion.plusMinutes(5).isAfter(LocalDateTime.now())
 	}
 
 	def void gestionarRespuesta(String opcionElegida, Usuario usuario)
@@ -104,5 +106,27 @@ class Solidaria extends Pregunta {
 
 	override gestionarRespuesta(String opcionElegida, Usuario usuario) {
 		this.sumarPuntosSiEsCorrecta(opcionElegida, usuario, puntosDonados)
+	}
+}
+
+@Accessors
+class Respuesta {
+	@JsonIgnore LocalDate fechaRespuesta
+	int puntos
+	String pregunta 
+	static String DATE_PATTERN = "yyyy-MM-dd"
+	
+	@JsonProperty("fechaRespuesta")
+	def setFecha(String fecha) {
+		this.fechaRespuesta = LocalDate.parse(fecha, formatter)
+	}
+
+	@JsonProperty("fechaRespuesta")
+	def getFechaAsString() {
+		formatter.format(this.fechaRespuesta)
+	}
+
+	def formatter() {
+		DateTimeFormatter.ofPattern(DATE_PATTERN)
 	}
 }

@@ -8,6 +8,7 @@ import java.time.LocalDateTime
 import repos.RepoPregunta
 import dominio.DeRiesgo
 import dominio.Solidaria
+import dominio.Respuesta
 
 class Bootstrap {
 
@@ -43,9 +44,9 @@ class Bootstrap {
 			puntaje = 304
 			fechaDeNacimiento = LocalDate.of(1995, 10, 4)
 		]
-		
-		manolo.agregarAmigo(pepe) 
-		
+
+		manolo.agregarAmigo(pepe)
+
 		RepoUsuario.instance.create(manolo)
 
 		nancy = new Usuario => [
@@ -56,10 +57,10 @@ class Bootstrap {
 			puntaje = 4089
 			fechaDeNacimiento = LocalDate.of(1985, 5, 7)
 		]
-		
+
 		nancy.agregarAmigo(manolo)
 		nancy.agregarAmigo(pepe)
-		
+
 		RepoUsuario.instance.create(nancy)
 
 		casandra = new Usuario => [
@@ -70,11 +71,11 @@ class Bootstrap {
 			puntaje = 100
 			fechaDeNacimiento = LocalDate.of(1985, 5, 7)
 		]
-		
+
 		casandra.agregarAmigo(nancy)
 		casandra.agregarAmigo(manolo)
 		casandra.agregarAmigo(pepe)
-		
+
 		RepoUsuario.instance.create(casandra)
 
 		lucrecia = new Usuario => [
@@ -85,13 +86,12 @@ class Bootstrap {
 			puntaje = 0
 			fechaDeNacimiento = LocalDate.of(1985, 5, 7)
 		]
-		
+
 		lucrecia.agregarAmigo(casandra)
 		lucrecia.agregarAmigo(nancy)
 		lucrecia.agregarAmigo(manolo)
 		lucrecia.agregarAmigo(pepe)
-		
-		
+
 		RepoUsuario.instance.create(lucrecia)
 
 		pancho = new Usuario => [
@@ -102,12 +102,19 @@ class Bootstrap {
 			puntaje = 904
 			fechaDeNacimiento = LocalDate.of(1985, 5, 7)
 		]
-		
+
 		pancho.agregarAmigo(lucrecia)
 		pancho.agregarAmigo(casandra)
 		pancho.agregarAmigo(nancy)
 		pancho.agregarAmigo(manolo)
-		
+		pancho.preguntasRespondidas.add(
+			new Respuesta => [
+				fechaRespuesta = LocalDate.of(1985, 5, 7)
+				puntos = 10
+				pregunta = "¿Por que sibarita es tan rica 2?"
+			]
+		)
+
 		RepoUsuario.instance.create(pancho)
 
 		elena = new Usuario => [
@@ -118,16 +125,16 @@ class Bootstrap {
 			puntaje = 3457
 			fechaDeNacimiento = LocalDate.of(1985, 5, 7)
 		]
-		
+
 		elena.agregarAmigo(pancho)
 		elena.agregarAmigo(lucrecia)
 		elena.agregarAmigo(casandra)
 		elena.agregarAmigo(manolo)
-		
+
 		RepoUsuario.instance.create(elena)
-		
+
 	}
-	
+
 	def crearPreguntas() {
 		RepoPregunta.instance.create(new Simple => [
 			descripcion = "¿Por que sibarita es tan rica?"
@@ -138,9 +145,9 @@ class Bootstrap {
 			agregarOpcion("Por la masa")
 			agregarOpcion("No hay motivo")
 			agregarOpcion("Es existencial")
-			respuestaCorrecta = "Es existencial" 
+			respuestaCorrecta = "Es existencial"
 		])
-		
+
 		RepoPregunta.instance.create(new Simple => [
 			descripcion = "¿Cual es la masa del sol?"
 			autor = pancho
@@ -149,9 +156,9 @@ class Bootstrap {
 			agregarOpcion("Poca")
 			agregarOpcion("Maso")
 			agregarOpcion("No se sabe")
-			respuestaCorrecta = "Mucha" 
+			respuestaCorrecta = "Mucha"
 		])
-		
+
 		RepoPregunta.instance.create(new DeRiesgo => [
 			descripcion = "¿Que es mas lento que un piropo de tartamudo?"
 			autor = manolo
@@ -160,9 +167,9 @@ class Bootstrap {
 			agregarOpcion("Higuain")
 			agregarOpcion("Una babosa")
 			agregarOpcion("Nada")
-			respuestaCorrecta = "Higuain" 
+			respuestaCorrecta = "Higuain"
 		])
-		
+
 		RepoPregunta.instance.create(new DeRiesgo => [
 			descripcion = "Cocodrilo que durmio es..."
 			autor = pancho
@@ -172,9 +179,9 @@ class Bootstrap {
 			agregarOpcion("Cartera")
 			agregarOpcion("Yacare")
 			agregarOpcion("No existe el dicho")
-			respuestaCorrecta = "Cartera" 
+			respuestaCorrecta = "Cartera"
 		])
-		
+
 		RepoPregunta.instance.create(new Solidaria => [
 			descripcion = "Hamlet es una obra de..."
 			autor = casandra
@@ -187,7 +194,7 @@ class Bootstrap {
 			agregarOpcion("Shakespare")
 			respuestaCorrecta = "Shakespare"
 		])
-		
+
 		RepoPregunta.instance.create(new Solidaria => [
 			descripcion = "Mas vale pajaro en mano que..."
 			autor = pepe
@@ -195,7 +202,7 @@ class Bootstrap {
 			puntosDonados = 30
 			agregarOpcion("Pajaro perdido")
 			agregarOpcion("Cien volando")
-			agregarOpcion("Una avestrus")
+			agregarOpcion("Un avestruz")
 			agregarOpcion("Se te escape")
 			agregarOpcion("Mano sin pajaro")
 			respuestaCorrecta = "Cien volando"
