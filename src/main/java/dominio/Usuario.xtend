@@ -61,4 +61,8 @@ class Usuario extends Entity {
 	def agregarAmigo(Usuario usuario){
 		amigos.add(usuario)
 	}
+	
+	def esAmigo(Usuario usuario) {
+		amigos.contains(usuario)
+	}
 }

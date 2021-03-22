@@ -84,6 +84,17 @@ class UsuarioController {
 			configure(SerializationFeature.INDENT_OUTPUT, true)
 		]
 	}
+	
+	@GetMapping(value="/usuarios/noAmigos/{id}")
+	def getUsuariosNoAmigos(@PathVariable String id) {
+		val usuarios = RepoUsuario.instance.getUsuariosNoAmigos(id)
+		if (usuarios.empty) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No tenes amigos para agregar''')
+		}
+		ResponseEntity.ok(usuarios)
+	}
+	
+	
 
 }
 

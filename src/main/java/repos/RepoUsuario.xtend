@@ -23,4 +23,10 @@ class RepoUsuario extends Repositorio<Usuario> {
 	def getByLogin(String userName, String pssw) {
 		objects.findFirst[user|user.userName == userName && user.password == pssw]
 	}
+	
+	def getUsuariosNoAmigos(String id) {
+		val usuarioLogueado = getById(id)
+		allInstances.filter(usuario |  !usuarioLogueado.esAmigo(usuario) && usuarioLogueado != usuario).toList
+	}
+	
 }
