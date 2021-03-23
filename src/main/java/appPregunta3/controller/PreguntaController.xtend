@@ -24,13 +24,10 @@ class PreguntaController {
 		if(valorBusqueda === null || activas === null) {
 			return ResponseEntity.badRequest.body('''Parametros de busqueda incorrectos''')
 		}
-		
 		val preguntas = RepoPregunta.instance.search(valorBusqueda, activas) 
-		
 		if(preguntas === null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontraron preguntas que coincidan con los valores de busqueda''')
 		}
-		
 		ResponseEntity.ok(preguntas)
 	}
 	
@@ -46,9 +43,12 @@ class PreguntaController {
 		ResponseEntity.ok(pregunta)
 	}
 	
-	@GetMapping("/preguntasAll")
-	def todasLasPreguntas() {
-		val preguntas = RepoPregunta.instance.allInstances
+	@GetMapping("/preguntasAll/{activas}")
+	def todasLasPreguntas(@PathVariable String activas) {
+		if(activas === null) {
+			return ResponseEntity.badRequest.body('''Parametro de busqueda incorrecto''')
+		}
+		val preguntas = RepoPregunta.instance.allInstances(activas)
 		if (preguntas === null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontraron preguntas''')
 		}

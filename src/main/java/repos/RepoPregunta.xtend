@@ -2,6 +2,7 @@ package repos
 
 import dominio.Pregunta
 import java.util.List
+import java.util.Set
 
 class RepoPregunta extends Repositorio<Pregunta>{
 	
@@ -24,6 +25,14 @@ class RepoPregunta extends Repositorio<Pregunta>{
 			return preguntas.filter[pregunta | pregunta.estaActiva].toList
 		} else {			
 			return preguntas
+		}
+	}
+	
+	def Set<Pregunta> allInstances(String activas) {
+		if(activas == "true") {			
+			return objects.filter[pregunta | pregunta.estaActiva].toSet
+		} else {
+			return objects
 		}
 	}
 }

@@ -1,10 +1,9 @@
 package dominio
 
-import java.time.LocalDateTime
+import java.time.LocalDateTime	
 import java.util.HashSet
 import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.eclipse.xtend.lib.annotations.Data
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.format.DateTimeFormatter
