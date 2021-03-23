@@ -190,26 +190,27 @@ class Bootstrap {
 			respuestaCorrecta = "Cartera"
 		])
 
-		RepoPregunta.instance.create(new Solidaria => [
+		RepoPregunta.instance.create(new Solidaria(12) => [
 			descripcion = "Hamlet es una obra de..."
 			autor = casandra
 			//fechaHoraCreacion = LocalDateTime.now
 			fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
-			puntosDonados = 15
+			puntos = 15
 			agregarOpcion("Pato donald")
 			agregarOpcion("Micky Mouse")
 			agregarOpcion("Gallo Claudio")
 			agregarOpcion("Coyote")
 			agregarOpcion("Shakespare")
 			respuestaCorrecta = "Shakespare"
+			puntos = 12
 		])
 
-		RepoPregunta.instance.create(new Solidaria => [
+		RepoPregunta.instance.create(new Solidaria(18) => [
 			descripcion = "Mas vale pajaro en mano que..."
 			autor = pepe
 			//fechaHoraCreacion = LocalDateTime.now
 			fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
-			puntosDonados = 30
+			puntos = 30
 			agregarOpcion("Pajaro perdido")
 			agregarOpcion("Cien volando")
 			agregarOpcion("Un avestruz")

@@ -22,7 +22,8 @@ import java.time.LocalDate
 )
 @Accessors
 abstract class Pregunta extends Entity {
-
+	
+	int puntos
 	String descripcion
 	Usuario autor
 	String respuestaCorrecta
@@ -72,8 +73,10 @@ abstract class Pregunta extends Entity {
 
 @JsonTypeName("simple")
 class Simple extends Pregunta {
-
-	val puntos = 10
+	
+	new() {
+		this.puntos = 10
+	}
 
 	override gestionarRespuesta(String opcionElegida, Usuario usuario) {
 		this.sumarPuntosSiEsCorrecta(opcionElegida, usuario, puntos)
@@ -83,7 +86,10 @@ class Simple extends Pregunta {
 @JsonTypeName("deRiesgo")
 class DeRiesgo extends Pregunta {
 
-	val puntos = 100
+	new() {
+		this.puntos = 100
+	}
+	
 	val puntosRestados = 50
 
 	override gestionarRespuesta(String opcionElegida, Usuario usuario) {
@@ -100,11 +106,13 @@ class DeRiesgo extends Pregunta {
 
 @JsonTypeName("solidaria")
 class Solidaria extends Pregunta {
-	@Accessors
-	int puntosDonados
+
+	new(int puntos) {
+		this.puntos = puntos
+	}
 
 	override gestionarRespuesta(String opcionElegida, Usuario usuario) {
-		this.sumarPuntosSiEsCorrecta(opcionElegida, usuario, puntosDonados)
+		this.sumarPuntosSiEsCorrecta(opcionElegida, usuario, this.puntos)
 	}
 }
 
