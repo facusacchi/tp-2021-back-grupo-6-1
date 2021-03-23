@@ -156,8 +156,8 @@ class Bootstrap {
 		RepoPregunta.instance.create(new Simple => [
 			descripcion = "¿Cual es la masa del sol?"
 			autor = pancho
-			//fechaHoraCreacion = LocalDateTime.now
-			fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
+			fechaHoraCreacion = LocalDateTime.now
+			//fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
 			agregarOpcion("Mucha")
 			agregarOpcion("Poca")
 			agregarOpcion("Maso")
