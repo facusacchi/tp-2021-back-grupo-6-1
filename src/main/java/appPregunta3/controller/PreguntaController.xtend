@@ -19,15 +19,18 @@ import org.springframework.web.bind.annotation.PostMapping
 @CrossOrigin(origins = "http://localhost:3000")
 class PreguntaController {
 	
-	@GetMapping(value="/preguntas/{valorBusqueda}")
-	def getPreguntasPorString(@PathVariable String valorBusqueda) {
-		if(valorBusqueda === null) {
-			return ResponseEntity.badRequest.body('''Parametro de busqueda incorrecto''')
+	@GetMapping(value="/preguntas/{valorBusqueda}/{activas}")
+	def getPreguntasPorString(@PathVariable String valorBusqueda, @PathVariable String activas) {
+		if(valorBusqueda === null || activas === null) {
+			return ResponseEntity.badRequest.body('''Parametros de busqueda incorrectos''')
 		}
-		val preguntas = RepoPregunta.instance.search(valorBusqueda)
+		
+		val preguntas = RepoPregunta.instance.search(valorBusqueda, activas) 
+		
 		if(preguntas === null) {
-						return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontraron preguntas que coincidan con el valor de busqueda''')
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontraron preguntas que coincidan con los valores de busqueda''')
 		}
+		
 		ResponseEntity.ok(preguntas)
 	}
 	

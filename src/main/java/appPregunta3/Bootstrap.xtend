@@ -24,6 +24,8 @@ class Bootstrap {
 		crearUsuarios
 		crearPreguntas
 	}
+	
+//########################### USUARIOS #####################################################//
 
 	def crearUsuarios() {
 		pepe = new Usuario => [
@@ -134,12 +136,15 @@ class Bootstrap {
 		RepoUsuario.instance.create(elena)
 
 	}
+	
+//########################### PREGUNTAS #####################################################//	
 
 	def crearPreguntas() {
 		RepoPregunta.instance.create(new Simple => [
 			descripcion = "¿Por que sibarita es tan rica?"
 			autor = pepe
 			fechaHoraCreacion = LocalDateTime.now
+			//fechaHoraCreacion = LocalDateTime.now.minusMinutes(15)
 			agregarOpcion("Por la muzza")
 			agregarOpcion("Por la salsa")
 			agregarOpcion("Por la masa")
@@ -152,6 +157,7 @@ class Bootstrap {
 			descripcion = "¿Cual es la masa del sol?"
 			autor = pancho
 			fechaHoraCreacion = LocalDateTime.now
+			//fechaHoraCreacion = LocalDateTime.now.minusMinutes(15)
 			agregarOpcion("Mucha")
 			agregarOpcion("Poca")
 			agregarOpcion("Maso")
@@ -163,6 +169,7 @@ class Bootstrap {
 			descripcion = "¿Que es mas lento que un piropo de tartamudo?"
 			autor = manolo
 			fechaHoraCreacion = LocalDateTime.now
+			//fechaHoraCreacion = LocalDateTime.now.minusMinutes(15)
 			agregarOpcion("Un caracol")
 			agregarOpcion("Higuain")
 			agregarOpcion("Una babosa")
@@ -174,6 +181,7 @@ class Bootstrap {
 			descripcion = "Cocodrilo que durmio es..."
 			autor = pancho
 			fechaHoraCreacion = LocalDateTime.now
+			//fechaHoraCreacion = LocalDateTime.now.minusMinutes(15)
 			agregarOpcion("Feroz")
 			agregarOpcion("Anfibio")
 			agregarOpcion("Cartera")
@@ -185,7 +193,8 @@ class Bootstrap {
 		RepoPregunta.instance.create(new Solidaria => [
 			descripcion = "Hamlet es una obra de..."
 			autor = casandra
-			fechaHoraCreacion = LocalDateTime.now
+			//fechaHoraCreacion = LocalDateTime.now
+			fechaHoraCreacion = LocalDateTime.now.minusMinutes(15)
 			puntosDonados = 15
 			agregarOpcion("Pato donald")
 			agregarOpcion("Micky Mouse")
@@ -199,6 +208,7 @@ class Bootstrap {
 			descripcion = "Mas vale pajaro en mano que..."
 			autor = pepe
 			fechaHoraCreacion = LocalDateTime.now
+			//fechaHoraCreacion = LocalDateTime.now.minusMinutes(15)
 			puntosDonados = 30
 			agregarOpcion("Pajaro perdido")
 			agregarOpcion("Cien volando")
