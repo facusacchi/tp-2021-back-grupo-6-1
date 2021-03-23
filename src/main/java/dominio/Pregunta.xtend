@@ -29,8 +29,7 @@ abstract class Pregunta extends Entity {
 	String respuestaCorrecta
 	@JsonIgnore LocalDateTime fechaHoraCreacion
 	Set<String> opciones = new HashSet<String>
-	// static String DATE_PATTERN = "dd-MM-yyyy h:mm a"
-	static String DATE_PATTERN = "yyyy-MM-dd h:mm a"
+	static String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss"
 
 	@JsonProperty("fechaHoraCreacion")
 	def setFecha(String fecha) {
