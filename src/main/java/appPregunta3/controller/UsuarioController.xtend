@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.PathVariable
 import dominio.Usuario
+import repos.RepoPregunta
 
 @RestController
 @CrossOrigin(origins="http://localhost:3000")
@@ -33,21 +34,37 @@ class UsuarioController {
 		}
 		ResponseEntity.ok(mapper.writeValueAsString(usuario))
 	}
-
-	@PutMapping(value="/perfilDeUsuario/{id}")
-	def actualizar(@RequestBody String body, @PathVariable Integer id) {
-		if (id === null || id === 0) {
-			return ResponseEntity.badRequest.body('''Debe ingresar el parámetro id''')
+/*
+	@PutMapping(value="/perfilDeUsuario/{idUser}/{idPregunta}")
+	def actualizar(@PathVariable Integer idUser, @PathVariable Integer idPregunta) {
+		if (idUser === null || idUser === 0) {
+			return ResponseEntity.badRequest.body('''Error de parámetro de usuario''')
 		}
-		val actualizado = mapper.readValue(body, Usuario)
-
-		if (id != actualizado.id) {
-			return ResponseEntity.badRequest.body("Id en URL distinto del id que viene en el body")
+		if (idPregunta === null || idPregunta === 0) {
+			return ResponseEntity.badRequest.body('''Error de parámetro de pregunta''')
 		}
+		val usuario = RepoUsuario.instance.getById(idUser.toString)
+		if (usuario === null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+				mapper.writeValueAsString('''Usuario no encontrado'''))
+		}
+		val pregunta = RepoPregunta.instance.getById(idPregunta.toString)
+		if (pregunta === null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+				mapper.writeValueAsString('''Pregunta no encontrada'''))
+		}
+		val actualizado = 
 		RepoUsuario.instance.update(actualizado)
-		ResponseEntity.ok(mapper.writeValueAsString(actualizado))
+		
+//		val actualizado = mapper.readValue(body, Usuario)
+//
+//		if (id != actualizado.id) {
+//			return ResponseEntity.badRequest.body("Id en URL distinto del id que viene en el body")
+//		}
+//		RepoUsuario.instance.update(actualizado)
+//		ResponseEntity.ok(mapper.writeValueAsString(actualizado))
 	}
-
+ */
 	@GetMapping("/perfilDeUsuario/{id}")
 	def usuarioPorId(@PathVariable Integer id) {
 		if (id === 0) {
