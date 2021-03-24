@@ -14,7 +14,6 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.PathVariable
-import dominio.Usuario
 import repos.RepoPregunta
 
 @RestController
@@ -34,9 +33,9 @@ class UsuarioController {
 		}
 		ResponseEntity.ok(mapper.writeValueAsString(usuario))
 	}
-/*
+
 	@PutMapping(value="/perfilDeUsuario/{idUser}/{idPregunta}")
-	def actualizar(@PathVariable Integer idUser, @PathVariable Integer idPregunta) {
+	def actualizar(@PathVariable Integer idUser, @PathVariable Integer idPregunta,@RequestBody String opcionElegida) {
 		if (idUser === null || idUser === 0) {
 			return ResponseEntity.badRequest.body('''Error de parámetro de usuario''')
 		}
@@ -53,18 +52,17 @@ class UsuarioController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
 				mapper.writeValueAsString('''Pregunta no encontrada'''))
 		}
-		val actualizado = 
-		RepoUsuario.instance.update(actualizado)
-		
+		usuario.responder(pregunta, opcionElegida)
+		ResponseEntity.ok(mapper.writeValueAsString(usuario))
 //		val actualizado = mapper.readValue(body, Usuario)
 //
 //		if (id != actualizado.id) {
 //			return ResponseEntity.badRequest.body("Id en URL distinto del id que viene en el body")
 //		}
 //		RepoUsuario.instance.update(actualizado)
-//		ResponseEntity.ok(mapper.writeValueAsString(actualizado))
+// 		ResponseEntity.ok(mapper.writeValueAsString(actualizado))
 	}
- */
+
 	@GetMapping("/perfilDeUsuario/{id}")
 	def usuarioPorId(@PathVariable Integer id) {
 		if (id === 0) {
