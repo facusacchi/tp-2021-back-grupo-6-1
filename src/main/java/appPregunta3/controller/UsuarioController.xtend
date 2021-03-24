@@ -94,7 +94,18 @@ class UsuarioController {
 		ResponseEntity.ok(usuarios)
 	}
 	
-	
+	@PutMapping(value="/usuarios/{id}/agregarAmigo/{nuevoAmigoId}")
+	def agregarAmigo(@PathVariable String id, @PathVariable String nuevoAmigoId) {
+		if (id === null || Integer.valueOf(id) === 0) {
+			return ResponseEntity.badRequest.body('''Debe ingresar el parámetro id''')
+		}
+		val Usuario nuevoAmigo = RepoUsuario.instance.getById(nuevoAmigoId)
+		val Usuario usuarioLogueado = RepoUsuario.instance.getById(id)
+
+		usuarioLogueado.agregarAmigo(nuevoAmigo)
+		RepoUsuario.instance.update(usuarioLogueado)
+		ResponseEntity.ok(usuarioLogueado)
+	}
 
 }
 
