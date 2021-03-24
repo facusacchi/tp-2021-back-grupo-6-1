@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName
 import java.time.LocalDate
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes(
     @JsonSubTypes.Type(value = Simple, name = "simple"),
     @JsonSubTypes.Type(value = DeRiesgo, name = "deRiesgo"),
@@ -66,14 +66,14 @@ abstract class Pregunta extends Entity {
 	}
 }
 
-@JsonTypeName("simple")
+//@JsonTypeName("simple")
 class Simple extends Pregunta {
 	new() {
 		this.puntos = 10
 	}
 }
 
-@JsonTypeName("deRiesgo")
+//@JsonTypeName("deRiesgo")
 class DeRiesgo extends Pregunta {
 	int puntosRestados
 	
@@ -91,7 +91,7 @@ class DeRiesgo extends Pregunta {
 	}
 }
 
-@JsonTypeName("solidaria")
+//@JsonTypeName("solidaria")
 class Solidaria extends Pregunta {
 	new(int puntos) {
 		this.puntos = puntos
