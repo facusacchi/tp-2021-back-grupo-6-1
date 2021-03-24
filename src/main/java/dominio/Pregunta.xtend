@@ -68,7 +68,6 @@ abstract class Pregunta extends Entity {
 
 @JsonTypeName("simple")
 class Simple extends Pregunta {
-	
 	new() {
 		this.puntos = 10
 	}
@@ -85,7 +84,7 @@ class DeRiesgo extends Pregunta {
 	
 	
 	override gestionarRespuestaDe(Usuario user) {
-		super().gestionarRespuestaDe(user)
+		super.gestionarRespuestaDe(user)
 		if(user.respondioAntesDeUnMinuto(this)) {
 			this.autor.restarPuntaje(puntosRestados)
 		}
@@ -94,13 +93,12 @@ class DeRiesgo extends Pregunta {
 
 @JsonTypeName("solidaria")
 class Solidaria extends Pregunta {
-
 	new(int puntos) {
 		this.puntos = puntos
 	}
 	
 	override gestionarRespuestaDe(Usuario user) {
-		super().gestionarRespuestaDe(user)
+		super.gestionarRespuestaDe(user)
 		this.autor.restarPuntaje(puntos)
 	}
 }
