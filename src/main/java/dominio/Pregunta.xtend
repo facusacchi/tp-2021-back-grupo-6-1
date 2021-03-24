@@ -62,7 +62,7 @@ abstract class Pregunta extends Entity {
 	}
 
 	override cumpleCondicionDeBusqueda(String valorBusqueda) {
-		descripcion.contains(valorBusqueda)
+		descripcion.toLowerCase.contains(valorBusqueda.toLowerCase)
 	}
 
 	def agregarOpcion(String opcion) {
