@@ -115,24 +115,4 @@ class Solidaria extends Pregunta {
 	}
 }
 
-@Accessors
-class Respuesta {
-	@JsonIgnore LocalDate fechaRespuesta
-	int puntos
-	String pregunta 
-	static String DATE_PATTERN = "yyyy-MM-dd"
-	
-	@JsonProperty("fechaRespuesta")
-	def setFecha(String fecha) {
-		this.fechaRespuesta = LocalDate.parse(fecha, formatter)
-	}
 
-	@JsonProperty("fechaRespuesta")
-	def getFechaAsString() {
-		formatter.format(this.fechaRespuesta)
-	}
-
-	def formatter() {
-		DateTimeFormatter.ofPattern(DATE_PATTERN)
-	}
-}
