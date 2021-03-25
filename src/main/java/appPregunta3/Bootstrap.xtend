@@ -111,9 +111,7 @@ class Bootstrap {
 		pancho.agregarAmigo(manolo)
 		pancho.preguntasRespondidas.add(
 			new Respuesta => [
-				fechaRespuesta = LocalDate.of(1985, 5, 7)
 				puntos = 10
-				pregunta = "¿Por que sibarita es tan rica 2?"
 			]
 		)
 

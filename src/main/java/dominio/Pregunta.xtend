@@ -10,7 +10,6 @@ import java.time.format.DateTimeFormatter
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import com.fasterxml.jackson.annotation.JsonTypeName
 import java.time.LocalDate
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -54,15 +53,16 @@ abstract class Pregunta extends Entity {
 	}	
 
 	def boolean esCorrecta(String opcionElegida) {
-		this.respuestaCorrecta.equals(opcionElegida)
+		this.respuestaCorrecta.toLowerCase == opcionElegida.toLowerCase 
 	}
 	
 	def agregarOpcion(String opcion) {
 		opciones.add(opcion)
 	}
 	
-	def void gestionarRespuestaDe(Usuario user) {
+	def void gestionarRespuestaDe(Usuario user, Respuesta respuesta) {
 		user.sumarPuntaje(puntos)
+		respuesta.puntos = puntos
 	}
 }
 
@@ -83,8 +83,8 @@ class DeRiesgo extends Pregunta {
 	}
 	
 	
-	override gestionarRespuestaDe(Usuario user) {
-		super.gestionarRespuestaDe(user)
+	override gestionarRespuestaDe(Usuario user, Respuesta respuesta) {
+		super.gestionarRespuestaDe(user, respuesta)
 		if(user.respondioAntesDeUnMinuto(this)) {
 			this.autor.restarPuntaje(puntosRestados)
 		}
@@ -97,28 +97,30 @@ class Solidaria extends Pregunta {
 		this.puntos = puntos
 	}
 	
-	override gestionarRespuestaDe(Usuario user) {
-		super.gestionarRespuestaDe(user)
+	override gestionarRespuestaDe(Usuario user, Respuesta respuesta) {
+		super.gestionarRespuestaDe(user, respuesta)
 		this.autor.restarPuntaje(puntos)
 	}
 }
 
 @Accessors
 class Respuesta {
+	
 	@JsonIgnore LocalDate fechaRespuesta
-	int puntos
-	String pregunta 
+	@JsonIgnore int puntos
+	String pregunta
+	String opcionElegida 
 	static String DATE_PATTERN = "yyyy-MM-dd"
 	
-	@JsonProperty("fechaRespuesta")
-	def setFecha(String fecha) {
-		this.fechaRespuesta = LocalDate.parse(fecha, formatter)
-	}
-
-	@JsonProperty("fechaRespuesta")
-	def getFechaAsString() {
-		formatter.format(this.fechaRespuesta)
-	}
+//	@JsonProperty("fechaRespuesta")
+//	def setFecha(String fecha) {
+//		this.fechaRespuesta = LocalDate.parse(fecha, formatter)
+//	}
+//
+//	@JsonProperty("fechaRespuesta")
+//	def getFechaAsString() {
+//		formatter.format(this.fechaRespuesta)
+//	}
 
 	def formatter() {
 		DateTimeFormatter.ofPattern(DATE_PATTERN)

@@ -67,10 +67,13 @@ class Usuario extends Entity {
 		amigos.contains(usuario)
 	}
 	
-	def responder(Pregunta pregunta, String opcionElegida) {
-		if (pregunta.esCorrecta(opcionElegida)) {
-			pregunta.gestionarRespuestaDe(this)
+	def responder(Pregunta pregunta, Respuesta respuesta) {
+		if (pregunta.esCorrecta(respuesta.opcionElegida)) {
+			pregunta.gestionarRespuestaDe(this, respuesta)
+		} else {
+			respuesta.puntos = 0
 		}
+			agregarPreguntaRespondida(respuesta)
 	}
 	
 	def respondioAntesDeUnMinuto(Pregunta pregunta) {
