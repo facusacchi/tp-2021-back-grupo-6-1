@@ -9,6 +9,7 @@ import java.util.List
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.format.DateTimeFormatter
+import java.time.LocalDateTime
 
 @Accessors
 class Usuario extends Entity {
@@ -64,5 +65,15 @@ class Usuario extends Entity {
 	
 	def esAmigo(Usuario usuario) {
 		amigos.contains(usuario)
+	}
+	
+	def responder(Pregunta pregunta, String opcionElegida) {
+		if (pregunta.esCorrecta(opcionElegida)) {
+			pregunta.gestionarRespuestaDe(this)
+		}
+	}
+	
+	def respondioAntesDeUnMinuto(Pregunta pregunta) {
+		pregunta.fechaHoraCreacion.plusMinutes(1).isAfter(LocalDateTime.now)
 	}
 }

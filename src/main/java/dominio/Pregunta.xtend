@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName
 import java.time.LocalDate
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes(
     @JsonSubTypes.Type(value = Simple, name = "simple"),
     @JsonSubTypes.Type(value = DeRiesgo, name = "deRiesgo"),
@@ -48,70 +48,58 @@ abstract class Pregunta extends Entity {
 	def estaActiva() {
 		fechaHoraCreacion.plusMinutes(5).isAfter(LocalDateTime.now())
 	}
-
-	def void gestionarRespuesta(String opcionElegida, Usuario usuario)
-
-	def sumarPuntosSiEsCorrecta(String opcionElegida, Usuario usuario, int puntos) {
-		if (this.esCorrecta(opcionElegida)) {
-			usuario.sumarPuntaje(puntos)
-		}
-	}
+	
+	override cumpleCondicionDeBusqueda(String valorBusqueda) {
+		descripcion.toLowerCase.contains(valorBusqueda.toLowerCase)
+	}	
 
 	def boolean esCorrecta(String opcionElegida) {
 		this.respuestaCorrecta.equals(opcionElegida)
 	}
-
-	override cumpleCondicionDeBusqueda(String valorBusqueda) {
-		descripcion.toLowerCase.contains(valorBusqueda.toLowerCase)
-	}
-
+	
 	def agregarOpcion(String opcion) {
 		opciones.add(opcion)
 	}
+	
+	def void gestionarRespuestaDe(Usuario user) {
+		user.sumarPuntaje(puntos)
+	}
 }
 
-@JsonTypeName("simple")
+//@JsonTypeName("simple")
 class Simple extends Pregunta {
-	
 	new() {
 		this.puntos = 10
 	}
-
-	override gestionarRespuesta(String opcionElegida, Usuario usuario) {
-		this.sumarPuntosSiEsCorrecta(opcionElegida, usuario, puntos)
-	}
 }
 
-@JsonTypeName("deRiesgo")
+//@JsonTypeName("deRiesgo")
 class DeRiesgo extends Pregunta {
-
+	int puntosRestados
+	
 	new() {
 		this.puntos = 100
+		this.puntosRestados = 50
 	}
 	
-	val puntosRestados = 50
-
-	override gestionarRespuesta(String opcionElegida, Usuario usuario) {
-		this.sumarPuntosSiEsCorrecta(opcionElegida, usuario, puntos)
-		if (respondioAntesDeUnMinuto && this.esCorrecta(opcionElegida)) {
-			autor.restarPuntaje(puntosRestados)
+	
+	override gestionarRespuestaDe(Usuario user) {
+		super.gestionarRespuestaDe(user)
+		if(user.respondioAntesDeUnMinuto(this)) {
+			this.autor.restarPuntaje(puntosRestados)
 		}
-	}
-
-	def respondioAntesDeUnMinuto() {
-		fechaHoraCreacion.plusMinutes(1).isBefore(LocalDateTime.now)
 	}
 }
 
-@JsonTypeName("solidaria")
+//@JsonTypeName("solidaria")
 class Solidaria extends Pregunta {
-
 	new(int puntos) {
 		this.puntos = puntos
 	}
-
-	override gestionarRespuesta(String opcionElegida, Usuario usuario) {
-		this.sumarPuntosSiEsCorrecta(opcionElegida, usuario, this.puntos)
+	
+	override gestionarRespuestaDe(Usuario user) {
+		super.gestionarRespuestaDe(user)
+		this.autor.restarPuntaje(puntos)
 	}
 }
 
