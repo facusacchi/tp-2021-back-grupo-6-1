@@ -168,8 +168,8 @@ class Bootstrap {
 		RepoPregunta.instance.create(new Simple => [
 			descripcion = "¿Cual es la masa del sol?"
 			autor = pancho
-			fechaHoraCreacion = LocalDateTime.now
-			//fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
+			//fechaHoraCreacion = LocalDateTime.now
+			fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
 			agregarOpcion("Mucha")
 			agregarOpcion("Poca")
 			agregarOpcion("Maso")
@@ -180,8 +180,8 @@ class Bootstrap {
 		RepoPregunta.instance.create(new DeRiesgo => [
 			descripcion = "¿Que es mas lento que un piropo de tartamudo?"
 			autor = manolo
-			//fechaHoraCreacion = LocalDateTime.now
-			fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
+			fechaHoraCreacion = LocalDateTime.now
+			//fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
 			agregarOpcion("Un caracol")
 			agregarOpcion("Higuain")
 			agregarOpcion("Una babosa")
@@ -205,8 +205,8 @@ class Bootstrap {
 		RepoPregunta.instance.create(new Solidaria() => [
 			descripcion = "Hamlet es una obra de..."
 			autor = casandra
-			//fechaHoraCreacion = LocalDateTime.now
-			fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
+			fechaHoraCreacion = LocalDateTime.now
+			//fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
 			puntos = 15
 			agregarOpcion("Pato donald")
 			agregarOpcion("Micky Mouse")
@@ -214,7 +214,6 @@ class Bootstrap {
 			agregarOpcion("Coyote")
 			agregarOpcion("Shakespare")
 			respuestaCorrecta = "Shakespare"
-			puntos = 12
 		])
 
 		RepoPregunta.instance.create(new Solidaria() => [

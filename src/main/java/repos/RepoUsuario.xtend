@@ -29,4 +29,8 @@ class RepoUsuario extends Repositorio<Usuario> {
 		allInstances.filter(usuario |  !usuarioLogueado.esAmigo(usuario) && usuarioLogueado != usuario).toList
 	}
 	
+	def searchAmigo(String ami) {
+		objects.findFirst[obj | ami.contains(obj.nombre) && ami.contains(obj.apellido)]
+	}
+	
 }

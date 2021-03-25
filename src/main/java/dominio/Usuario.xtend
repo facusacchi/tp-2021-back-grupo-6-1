@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.format.DateTimeFormatter
 import java.time.LocalDateTime
+import repos.RepoUsuario
 
 @Accessors
 class Usuario extends Entity {
@@ -38,6 +39,11 @@ class Usuario extends Entity {
 	@JsonProperty("amigos")
 	def getAmigos() {
 		amigos.map[amigo|amigo.nombre +" "+ amigo.apellido].toSet
+	}
+	
+	@JsonProperty("amigos")
+	def setAmigos(List<String> ami) {
+		ami.forEach[amigo | this.amigos.add(RepoUsuario.instance.searchAmigo(amigo))]
 	}
 
 	def formatter() {
