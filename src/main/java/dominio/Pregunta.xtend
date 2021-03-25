@@ -1,6 +1,6 @@
 package dominio
 
-import java.time.LocalDateTime	
+import java.time.LocalDateTime		
 import java.util.HashSet
 import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -10,7 +10,6 @@ import java.time.format.DateTimeFormatter
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import java.time.LocalDate
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -66,14 +65,12 @@ abstract class Pregunta extends Entity {
 	}
 }
 
-//@JsonTypeName("simple")
 class Simple extends Pregunta {
 	new() {
 		this.puntos = 10
 	}
 }
 
-//@JsonTypeName("deRiesgo")
 class DeRiesgo extends Pregunta {
 	int puntosRestados
 	
@@ -91,7 +88,6 @@ class DeRiesgo extends Pregunta {
 	}
 }
 
-//@JsonTypeName("solidaria")
 class Solidaria extends Pregunta {
 	new(int puntos) {
 		this.puntos = puntos
@@ -102,26 +98,4 @@ class Solidaria extends Pregunta {
 		this.autor.restarPuntaje(puntos)
 	}
 }
-
-<<<<<<< HEAD
-@Accessors
-class Respuesta {
-	
-	@JsonIgnore LocalDate fechaRespuesta
-	@JsonIgnore int puntos
-	String pregunta
-	String opcionElegida 
-	static String DATE_PATTERN = "yyyy-MM-dd"
-	
-//	@JsonProperty("fechaRespuesta")
-//	def setFecha(String fecha) {
-//		this.fechaRespuesta = LocalDate.parse(fecha, formatter)
-//	}
-//
-//	@JsonProperty("fechaRespuesta")
-//	def getFechaAsString() {
-//		formatter.format(this.fechaRespuesta)
-//	}
-=======
->>>>>>> 8c52bc21af31b2d4b53db33d9c3ca2a55fb2ca9c
 

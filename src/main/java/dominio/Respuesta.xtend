@@ -12,6 +12,7 @@ class Respuesta {
 	@JsonIgnore LocalDate fechaRespuesta
 	int puntos
 	String pregunta 
+	String opcionElegida
 	static String DATE_PATTERN = "yyyy-MM-dd"
 	
 	@JsonProperty("fechaRespuesta")
