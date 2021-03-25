@@ -202,7 +202,7 @@ class Bootstrap {
 			respuestaCorrecta = "Cartera"
 		])
 
-		RepoPregunta.instance.create(new Solidaria(12) => [
+		RepoPregunta.instance.create(new Solidaria() => [
 			descripcion = "Hamlet es una obra de..."
 			autor = casandra
 			//fechaHoraCreacion = LocalDateTime.now
@@ -217,7 +217,7 @@ class Bootstrap {
 			puntos = 12
 		])
 
-		RepoPregunta.instance.create(new Solidaria(18) => [
+		RepoPregunta.instance.create(new Solidaria() => [
 			descripcion = "Mas vale pajaro en mano que..."
 			autor = pepe
 			//fechaHoraCreacion = LocalDateTime.now

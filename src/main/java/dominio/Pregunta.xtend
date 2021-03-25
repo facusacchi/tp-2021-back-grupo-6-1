@@ -89,7 +89,7 @@ class DeRiesgo extends Pregunta {
 }
 
 class Solidaria extends Pregunta {
-	new(int puntos) {
+	new() {
 		this.puntos = puntos
 	}
 	
