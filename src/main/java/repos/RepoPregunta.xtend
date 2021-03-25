@@ -3,6 +3,7 @@ package repos
 import dominio.Pregunta
 import java.util.List
 import java.util.Set
+import dominio.Usuario
 
 class RepoPregunta extends Repositorio<Pregunta>{
 	
@@ -19,8 +20,8 @@ class RepoPregunta extends Repositorio<Pregunta>{
 		instance = new RepoPregunta
 	}
 	
-	def List<Pregunta> search(String value, String activa) {
-		val preguntas = objects.filter[object | object.cumpleCondicionDeBusqueda(value)].toList
+	def List<Pregunta> search(String value, String activa, Usuario user) {
+		val preguntas = preguntasNoRespondidasPor(user).filter[object | object.cumpleCondicionDeBusqueda(value)].toList
 		if(activa == "true") {
 			return preguntasActivas(preguntas)
 		} else {			
@@ -28,12 +29,18 @@ class RepoPregunta extends Repositorio<Pregunta>{
 		}
 	}
 	
-	def Set<Pregunta> allInstances(String activas) {
+	def Set<Pregunta> allInstances(String activas, Usuario user) {
 		if(activas == "true") {			
-			preguntasActivas(objects.toList).toSet
+			preguntasActivas(preguntasNoRespondidasPor(user)).toSet
 		} else {
-			return objects
+			return preguntasNoRespondidasPor(user).toSet
 		}
+	}
+	
+	def preguntasNoRespondidasPor(Usuario user) {
+		return objects.filter[ object | !user.preguntasRespondidas.map[p | p.toLowerCase]
+			.contains(object.descripcion.toLowerCase)
+		].toList
 	}
 	
 	def preguntasActivas(List<Pregunta> preguntas) {

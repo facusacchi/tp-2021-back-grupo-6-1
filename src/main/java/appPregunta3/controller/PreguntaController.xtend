@@ -14,17 +14,22 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import dominio.Pregunta
 import org.springframework.web.bind.annotation.PostMapping
+import repos.RepoUsuario
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 class PreguntaController {
 	
-	@GetMapping(value="/preguntas/{valorBusqueda}/{activas}")
-	def getPreguntasPorString(@PathVariable String valorBusqueda, @PathVariable String activas) {
-		if(valorBusqueda === null || activas === null) {
+	@GetMapping(value="/preguntas/{valorBusqueda}/{activas}/{idUser}")
+	def getPreguntasPorString(@PathVariable String valorBusqueda, @PathVariable String activas, @PathVariable String idUser) {
+		if(valorBusqueda === null || activas === null || idUser === null) {
 			return ResponseEntity.badRequest.body('''Parametros de busqueda incorrectos''')
 		}
-		val preguntas = RepoPregunta.instance.search(valorBusqueda, activas) 
+		val user = RepoUsuario.instance.getById(idUser)
+		if(user === null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontro usuario con ese id''')
+		}
+		val preguntas = RepoPregunta.instance.search(valorBusqueda, activas, user) 
 		if(preguntas === null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontraron preguntas que coincidan con los valores de busqueda''')
 		}
@@ -43,12 +48,16 @@ class PreguntaController {
 		ResponseEntity.ok(pregunta)
 	}
 	
-	@GetMapping("/preguntasAll/{activas}")
-	def todasLasPreguntas(@PathVariable String activas) {
-		if(activas === null) {
+	@GetMapping("/preguntasAll/{activas}/{idUser}")
+	def todasLasPreguntas(@PathVariable String activas, @PathVariable String idUser) {
+		if(activas === null || idUser === null) {
 			return ResponseEntity.badRequest.body('''Parametro de busqueda incorrecto''')
 		}
-		val preguntas = RepoPregunta.instance.allInstances(activas)
+		val user = RepoUsuario.instance.getById(idUser)
+		if (user === null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontro usuario''')
+		}
+		val preguntas = RepoPregunta.instance.allInstances(activas, user)
 		if (preguntas === null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontraron preguntas''')
 		}
