@@ -22,7 +22,7 @@ class RepoPregunta extends Repositorio<Pregunta>{
 	def List<Pregunta> search(String value, String activa) {
 		val preguntas = objects.filter[object | object.cumpleCondicionDeBusqueda(value)].toList
 		if(activa == "true") {
-			return preguntas.filter[pregunta | pregunta.estaActiva].toList
+			return preguntasActivas(preguntas)
 		} else {			
 			return preguntas
 		}
@@ -30,9 +30,13 @@ class RepoPregunta extends Repositorio<Pregunta>{
 	
 	def Set<Pregunta> allInstances(String activas) {
 		if(activas == "true") {			
-			return objects.filter[pregunta | pregunta.estaActiva].toSet
+			preguntasActivas(objects.toList).toSet
 		} else {
 			return objects
 		}
+	}
+	
+	def preguntasActivas(List<Pregunta> preguntas) {
+		return preguntas.filter[pregunta | pregunta.estaActiva].toList
 	}
 }
