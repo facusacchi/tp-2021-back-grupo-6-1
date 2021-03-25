@@ -73,7 +73,7 @@ class Usuario extends Entity {
 	}
 	
 	def responder(Pregunta pregunta, Respuesta respuesta) {
-		if (pregunta.esCorrecta(respuesta.opcionElegida)) {
+		if (pregunta.esCorrecta(respuesta.opcionElegida) && pregunta.estaActiva) {
 			pregunta.gestionarRespuestaDe(this, respuesta)
 		} else {
 			respuesta.puntos = 0

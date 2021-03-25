@@ -45,6 +45,7 @@ class PreguntaController {
 		if (pregunta === null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontró la pregunta con id <«id»>''')
 		}
+		pregunta.activa = pregunta.estaActiva
 		ResponseEntity.ok(pregunta)
 	}
 	
