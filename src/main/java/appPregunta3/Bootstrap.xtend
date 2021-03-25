@@ -128,11 +128,6 @@ class Bootstrap {
 		pancho.agregarAmigo(casandra)
 		pancho.agregarAmigo(nancy)
 		pancho.agregarAmigo(manolo)
-//		pancho.preguntasRespondidas.add(
-//			new Respuesta => [
-//				puntos = 10
-//			]
-//		)
 
 		RepoUsuario.instance.create(pancho)
 
