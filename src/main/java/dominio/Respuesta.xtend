@@ -15,14 +15,14 @@ class Respuesta {
 	String opcionElegida
 	static String DATE_PATTERN = "yyyy-MM-dd"
 	
+	@JsonProperty("fechaRespuesta")
+	def getFechaAsString() {
+		formatter.format(this.fechaRespuesta)
+	}
+// esto se setea automaticamente cuando el usuario responde
 //	@JsonProperty("fechaRespuesta")
 //	def setFecha(String fecha) {
 //		this.fechaRespuesta = LocalDate.parse(fecha, formatter)
-//	}
-//
-//	@JsonProperty("fechaRespuesta")
-//	def getFechaAsString() {
-//		formatter.format(this.fechaRespuesta)
 //	}
 
 	def formatter() {
