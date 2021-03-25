@@ -35,7 +35,26 @@ class Bootstrap {
 			password = "123"
 			puntaje = 1098
 			fechaDeNacimiento = LocalDate.of(1990, 7, 28)
+			
+			agregarPreguntaRespondida(new Respuesta => [
+				pregunta = "¿Cuantos años tiene Mirtha Legrand?"
+				puntos = 500
+				fechaRespuesta= LocalDate.of(2020,4,16)
+			])
+			
+			agregarPreguntaRespondida(new Respuesta => [
+				pregunta="¿Cuantas provincias tiene Argentina?"
+				puntos=100
+				fechaRespuesta= LocalDate.of(2021,3,24)
+			])
+			
+			agregarPreguntaRespondida(new Respuesta => [
+				pregunta="¿Cuantas provincias tiene Argentina?"
+				puntos=100
+				fechaRespuesta= LocalDate.of(2021,3,24)
+			])
 		]
+		
 		RepoUsuario.instance.create(pepe)
 
 		manolo = new Usuario => [

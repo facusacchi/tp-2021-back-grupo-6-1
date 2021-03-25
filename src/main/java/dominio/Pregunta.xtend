@@ -103,6 +103,7 @@ class Solidaria extends Pregunta {
 	}
 }
 
+<<<<<<< HEAD
 @Accessors
 class Respuesta {
 	
@@ -121,8 +122,6 @@ class Respuesta {
 //	def getFechaAsString() {
 //		formatter.format(this.fechaRespuesta)
 //	}
+=======
+>>>>>>> 8c52bc21af31b2d4b53db33d9c3ca2a55fb2ca9c
 
-	def formatter() {
-		DateTimeFormatter.ofPattern(DATE_PATTERN)
-	}
-}
