@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.format.DateTimeFormatter
 import java.time.LocalDateTime
 import repos.RepoUsuario
+import com.fasterxml.jackson.annotation.JsonView
+import serializer.View
 
 @Accessors
 class Usuario extends Entity {
-	
+	@JsonView(View.Pregunta.Table)
 	String nombre
+	@JsonView(View.Pregunta.Table)
 	String apellido
 	@JsonIgnore LocalDate fechaDeNacimiento
 	String userName

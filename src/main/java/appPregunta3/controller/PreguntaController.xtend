@@ -54,6 +54,7 @@ class PreguntaController {
 	}
 	
 	@GetMapping("/preguntasAll/{activas}/{idUser}")
+	@JsonView(value=View.Pregunta.Busqueda)
 	def todasLasPreguntas(@PathVariable String activas, @PathVariable String idUser) {
 		if(activas === null || idUser === null) {
 			return ResponseEntity.badRequest.body('''Parametro de busqueda incorrecto''')

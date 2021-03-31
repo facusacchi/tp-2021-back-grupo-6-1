@@ -26,6 +26,7 @@ abstract class Pregunta extends Entity {
 	int puntos
 	@JsonView(View.Pregunta.Busqueda, View.Pregunta.Table)
 	String descripcion
+	@JsonView(View.Pregunta.Table)
 	Usuario autor
 	String respuestaCorrecta
 	@JsonIgnore
