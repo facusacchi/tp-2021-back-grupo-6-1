@@ -21,6 +21,7 @@ class Usuario extends Entity {
 	@JsonView(View.Pregunta.Table)
 	String apellido
 	@JsonIgnore LocalDate fechaDeNacimiento
+	@JsonView(View.Pregunta.Busqueda)
 	String userName
 	String password
 	@JsonIgnore Set<Usuario> amigos = new HashSet<Usuario>
