@@ -71,17 +71,20 @@ class PreguntaController {
 	}
 	
 	@PutMapping(value="/pregunta/{id}")
-	def actualizar(@RequestBody String body, @PathVariable Integer id) {
+	def actualizar(@RequestBody Pregunta preguntaModificada, @PathVariable Integer id) {
 		if (id === null || id === 0) {
 			return ResponseEntity.badRequest.body('''Debe ingresar el parámetro id''')
 		}
-		val actualizado = mapper.readValue(body, Pregunta)
-
-		if (id != actualizado.id) {
-			return ResponseEntity.badRequest.body("Id en URL distinto del id que viene en el body")
+		val pregunta = RepoPregunta.instance.getById(id.toString)
+		if(pregunta === null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''Error, no se encontro la pregunta''')
 		}
-		RepoPregunta.instance.update(actualizado)
-		ResponseEntity.ok(mapper.writeValueAsString(actualizado))
+		RepoPregunta.instance.getById(id.toString) => [
+			it.descripcion = preguntaModificada.descripcion
+			it.opciones = preguntaModificada.opciones
+			it.respuestaCorrecta = preguntaModificada.respuestaCorrecta
+		]
+		ResponseEntity.ok(pregunta)
 	}
 	
 	@PostMapping(value="/pregunta")
