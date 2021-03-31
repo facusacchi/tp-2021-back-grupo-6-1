@@ -28,12 +28,14 @@ abstract class Pregunta extends Entity {
 	String descripcion
 	@JsonView(View.Pregunta.Table, View.Pregunta.Busqueda)
 	Usuario autor
+	@JsonView(View.Pregunta.Table)
 	String respuestaCorrecta
 	@JsonIgnore
 	LocalDateTime fechaHoraCreacion
 	@JsonView(View.Pregunta.Table)
 	Set<String> opciones = new HashSet<String>
 	static String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss"
+	@JsonView(View.Pregunta.Table)
 	boolean activa
 
 	@JsonProperty("fechaHoraCreacion")
