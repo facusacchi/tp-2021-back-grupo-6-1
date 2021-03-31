@@ -10,6 +10,8 @@ import java.time.format.DateTimeFormatter
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.fasterxml.jackson.annotation.JsonView
+import serializer.View
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -22,10 +24,13 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 abstract class Pregunta extends Entity {
 	
 	int puntos
+	@JsonView(View.Pregunta.Busqueda, View.Pregunta.Table)
 	String descripcion
 	Usuario autor
 	String respuestaCorrecta
-	@JsonIgnore LocalDateTime fechaHoraCreacion
+	@JsonIgnore
+	LocalDateTime fechaHoraCreacion
+	@JsonView(View.Pregunta.Table)
 	Set<String> opciones = new HashSet<String>
 	static String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss"
 	boolean activa

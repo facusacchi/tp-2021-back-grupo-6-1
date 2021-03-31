@@ -15,12 +15,15 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import dominio.Pregunta
 import org.springframework.web.bind.annotation.PostMapping
 import repos.RepoUsuario
+import com.fasterxml.jackson.annotation.JsonView
+import serializer.View
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 class PreguntaController {
 	
 	@GetMapping(value="/preguntas/{valorBusqueda}/{activas}/{idUser}")
+	@JsonView(value=View.Pregunta.Busqueda)
 	def getPreguntasPorString(@PathVariable String valorBusqueda, @PathVariable String activas, @PathVariable String idUser) {
 		if(valorBusqueda === null || activas === null || idUser === null) {
 			return ResponseEntity.badRequest.body('''Parametros de busqueda incorrectos''')
@@ -37,6 +40,7 @@ class PreguntaController {
 	}
 	
 	@GetMapping("/pregunta/{id}")
+	@JsonView(value=View.Pregunta.Table)
 	def preguntaPorId(@PathVariable Integer id) {
 		if (id === 0) {
 			return ResponseEntity.badRequest.body('''Debe ingresar el parámetro id''')
