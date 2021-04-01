@@ -87,14 +87,20 @@ class PreguntaController {
 		ResponseEntity.ok(pregunta)
 	}
 	
-	@PostMapping(value="/pregunta")
-	def crearPregunta(@RequestBody String body) {
-		val pregunta = mapper.readValue(body, Pregunta)
-		if(pregunta === null) {
+	@PostMapping(value="/{idAutor}/pregunta")
+	def crearPregunta(@RequestBody Pregunta bodyPregunta, @PathVariable Integer idAutor) {
+		if (idAutor === null || idAutor === 0) {
+			return ResponseEntity.badRequest.body('''Id en url invalido''')
+		}
+		//val pregunta = mapper.readValue(bodyPregunta, Pregunta)
+		
+		if(bodyPregunta === null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''Error al construir el recurso''')
 		}
-		RepoPregunta.instance.create(pregunta)
-		ResponseEntity.ok(mapper.writeValueAsString(pregunta))
+		val usuario = RepoUsuario.instance.getById(idAutor.toString)
+		bodyPregunta.autor = usuario
+		RepoPregunta.instance.create(bodyPregunta)
+		ResponseEntity.ok(mapper.writeValueAsString(bodyPregunta))
 	}
 	
 	static def mapper() {
