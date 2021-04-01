@@ -7,4 +7,13 @@ class View {
 
 		static interface Table {
 		}
-	}}
+	}
+
+	static interface Usuario {
+		static interface Login {
+		}
+
+		static interface Perfil {
+		}
+	}
+}

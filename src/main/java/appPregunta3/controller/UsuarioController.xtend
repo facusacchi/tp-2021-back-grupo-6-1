@@ -70,17 +70,8 @@ class UsuarioController {
 		}
 		ResponseEntity.ok(usuario)
 	}
-
-	@GetMapping(value="/usuarios")
-	def getUsuarios() {
-		val usuarios = RepoUsuario.instance.allInstances
-		if (usuarios === null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontron usuarios''')
-		}
-		ResponseEntity.ok(usuarios)
-	}
 	
-		@PutMapping(value="/perfilDeUsuario/{id}")
+	@PutMapping(value="/perfilDeUsuario/{id}")
 	def actualizar(@RequestBody String body, @PathVariable Integer id) {
 		if (id === null || id === 0) {
 			return ResponseEntity.badRequest.body('''Debe ingresar el parámetro id''')
@@ -93,17 +84,6 @@ class UsuarioController {
 		RepoUsuario.instance.update(actualizado)
 		ResponseEntity.ok(mapper.writeValueAsString(actualizado))
 	}
-
-	@GetMapping(value="/usuarios/{valorBusqueda}")
-	def getUsuariosPorString(@PathVariable String valorBusqueda) {
-		if (valorBusqueda === null) {
-			return ResponseEntity.badRequest.body('''Parametro de busqueda incorrecto''')
-		}
-		val usuarios = RepoUsuario.instance.search(valorBusqueda)
-		ResponseEntity.ok(usuarios)
-	}
-	
-
 
 	static def mapper() {
 		new ObjectMapper => [
