@@ -1,11 +1,5 @@
 package exceptions
 
-//class UserException extends Exception {
-//	new(String messagge) {
-//		super(messagge)
-//	}
-//}
-
 class NullFieldException extends Exception {
 	new(String messagge) {
 		super(messagge)

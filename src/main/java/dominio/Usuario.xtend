@@ -13,6 +13,7 @@ import java.time.LocalDateTime
 import repos.RepoUsuario
 import com.fasterxml.jackson.annotation.JsonView
 import serializer.View
+import exceptions.NullFieldException
 
 @Accessors
 class Usuario extends Entity {
@@ -94,6 +95,12 @@ class Usuario extends Entity {
 	
 	def preguntasRespondidas() {
 		respuestas.map[respuesta | respuesta.pregunta]
+	}
+	
+	def validar() {
+		if(nombre === null || apellido === null || fechaDeNacimiento === null || userName === null) {
+			throw new NullFieldException("Campos de usuario nulos")
+		}
 	}
 }
 

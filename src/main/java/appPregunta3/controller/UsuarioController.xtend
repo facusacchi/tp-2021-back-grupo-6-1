@@ -19,6 +19,7 @@ import dominio.Usuario
 import dominio.Respuesta
 import com.fasterxml.jackson.annotation.JsonView
 import serializer.View
+import exceptions.NullFieldException
 
 @RestController
 @CrossOrigin(origins="http://localhost:3000")
@@ -30,6 +31,9 @@ class UsuarioController {
 		val dataSession = mapper.readValue(body, DataSession)
 		if (dataSession === null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''Error al construir los datos de sesion''')
+		}
+		if(dataSession.userName === null || dataSession.password === null) {
+			throw new NullFieldException("Campos de login invalidos")
 		}
 		val usuario = RepoUsuario.instance.getByLogin(dataSession.userName, dataSession.password)
 		if (usuario === null) {
@@ -58,6 +62,9 @@ class UsuarioController {
 				mapper.writeValueAsString('''Pregunta no encontrada'''))
 		}
 		val opcion = mapper.readValue(opcionElegida, Respuesta)
+		if(opcion === null) {
+			return ResponseEntity.badRequest.body('''Error en la respuesta enviada en el body''')
+		}
 		usuario.responder(pregunta, opcion)
 		ResponseEntity.ok(mapper.writeValueAsString(usuario))
 	}
@@ -80,8 +87,11 @@ class UsuarioController {
 			return ResponseEntity.badRequest.body('''Debe ingresar el parámetro id''')
 		}
 		val actualizado = mapper.readValue(body, Usuario)
-
-		if (id != actualizado.id) {
+		if (actualizado === null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+				mapper.writeValueAsString('''Usuario no encontrado'''))
+		}
+		if(id != actualizado.id) {
 			return ResponseEntity.badRequest.body("Id en URL distinto del id que viene en el body")
 		}
 		RepoUsuario.instance.update(actualizado)
@@ -111,7 +121,8 @@ class UsuarioController {
 		}
 		val Usuario nuevoAmigo = RepoUsuario.instance.getById(nuevoAmigoId)
 		val Usuario usuarioLogueado = RepoUsuario.instance.getById(id)
-
+		nuevoAmigo.validar
+		usuarioLogueado.validar
 		usuarioLogueado.agregarAmigo(nuevoAmigo)
 		RepoUsuario.instance.update(usuarioLogueado)
 		ResponseEntity.ok(usuarioLogueado)
