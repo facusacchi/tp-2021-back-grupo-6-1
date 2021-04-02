@@ -44,7 +44,7 @@ class UsuarioController {
 	}
 
 	@PutMapping(value="/perfilDeUsuario/{idUser}/{idPregunta}")
-	def actualizar(@PathVariable Integer idUser, @PathVariable Integer idPregunta, @RequestBody String opcionElegida) {
+	def responder(@PathVariable Integer idUser, @PathVariable Integer idPregunta, @RequestBody String opcionElegida) {
 		if (idUser === null || idUser === 0) {
 			return ResponseEntity.badRequest.body('''Error de parámetro de usuario''')
 		}
@@ -68,7 +68,8 @@ class UsuarioController {
 		usuario.responder(pregunta, opcion)
 		ResponseEntity.ok(mapper.writeValueAsString(usuario))
 	}
-
+	
+    @JsonView(View.Usuario.Perfil)
 	@GetMapping("/perfilDeUsuario/{id}")
 	def usuarioPorId(@PathVariable Integer id) {
 		if (id === 0) {
@@ -81,6 +82,7 @@ class UsuarioController {
 		ResponseEntity.ok(usuario)
 	}
 
+	@JsonView(View.Usuario.Perfil)
 	@PutMapping(value="/perfilDeUsuario/{id}")
 	def actualizar(@RequestBody String body, @PathVariable Integer id) {
 		if (id === null || id === 0) {
@@ -94,8 +96,8 @@ class UsuarioController {
 		if(id != actualizado.id) {
 			return ResponseEntity.badRequest.body("Id en URL distinto del id que viene en el body")
 		}
-		actualizado.validar
-		RepoUsuario.instance.update(actualizado)
+//		actualizado.validar
+		RepoUsuario.instance.modificar(actualizado)
 		ResponseEntity.ok(mapper.writeValueAsString(actualizado))
 	}
 
@@ -106,6 +108,7 @@ class UsuarioController {
 		]
 	}
 
+	@JsonView(View.Usuario.TablaNoAmigos)
 	@GetMapping(value="/usuarios/noAmigos/{id}")
 	def getUsuariosNoAmigos(@PathVariable String id) {
 		val usuarios = RepoUsuario.instance.getUsuariosNoAmigos(id)
@@ -115,6 +118,7 @@ class UsuarioController {
 		ResponseEntity.ok(usuarios)
 	}
 
+	@JsonView(View.Usuario.Perfil)
 	@PutMapping(value="/usuarios/{id}/agregarAmigo/{nuevoAmigoId}")
 	def agregarAmigo(@PathVariable String id, @PathVariable String nuevoAmigoId) {
 		if (id === null || Integer.valueOf(id) === 0) {

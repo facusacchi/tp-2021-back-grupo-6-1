@@ -7,6 +7,7 @@ class View {
 
 		static interface Table {
 		}
+		
 	}
 
 	static interface Usuario {
@@ -14,6 +15,10 @@ class View {
 		}
 
 		static interface Perfil {
+		}
+		
+		static interface TablaNoAmigos {
+			
 		}
 	}
 }

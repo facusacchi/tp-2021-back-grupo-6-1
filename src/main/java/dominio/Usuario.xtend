@@ -10,27 +10,28 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.format.DateTimeFormatter
 import java.time.LocalDateTime
-import repos.RepoUsuario
 import com.fasterxml.jackson.annotation.JsonView
 import serializer.View
 import exceptions.NullFieldException
 
 @Accessors
 class Usuario extends Entity {
-	@JsonView(View.Pregunta.Table, View.Usuario.Login)
+	@JsonView(View.Pregunta.Table, View.Usuario.Login, View.Usuario.Perfil, View.Usuario.TablaNoAmigos)
 	String nombre
-	@JsonView(View.Pregunta.Table, View.Usuario.Login)
+	@JsonView(View.Pregunta.Table, View.Usuario.Login, View.Usuario.Perfil, View.Usuario.TablaNoAmigos)
 	String apellido
 	@JsonIgnore LocalDate fechaDeNacimiento
 	@JsonView(View.Pregunta.Busqueda, View.Usuario.Login)
 	String userName
 	String password
 	@JsonIgnore Set<Usuario> amigos = new HashSet<Usuario>
-	@JsonView(View.Usuario.Login)
+	@JsonView(View.Usuario.Login, View.Usuario.Perfil)
 	int puntaje
+	@JsonView(View.Usuario.Perfil)
 	List<Respuesta> respuestas = new ArrayList<Respuesta>
 	static String DATE_PATTERN = "yyyy-MM-dd"
 
+    @JsonView(View.Usuario.Perfil)
 	@JsonProperty("fechaDeNacimiento")
 	def getFechaAsString() {
 		formatter.format(this.fechaDeNacimiento)
@@ -41,14 +42,10 @@ class Usuario extends Entity {
 		this.fechaDeNacimiento = LocalDate.parse(fecha, formatter)
 	}
 
+    @JsonView(View.Usuario.Perfil)
 	@JsonProperty("amigos")
 	def getAmigos() {
 		amigos.map[amigo|amigo.nombre + " " + amigo.apellido].toSet
-	}
-
-	@JsonProperty("amigos")
-	def setAmigos(List<String> ami) {
-		ami.forEach[amigo|this.amigos.add(RepoUsuario.instance.searchAmigo(amigo))]
 	}
 
 	def formatter() {
