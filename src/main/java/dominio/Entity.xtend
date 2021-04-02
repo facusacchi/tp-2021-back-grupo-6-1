@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonView
 
 @Accessors
 abstract class Entity {
-	@JsonView(View.Pregunta.Busqueda, View.Pregunta.Table)
+	@JsonView(View.Pregunta.Busqueda, View.Pregunta.Table, View.Usuario.Login)
 	int id
 
 	def boolean cumpleCondicionDeBusqueda(String valorBusqueda)
