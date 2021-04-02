@@ -27,7 +27,6 @@ class Usuario extends Entity {
 	@JsonIgnore Set<Usuario> amigos = new HashSet<Usuario>
 	int puntaje
 	List<Respuesta> respuestas = new ArrayList<Respuesta>
-	List<String> preguntasRespondidas = new ArrayList<String>
 	static String DATE_PATTERN = "yyyy-MM-dd"
 	
 	@JsonProperty("fechaDeNacimiento")
@@ -70,10 +69,6 @@ class Usuario extends Entity {
 		respuestas.add(respuesta)
 	}
 	
-	def agregarPreguntaRespondida(String pregunta) {
-		preguntasRespondidas.add(pregunta)
-	}
-	
 	def agregarAmigo(Usuario usuario){
 		amigos.add(usuario)
 	}
@@ -89,11 +84,14 @@ class Usuario extends Entity {
 		} else {
 			respuesta.puntos = 0
 		}
-			agregarRespuesta(respuesta)
-			agregarPreguntaRespondida(pregunta.descripcion)
+			agregarRespuesta(respuesta)			
 	}
 	
 	def respondioAntesDeUnMinuto(Pregunta pregunta) {
 		pregunta.fechaHoraCreacion.plusMinutes(1).isAfter(LocalDateTime.now)
+	}
+	
+	def preguntasRespondidas() {
+		respuestas.map[respuesta | respuesta.pregunta]
 	}
 }
