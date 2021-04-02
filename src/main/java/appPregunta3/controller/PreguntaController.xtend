@@ -108,7 +108,7 @@ class PreguntaController {
 		}
 		bodyPregunta.autor = usuario
 		RepoPregunta.instance.create(bodyPregunta)
-		ResponseEntity.ok(mapper.writeValueAsString(bodyPregunta))
+		ResponseEntity.ok(bodyPregunta)
 	}
 	
 	static def mapper() {
