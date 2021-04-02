@@ -38,9 +38,10 @@ class RepoPregunta extends Repositorio<Pregunta>{
 	}
 	
 	def preguntasNoRespondidasPor(Usuario user) {
-		return objects.filter[ object | !user.preguntasRespondidas.map[p | p.toLowerCase]
+		val filtradas = objects.filter[ object | !user.preguntasRespondidas
 			.contains(object.descripcion.toLowerCase)
 		].toList
+		filtradas
 	}
 	
 	def preguntasActivas(List<Pregunta> preguntas) {
