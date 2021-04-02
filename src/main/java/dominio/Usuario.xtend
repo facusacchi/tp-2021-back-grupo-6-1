@@ -69,17 +69,8 @@ class Usuario extends Entity {
 	def agregarRespuesta(Respuesta respuesta) {
 		respuestas.add(respuesta)
 	}
-<<<<<<< HEAD
 	
 	def agregarAmigo(Usuario usuario){
-=======
-
-	def agregarPreguntaRespondida(String pregunta) {
-		preguntasRespondidas.add(pregunta)
-	}
-
-	def agregarAmigo(Usuario usuario) {
->>>>>>> da02551d9d4364e3e051301d1ac06dcfa01ce534
 		amigos.add(usuario)
 	}
 
@@ -94,23 +85,15 @@ class Usuario extends Entity {
 		} else {
 			respuesta.puntos = 0
 		}
-<<<<<<< HEAD
-			agregarRespuesta(respuesta)			
-=======
-		agregarRespuesta(respuesta)
-		agregarPreguntaRespondida(pregunta.descripcion)
->>>>>>> da02551d9d4364e3e051301d1ac06dcfa01ce534
+
 	}
 
 	def respondioAntesDeUnMinuto(Pregunta pregunta) {
 		pregunta.fechaHoraCreacion.plusMinutes(1).isAfter(LocalDateTime.now)
 	}
-<<<<<<< HEAD
 	
 	def preguntasRespondidas() {
 		respuestas.map[respuesta | respuesta.pregunta]
 	}
 }
-=======
-}
->>>>>>> da02551d9d4364e3e051301d1ac06dcfa01ce534
+
