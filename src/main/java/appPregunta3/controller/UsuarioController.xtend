@@ -94,6 +94,7 @@ class UsuarioController {
 		if(id != actualizado.id) {
 			return ResponseEntity.badRequest.body("Id en URL distinto del id que viene en el body")
 		}
+		actualizado.validar
 		RepoUsuario.instance.update(actualizado)
 		ResponseEntity.ok(mapper.writeValueAsString(actualizado))
 	}
