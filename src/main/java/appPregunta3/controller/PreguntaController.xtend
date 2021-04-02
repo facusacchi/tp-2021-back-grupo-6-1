@@ -85,6 +85,7 @@ class PreguntaController {
 			it.descripcion = preguntaModificada.descripcion
 			it.opciones = preguntaModificada.opciones
 			it.respuestaCorrecta = preguntaModificada.respuestaCorrecta
+			it.puntos = preguntaModificada.puntos
 		]
 		ResponseEntity.ok(pregunta)
 	}

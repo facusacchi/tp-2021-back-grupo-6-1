@@ -26,6 +26,7 @@ import exceptions.BusinessException
 @Accessors
 abstract class Pregunta extends Entity {
 	
+	@JsonView(View.Pregunta.Table)
 	int puntos
 	@JsonView(View.Pregunta.Busqueda, View.Pregunta.Table)
 	String descripcion
