@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.PathVariable
 import repos.RepoPregunta
 import dominio.Usuario
 import dominio.Respuesta
+import com.fasterxml.jackson.annotation.JsonView
+import serializer.View
 
 @RestController
 @CrossOrigin(origins="http://localhost:3000")
 class UsuarioController {
 
 	@PostMapping(value="/login")
+	@JsonView(value=View.Usuario.Login)
 	def buscarUsuario(@RequestBody String body) {
 		val dataSession = mapper.readValue(body, DataSession)
 		if (dataSession === null) {
@@ -33,11 +36,11 @@ class UsuarioController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
 				mapper.writeValueAsString('''Usuario o contraseña invalidos'''))
 		}
-		ResponseEntity.ok(mapper.writeValueAsString(usuario))
+		ResponseEntity.ok(usuario)
 	}
 
 	@PutMapping(value="/perfilDeUsuario/{idUser}/{idPregunta}")
-	def actualizar(@PathVariable Integer idUser, @PathVariable Integer idPregunta,@RequestBody String opcionElegida) {
+	def actualizar(@PathVariable Integer idUser, @PathVariable Integer idPregunta, @RequestBody String opcionElegida) {
 		if (idUser === null || idUser === 0) {
 			return ResponseEntity.badRequest.body('''Error de parámetro de usuario''')
 		}
@@ -70,7 +73,7 @@ class UsuarioController {
 		}
 		ResponseEntity.ok(usuario)
 	}
-	
+
 	@PutMapping(value="/perfilDeUsuario/{id}")
 	def actualizar(@RequestBody String body, @PathVariable Integer id) {
 		if (id === null || id === 0) {
@@ -91,7 +94,7 @@ class UsuarioController {
 			configure(SerializationFeature.INDENT_OUTPUT, true)
 		]
 	}
-	
+
 	@GetMapping(value="/usuarios/noAmigos/{id}")
 	def getUsuariosNoAmigos(@PathVariable String id) {
 		val usuarios = RepoUsuario.instance.getUsuariosNoAmigos(id)
@@ -100,7 +103,7 @@ class UsuarioController {
 		}
 		ResponseEntity.ok(usuarios)
 	}
-	
+
 	@PutMapping(value="/usuarios/{id}/agregarAmigo/{nuevoAmigoId}")
 	def agregarAmigo(@PathVariable String id, @PathVariable String nuevoAmigoId) {
 		if (id === null || Integer.valueOf(id) === 0) {

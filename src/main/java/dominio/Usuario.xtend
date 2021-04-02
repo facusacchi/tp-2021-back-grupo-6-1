@@ -16,67 +16,77 @@ import serializer.View
 
 @Accessors
 class Usuario extends Entity {
-	@JsonView(View.Pregunta.Table)
+	@JsonView(View.Pregunta.Table, View.Usuario.Login)
 	String nombre
-	@JsonView(View.Pregunta.Table)
+	@JsonView(View.Pregunta.Table, View.Usuario.Login)
 	String apellido
 	@JsonIgnore LocalDate fechaDeNacimiento
-	@JsonView(View.Pregunta.Busqueda)
+	@JsonView(View.Pregunta.Busqueda, View.Usuario.Login)
 	String userName
 	String password
 	@JsonIgnore Set<Usuario> amigos = new HashSet<Usuario>
+	@JsonView(View.Usuario.Login)
 	int puntaje
 	List<Respuesta> respuestas = new ArrayList<Respuesta>
 	static String DATE_PATTERN = "yyyy-MM-dd"
-	
+
 	@JsonProperty("fechaDeNacimiento")
 	def getFechaAsString() {
 		formatter.format(this.fechaDeNacimiento)
 	}
-	
+
 	@JsonProperty("fechaDeNacimiento")
 	def setFecha(String fecha) {
 		this.fechaDeNacimiento = LocalDate.parse(fecha, formatter)
 	}
-	
+
 	@JsonProperty("amigos")
 	def getAmigos() {
-		amigos.map[amigo|amigo.nombre +" "+ amigo.apellido].toSet
+		amigos.map[amigo|amigo.nombre + " " + amigo.apellido].toSet
 	}
-	
+
 	@JsonProperty("amigos")
 	def setAmigos(List<String> ami) {
-		ami.forEach[amigo | this.amigos.add(RepoUsuario.instance.searchAmigo(amigo))]
+		ami.forEach[amigo|this.amigos.add(RepoUsuario.instance.searchAmigo(amigo))]
 	}
 
 	def formatter() {
 		DateTimeFormatter.ofPattern(DATE_PATTERN)
 	}
-	
+
 	def sumarPuntaje(int puntos) {
 		puntaje += puntos
 	}
-	
+
 	def restarPuntaje(int puntos) {
 		puntaje -= puntos
 	}
-	
+
 	override cumpleCondicionDeBusqueda(String valorBusqueda) {
 		nombre.toLowerCase.contains(valorBusqueda.toLowerCase) || apellido.toLowerCase.equals(valorBusqueda.toLowerCase)
 	}
-	
+
 	def agregarRespuesta(Respuesta respuesta) {
 		respuestas.add(respuesta)
 	}
+<<<<<<< HEAD
 	
 	def agregarAmigo(Usuario usuario){
+=======
+
+	def agregarPreguntaRespondida(String pregunta) {
+		preguntasRespondidas.add(pregunta)
+	}
+
+	def agregarAmigo(Usuario usuario) {
+>>>>>>> da02551d9d4364e3e051301d1ac06dcfa01ce534
 		amigos.add(usuario)
 	}
-	
+
 	def esAmigo(Usuario usuario) {
 		amigos.contains(usuario)
 	}
-	
+
 	def responder(Pregunta pregunta, Respuesta respuesta) {
 		respuesta.fechaRespuesta = LocalDate.now
 		if (pregunta.esCorrecta(respuesta.opcionElegida) && pregunta.estaActiva) {
@@ -84,14 +94,23 @@ class Usuario extends Entity {
 		} else {
 			respuesta.puntos = 0
 		}
+<<<<<<< HEAD
 			agregarRespuesta(respuesta)			
+=======
+		agregarRespuesta(respuesta)
+		agregarPreguntaRespondida(pregunta.descripcion)
+>>>>>>> da02551d9d4364e3e051301d1ac06dcfa01ce534
 	}
-	
+
 	def respondioAntesDeUnMinuto(Pregunta pregunta) {
 		pregunta.fechaHoraCreacion.plusMinutes(1).isAfter(LocalDateTime.now)
 	}
+<<<<<<< HEAD
 	
 	def preguntasRespondidas() {
 		respuestas.map[respuesta | respuesta.pregunta]
 	}
 }
+=======
+}
+>>>>>>> da02551d9d4364e3e051301d1ac06dcfa01ce534
