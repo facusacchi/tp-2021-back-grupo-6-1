@@ -86,7 +86,7 @@ class Usuario extends Entity {
 		} else {
 			respuesta.puntos = 0
 		}
-
+		agregarRespuesta(respuesta)
 	}
 
 	def respondioAntesDeUnMinuto(Pregunta pregunta) {
@@ -94,7 +94,7 @@ class Usuario extends Entity {
 	}
 	
 	def preguntasRespondidas() {
-		respuestas.map[respuesta | respuesta.pregunta]
+		respuestas.map[respuesta | respuesta.pregunta.toLowerCase].toList
 	}
 	
 	def validar() {
