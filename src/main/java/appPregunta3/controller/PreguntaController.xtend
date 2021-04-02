@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import repos.RepoUsuario
 import com.fasterxml.jackson.annotation.JsonView
 import serializer.View
+import dominio.Solidaria
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -79,7 +80,7 @@ class PreguntaController {
 		if(pregunta === null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''Error, no se encontro la pregunta''')
 		}
-		pregunta.validar
+		preguntaModificada.validar
 		RepoPregunta.instance.getById(id.toString) => [
 			it.descripcion = preguntaModificada.descripcion
 			it.opciones = preguntaModificada.opciones
@@ -101,6 +102,9 @@ class PreguntaController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontró el usuario con id < «idAutor» >''')
 		}
 		bodyPregunta.validar
+		if(bodyPregunta instanceof Solidaria) {
+			bodyPregunta.validar(usuario)
+		}
 		bodyPregunta.autor = usuario
 		RepoPregunta.instance.create(bodyPregunta)
 		ResponseEntity.ok(mapper.writeValueAsString(bodyPregunta))

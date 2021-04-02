@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonView
 import serializer.View
 import exceptions.NullFieldException
 import exceptions.NullCollectionException
+import exceptions.BusinessException
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -116,6 +117,12 @@ class Solidaria extends Pregunta {
 	override gestionarRespuestaDe(Usuario user, Respuesta respuesta) {
 		super.gestionarRespuestaDe(user, respuesta)
 		this.autor.restarPuntaje(puntos)
+	}
+	
+	def validar(Usuario autor) {
+		if(puntos > autor.puntaje) {
+			throw new BusinessException("El puntaje asignado a la pregunta debe ser menor al puntaje actual del autor")
+		}
 	}
 }
 
