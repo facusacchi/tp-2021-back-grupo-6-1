@@ -33,4 +33,13 @@ class RepoUsuario extends Repositorio<Usuario> {
 		objects.findFirst[obj | ami.contains(obj.nombre) && ami.contains(obj.apellido)]
 	}
 	
+	def modificar(Usuario usuario) {
+		val usuarioAActualizar = getById(usuario.id.toString)
+		usuarioAActualizar =>[
+			nombre = usuario.nombre
+			apellido = usuario.apellido
+			fechaDeNacimiento= usuario.fechaDeNacimiento
+		]
+	}
+	
 }
