@@ -79,6 +79,7 @@ class PreguntaController {
 		if(pregunta === null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''Error, no se encontro la pregunta''')
 		}
+		pregunta.validar
 		RepoPregunta.instance.getById(id.toString) => [
 			it.descripcion = preguntaModificada.descripcion
 			it.opciones = preguntaModificada.opciones
@@ -92,12 +93,14 @@ class PreguntaController {
 		if (idAutor === null || idAutor === 0) {
 			return ResponseEntity.badRequest.body('''Id en url invalido''')
 		}
-		//val pregunta = mapper.readValue(bodyPregunta, Pregunta)
-		
 		if(bodyPregunta === null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''Error al construir el recurso''')
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''Error en el body''')
 		}
 		val usuario = RepoUsuario.instance.getById(idAutor.toString)
+		if(usuario === null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontró el usuario con id < «idAutor» >''')
+		}
+		bodyPregunta.validar
 		bodyPregunta.autor = usuario
 		RepoPregunta.instance.create(bodyPregunta)
 		ResponseEntity.ok(mapper.writeValueAsString(bodyPregunta))

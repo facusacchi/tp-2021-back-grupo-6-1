@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.JsonView
 import serializer.View
+import exceptions.NullFieldException
+import exceptions.NullCollectionException
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -71,6 +73,15 @@ abstract class Pregunta extends Entity {
 	def void gestionarRespuestaDe(Usuario user, Respuesta respuesta) {
 		user.sumarPuntaje(puntos)
 		respuesta.puntos = puntos
+	}
+	
+	def validar() {
+		if(descripcion === null || respuestaCorrecta === null) {
+			throw new NullFieldException("Error al dejar campos nulos en la pregunta")
+		}
+		if(opciones.isEmpty) {
+			throw new NullCollectionException("Error al dejar colecciones vacias en la pregunta")
+		}
 	}
 }
 
