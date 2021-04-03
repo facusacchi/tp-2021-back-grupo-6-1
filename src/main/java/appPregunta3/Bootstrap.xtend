@@ -1,6 +1,6 @@
 package appPregunta3
 
-import dominio.Usuario	
+import dominio.Usuario
 import repos.RepoUsuario
 import java.time.LocalDate
 import dominio.Simple
@@ -9,8 +9,19 @@ import repos.RepoPregunta
 import dominio.DeRiesgo
 import dominio.Solidaria
 import dominio.Respuesta
+import org.springframework.stereotype.Service
+import org.springframework.beans.factory.InitializingBean
+import org.springframework.beans.factory.annotation.Autowired
+import dominio.Pregunta
 
-class Bootstrap {
+@Service
+class Bootstrap implements InitializingBean {
+
+	@Autowired
+	RepoUsuario repoUsuario
+
+	@Autowired
+	RepoPregunta repoPregunta
 
 	Usuario pepe
 	Usuario manolo
@@ -20,14 +31,8 @@ class Bootstrap {
 	Usuario pancho
 	Usuario elena
 
-	def void run() {
-		crearUsuarios
-		crearPreguntas
-	}
-	
 //########################### USUARIOS #####################################################//
-
-	def crearUsuarios() {
+	def void initUsuarios() {
 		pepe = new Usuario => [
 			nombre = "Pepe"
 			apellido = "Palala"
@@ -35,27 +40,27 @@ class Bootstrap {
 			password = "123"
 			puntaje = 1098
 			fechaDeNacimiento = LocalDate.of(1990, 7, 28)
-			
+
 			agregarRespuesta(new Respuesta => [
 				pregunta = "¿Cuantos años tiene Mirtha Legrand?"
 				puntos = 500
-				fechaRespuesta= LocalDate.of(2020,4,16)
+				fechaRespuesta = LocalDate.of(2020, 4, 16)
 			])
-			
+
 			agregarRespuesta(new Respuesta => [
-				pregunta="¿Cuantas provincias tiene Argentina?"
-				puntos=100
-				fechaRespuesta= LocalDate.of(2021,3,24)
+				pregunta = "¿Cuantas provincias tiene Argentina?"
+				puntos = 100
+				fechaRespuesta = LocalDate.of(2021, 3, 24)
 			])
-			
+
 			agregarRespuesta(new Respuesta => [
-				pregunta="¿Cuantas provincias tiene Argentina?"
-				puntos=100
-				fechaRespuesta= LocalDate.of(2021,3,24)
+				pregunta = "¿Cuantas provincias tiene Argentina?"
+				puntos = 100
+				fechaRespuesta = LocalDate.of(2021, 3, 24)
 			])
 		]
-		
-		RepoUsuario.instance.create(pepe)
+
+		this.crearUsuario(pepe)
 
 		manolo = new Usuario => [
 			nombre = "Manolo"
@@ -68,7 +73,7 @@ class Bootstrap {
 
 		manolo.agregarAmigo(pepe)
 
-		RepoUsuario.instance.create(manolo)
+		this.crearUsuario(manolo)
 
 		nancy = new Usuario => [
 			nombre = "Nancy"
@@ -82,7 +87,7 @@ class Bootstrap {
 		nancy.agregarAmigo(manolo)
 		nancy.agregarAmigo(pepe)
 
-		RepoUsuario.instance.create(nancy)
+		this.crearUsuario(nancy)
 
 		casandra = new Usuario => [
 			nombre = "Casandra"
@@ -97,7 +102,7 @@ class Bootstrap {
 		casandra.agregarAmigo(manolo)
 		casandra.agregarAmigo(pepe)
 
-		RepoUsuario.instance.create(casandra)
+		this.crearUsuario(casandra)
 
 		lucrecia = new Usuario => [
 			nombre = "Lucrecia"
@@ -113,7 +118,7 @@ class Bootstrap {
 		lucrecia.agregarAmigo(manolo)
 		lucrecia.agregarAmigo(pepe)
 
-		RepoUsuario.instance.create(lucrecia)
+		this.crearUsuario(lucrecia)
 
 		pancho = new Usuario => [
 			nombre = "Pancho"
@@ -129,7 +134,7 @@ class Bootstrap {
 		pancho.agregarAmigo(nancy)
 		pancho.agregarAmigo(manolo)
 
-		RepoUsuario.instance.create(pancho)
+		this.crearUsuario(pancho)
 
 		elena = new Usuario => [
 			nombre = "Elena"
@@ -145,18 +150,27 @@ class Bootstrap {
 		elena.agregarAmigo(casandra)
 		elena.agregarAmigo(manolo)
 
-		RepoUsuario.instance.create(elena)
+		this.crearUsuario(elena)
 
 	}
-	
-//########################### PREGUNTAS #####################################################//	
 
-	def crearPreguntas() {
-		RepoPregunta.instance.create(new Simple => [
+	def void crearUsuario(Usuario usuario) {
+		val usuarioEnRepo = repoUsuario.findByUserName(usuario.userName)
+		if (usuarioEnRepo !== null) {
+			usuario.id = usuarioEnRepo.id
+		}
+		repoUsuario.save(usuario)
+		println("Usuario " + usuario.userName + " creado")
+	}
+
+//########################### PREGUNTAS #####################################################//	
+	def void initPreguntas() {
+		
+		this.crearPregunta(new Simple => [
 			descripcion = "¿Por que sibarita es tan rica?"
 			autor = pepe
 			fechaHoraCreacion = LocalDateTime.now
-			//fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
+			// fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
 			agregarOpcion("Por la muzza")
 			agregarOpcion("Por la salsa")
 			agregarOpcion("Por la masa")
@@ -165,10 +179,10 @@ class Bootstrap {
 			respuestaCorrecta = "Es existencial"
 		])
 
-		RepoPregunta.instance.create(new Simple => [
+		this.crearPregunta(new Simple => [
 			descripcion = "¿Cual es la masa del sol?"
 			autor = pancho
-			//fechaHoraCreacion = LocalDateTime.now
+			// fechaHoraCreacion = LocalDateTime.now
 			fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
 			agregarOpcion("Mucha")
 			agregarOpcion("Poca")
@@ -177,11 +191,11 @@ class Bootstrap {
 			respuestaCorrecta = "Mucha"
 		])
 
-		RepoPregunta.instance.create(new DeRiesgo => [
+		this.crearPregunta(new DeRiesgo => [
 			descripcion = "¿Que es mas lento que un piropo de tartamudo?"
 			autor = manolo
 			fechaHoraCreacion = LocalDateTime.now
-			//fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
+			// fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
 			agregarOpcion("Un caracol")
 			agregarOpcion("Higuain")
 			agregarOpcion("Una babosa")
@@ -189,10 +203,10 @@ class Bootstrap {
 			respuestaCorrecta = "Higuain"
 		])
 
-		RepoPregunta.instance.create(new DeRiesgo => [
+		this.crearPregunta(new DeRiesgo => [
 			descripcion = "Cocodrilo que durmio es..."
 			autor = pancho
-			//fechaHoraCreacion = LocalDateTime.now
+			// fechaHoraCreacion = LocalDateTime.now
 			fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
 			agregarOpcion("Feroz")
 			agregarOpcion("Anfibio")
@@ -202,11 +216,11 @@ class Bootstrap {
 			respuestaCorrecta = "Cartera"
 		])
 
-		RepoPregunta.instance.create(new Solidaria() => [
+		this.crearPregunta(new Solidaria() => [
 			descripcion = "Hamlet es una obra de..."
 			autor = casandra
 			fechaHoraCreacion = LocalDateTime.now
-			//fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
+			// fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
 			puntos = 15
 			agregarOpcion("Pato donald")
 			agregarOpcion("Micky Mouse")
@@ -216,10 +230,10 @@ class Bootstrap {
 			respuestaCorrecta = "Shakespare"
 		])
 
-		RepoPregunta.instance.create(new Solidaria() => [
+		this.crearPregunta(new Solidaria() => [
 			descripcion = "Mas vale pajaro en mano que..."
 			autor = pepe
-			//fechaHoraCreacion = LocalDateTime.now
+			// fechaHoraCreacion = LocalDateTime.now
 			fechaHoraCreacion = LocalDateTime.now.minusMinutes(300)
 			puntos = 30
 			agregarOpcion("Pajaro perdido")
@@ -229,6 +243,23 @@ class Bootstrap {
 			agregarOpcion("Mano sin pajaro")
 			respuestaCorrecta = "Cien volando"
 		])
+	}
+	
+	def void crearPregunta(Pregunta pregunta) {
+		val preguntaEnRepo = repoPregunta.findByDescripcionIgnoreCase(pregunta.descripcion)
+		if (preguntaEnRepo !== null) {
+			pregunta.id = preguntaEnRepo.id
+		}
+		repoPregunta.save(pregunta)
+		println("Usuario " + pregunta.descripcion + " creado")
+	}
+	
+		override afterPropertiesSet() throws Exception {
+		println("************************************************************************")
+		println("Running initialization")
+		println("************************************************************************")
+		initUsuarios
+		initPreguntas
 	}
 
 }

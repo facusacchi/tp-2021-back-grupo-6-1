@@ -40,7 +40,7 @@ abstract class Pregunta extends Entity {
 	Set<String> opciones = new HashSet<String>
 	static String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss"
 	@JsonView(View.Pregunta.Table)
-	boolean activa
+	Boolean activa
 
 	@JsonProperty("fechaHoraCreacion")
 	def setFecha(String fecha) {

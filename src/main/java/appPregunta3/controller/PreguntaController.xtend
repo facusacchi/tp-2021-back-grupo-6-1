@@ -18,22 +18,35 @@ import repos.RepoUsuario
 import com.fasterxml.jackson.annotation.JsonView
 import serializer.View
 import dominio.Solidaria
+import org.springframework.beans.factory.annotation.Autowired
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 class PreguntaController {
 	
+	@Autowired
+	RepoPregunta repoPregunta
+	
+	@Autowired
+	RepoUsuario repoUsuario
+	
 	@GetMapping(value="/preguntas/{valorBusqueda}/{activas}/{idUser}")
 	@JsonView(value=View.Pregunta.Busqueda)
-	def getPreguntasPorString(@PathVariable String valorBusqueda, @PathVariable String activas, @PathVariable String idUser) {
+	def getPreguntasPorString(@PathVariable String valorBusqueda, @PathVariable String activas, @PathVariable Long idUser) {
 		if(valorBusqueda === null || activas === null || idUser === null) {
 			return ResponseEntity.badRequest.body('''Parametros de busqueda incorrectos''')
 		}
-		val user = RepoUsuario.instance.getById(idUser)
+		val user = this.repoUsuario.findById(idUser)
+		//val user = RepoUsuario.instance.getById(idUser)
 		if(user === null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontro usuario con ese id''')
 		}
-		val preguntas = RepoPregunta.instance.search(valorBusqueda, activas, user) 
+		var activa = false
+		if (activas=='true') {
+			activa = true
+		}
+		val preguntas = this.repoPregunta.findByDescripcionAndActivaAndAutor(valorBusqueda, activa, user).toList
+		//val preguntas = RepoPregunta.instance.search(valorBusqueda, activas, user) 
 		if(preguntas === null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontraron preguntas que coincidan con los valores de busqueda''')
 		}

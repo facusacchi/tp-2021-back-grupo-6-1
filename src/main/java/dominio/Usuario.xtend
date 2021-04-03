@@ -13,9 +13,18 @@ import java.time.LocalDateTime
 import com.fasterxml.jackson.annotation.JsonView
 import serializer.View
 import exceptions.NullFieldException
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.GeneratedValue
 
+@Entity
 @Accessors
-class Usuario extends Entity {
+class Usuario implements Entidad {
+	
+	@Id @GeneratedValue
+	@JsonView(View.Usuario.Login, View.Usuario.Perfil, View.Usuario.TablaNoAmigos)
+	Long id
+	
 	@JsonView(View.Pregunta.Table, View.Usuario.Login, View.Usuario.Perfil, View.Usuario.TablaNoAmigos)
 	String nombre
 	@JsonView(View.Pregunta.Table, View.Usuario.Login, View.Usuario.Perfil, View.Usuario.TablaNoAmigos)
@@ -99,5 +108,6 @@ class Usuario extends Entity {
 			throw new NullFieldException("Campos de usuario nulos")
 		}
 	}
+	
 }
 
