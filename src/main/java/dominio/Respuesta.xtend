@@ -7,11 +7,19 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.format.DateTimeFormatter
 import com.fasterxml.jackson.annotation.JsonView
 import serializer.View
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 
+@Entity
 @Accessors
 class Respuesta {
 	
-	@JsonIgnore LocalDate fechaRespuesta
+	@Id @GeneratedValue
+	Long id
+	
+	@JsonIgnore
+	LocalDate fechaRespuesta
 	@JsonView(View.Usuario.Perfil)
 	int puntos
 	@JsonView(View.Usuario.Perfil)
@@ -24,11 +32,6 @@ class Respuesta {
 	def getFechaAsString() {
 		formatter.format(this.fechaRespuesta)
 	}
-// esto se setea automaticamente cuando el usuario responde
-//	@JsonProperty("fechaRespuesta")
-//	def setFecha(String fecha) {
-//		this.fechaRespuesta = LocalDate.parse(fecha, formatter)
-//	}
 
 	def formatter() {
 		DateTimeFormatter.ofPattern(DATE_PATTERN)

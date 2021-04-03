@@ -31,7 +31,7 @@ class Bootstrap implements InitializingBean {
 	Usuario pancho
 	Usuario elena
 
-//########################### USUARIOS #####################################################//
+//########################### INIT USUARIOS #####################################################//
 	def void initUsuarios() {
 		pepe = new Usuario => [
 			nombre = "Pepe"
@@ -154,16 +154,7 @@ class Bootstrap implements InitializingBean {
 
 	}
 
-	def void crearUsuario(Usuario usuario) {
-		val usuarioEnRepo = repoUsuario.findByUserName(usuario.userName)
-		if (usuarioEnRepo !== null) {
-			usuario.id = usuarioEnRepo.id
-		}
-		repoUsuario.save(usuario)
-		println("Usuario " + usuario.userName + " creado")
-	}
-
-//########################### PREGUNTAS #####################################################//	
+//########################### INIT PREGUNTAS #####################################################//	
 	def void initPreguntas() {
 		
 		this.crearPregunta(new Simple => [
@@ -243,6 +234,17 @@ class Bootstrap implements InitializingBean {
 			agregarOpcion("Mano sin pajaro")
 			respuestaCorrecta = "Cien volando"
 		])
+	}
+
+//######################### IMPLEMENTATION METHODS ##########################################
+	
+	def void crearUsuario(Usuario usuario) {
+		val usuarioEnRepo = repoUsuario.findByUserName(usuario.userName)
+		if (usuarioEnRepo !== null) {
+			usuario.id = usuarioEnRepo.id
+		}
+		repoUsuario.save(usuario)
+		println("Usuario " + usuario.userName + " creado")
 	}
 	
 	def void crearPregunta(Pregunta pregunta) {

@@ -24,7 +24,7 @@ import exceptions.BusinessException
     @JsonSubTypes.Type(value = Solidaria, name = "solidaria")
 )
 @Accessors
-abstract class Pregunta extends Entity {
+abstract class Pregunta implements Entidad {
 	
 	@JsonView(View.Pregunta.Table)
 	int puntos
