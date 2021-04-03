@@ -19,7 +19,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.OneToMany
 import javax.persistence.FetchType
 import javax.persistence.Column
-import javax.persistence.Transient
+import javax.persistence.OrderColumn
 
 @Entity
 @Accessors
@@ -51,6 +51,7 @@ class Usuario implements Entidad {
 	int puntaje
 	@JsonView(View.Usuario.Perfil)
 	@OneToMany(fetch=FetchType.LAZY)
+	@OrderColumn
 	List<Respuesta> respuestas = new ArrayList<Respuesta>
 	static String DATE_PATTERN = "yyyy-MM-dd"
 
