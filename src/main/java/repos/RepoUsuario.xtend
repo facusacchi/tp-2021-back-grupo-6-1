@@ -2,21 +2,24 @@ package repos
 
 import dominio.Usuario
 import org.springframework.data.repository.CrudRepository
+import java.util.Optional
 
 interface RepoUsuario extends CrudRepository<Usuario, Long> {
 
-	def Usuario findByuserNameAndpassword(String userName, String password);
+	def Optional<Usuario> findByUserNameAndPassword(String userName, String password);
 	
-	def Usuario findByUserName(String userName);
+	def Optional<Usuario> findByUserName(String userName);
+	
+//	def List<Pregunta> search(String value, String activa, Usuario user) {
+//		val preguntas = preguntasNoRespondidasPor(user).filter[object | object.cumpleCondicionDeBusqueda(value)].toList
+//		if(activa == "true") {
+//			return preguntasActivas(preguntas)
+//		} else {			
+//			return preguntas
+//		}
+//	}
 
-//	def getByLogin(String userName, String pssw) {
-//		objects.findFirst[user|user.userName == userName && user.password == pssw]
-//	}
-	
-//	def getUsuariosNoAmigos(String id) {
-//		val usuarioLogueado = getById(id)
-//		allInstances.filter(usuario |  !usuarioLogueado.esAmigo(usuario) && usuarioLogueado != usuario).toList
-//	}
+
 //	
 //	def searchAmigo(String ami) {
 //		objects.findFirst[obj | ami.contains(obj.nombre) && ami.contains(obj.apellido)]

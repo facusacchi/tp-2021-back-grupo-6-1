@@ -15,7 +15,20 @@ import serializer.View
 import exceptions.NullFieldException
 import exceptions.NullCollectionException
 import exceptions.BusinessException
+import javax.persistence.Entity
+import javax.persistence.Inheritance
+import javax.persistence.InheritanceType
+import javax.persistence.DiscriminatorColumn
+import javax.persistence.DiscriminatorType
+import javax.persistence.Id
+import javax.persistence.GeneratedValue
+import javax.persistence.Column
+import javax.persistence.OneToOne
+import javax.persistence.FetchType
+import javax.persistence.ElementCollection
+import javax.persistence.Transient
 
+@Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes(
@@ -23,22 +36,41 @@ import exceptions.BusinessException
     @JsonSubTypes.Type(value = DeRiesgo, name = "deRiesgo"),
     @JsonSubTypes.Type(value = Solidaria, name = "solidaria")
 )
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="tipo_pregunta",    
+                     discriminatorType=DiscriminatorType.INTEGER)
 @Accessors
 abstract class Pregunta implements Entidad {
 	
+	@Id @GeneratedValue
+	@JsonView(View.Pregunta.Busqueda, View.Pregunta.Table)
+	Long id
+	
 	@JsonView(View.Pregunta.Table)
 	int puntos
+	
 	@JsonView(View.Pregunta.Busqueda, View.Pregunta.Table)
+	@Column(length=150)
 	String descripcion
+	
+	@OneToOne(fetch=FetchType.LAZY)
 	@JsonView(View.Pregunta.Table, View.Pregunta.Busqueda)
 	Usuario autor
+	
 	@JsonView(View.Pregunta.Table)
+	@Column(length=150)
 	String respuestaCorrecta
+	
+	//@Column(length=50)
 	@JsonIgnore
 	LocalDateTime fechaHoraCreacion
+	
+	@ElementCollection
 	@JsonView(View.Pregunta.Table)
 	Set<String> opciones = new HashSet<String>
+	
 	static String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss"
+	
 	@JsonView(View.Pregunta.Table)
 	Boolean activa
 
@@ -94,6 +126,8 @@ class Simple extends Pregunta {
 }
 
 class DeRiesgo extends Pregunta {
+	
+	@Transient
 	int puntosRestados
 	
 	new() {

@@ -1,5 +1,4 @@
 spring:
-#   base de datos posta    
     datasource:
         url: jdbc:mysql://localhost/pregunta3
         username: root

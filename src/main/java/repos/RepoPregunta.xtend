@@ -11,16 +11,8 @@ interface RepoPregunta extends CrudRepository<Pregunta, Long> {
 	
 	def List<Pregunta> findByDescripcionAndActivaAndAutor(String descripcion, Boolean activa, Optional<Usuario> autor)
 	
-	def List<Pregunta> findByDescripcionIgnoreCase(String descripcion)
+	def Optional<Pregunta> findByDescripcionIgnoreCase(String descripcion)
 	
-//	def List<Pregunta> search(String value, String activa, Usuario user) {
-//		val preguntas = preguntasNoRespondidasPor(user).filter[object | object.cumpleCondicionDeBusqueda(value)].toList
-//		if(activa == "true") {
-//			return preguntasActivas(preguntas)
-//		} else {			
-//			return preguntas
-//		}
-//	}
 //	
 //	def Set<Pregunta> allInstances(String activas, Usuario user) {
 //		if(activas == "true") {			

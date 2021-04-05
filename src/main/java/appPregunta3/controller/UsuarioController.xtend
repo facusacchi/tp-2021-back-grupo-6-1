@@ -20,102 +20,120 @@ import dominio.Respuesta
 import com.fasterxml.jackson.annotation.JsonView
 import serializer.View
 import exceptions.NullFieldException
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @CrossOrigin(origins="http://localhost:3000")
 class UsuarioController {
 
+	@Autowired
+	RepoUsuario repoUsuario
+
+	@Autowired
+	RepoPregunta repoPregunta
+
 	@PostMapping(value="/login")
 	@JsonView(value=View.Usuario.Login)
-	def buscarUsuario(@RequestBody String body) {
-		val dataSession = mapper.readValue(body, DataSession)
-		if (dataSession === null) {
+	def buscarUsuario(@RequestBody Usuario usuarioBody) {
+		if (usuarioBody === null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''Error al construir los datos de sesion''')
 		}
-		if(dataSession.userName === null || dataSession.password === null) {
+		if (usuarioBody.userName === null || usuarioBody.password === null) {
 			throw new NullFieldException("Campos de login invalidos")
 		}
-		val usuario = RepoUsuario.instance.getByLogin(dataSession.userName, dataSession.password)
-		if (usuario === null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-				mapper.writeValueAsString('''Usuario o contraseña invalidos'''))
-		}
+		val usuario = repoUsuario.findByUserNameAndPassword(usuarioBody.userName, usuarioBody.password).orElseThrow([
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, '''Usuario o contraseña invalidos''')
+		])
 		ResponseEntity.ok(usuario)
 	}
 
 	@PutMapping(value="/perfilDeUsuario/{idUser}/{idPregunta}")
-	def responder(@PathVariable Integer idUser, @PathVariable Integer idPregunta, @RequestBody String opcionElegida) {
+	def responder(@PathVariable Long idUser, @PathVariable Long idPregunta, @RequestBody Respuesta respuesta) {
 		if (idUser === null || idUser === 0) {
 			return ResponseEntity.badRequest.body('''Error de parámetro de usuario''')
 		}
 		if (idPregunta === null || idPregunta === 0) {
 			return ResponseEntity.badRequest.body('''Error de parámetro de pregunta''')
 		}
-		val usuario = RepoUsuario.instance.getById(idUser.toString)
-		if (usuario === null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-				mapper.writeValueAsString('''Usuario no encontrado'''))
-		}
-		val pregunta = RepoPregunta.instance.getById(idPregunta.toString)
-		if (pregunta === null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-				mapper.writeValueAsString('''Pregunta no encontrada'''))
-		}
-		val opcion = mapper.readValue(opcionElegida, Respuesta)
-		if(opcion === null) {
+		val pregunta = repoPregunta.findById(idPregunta).orElseThrow([
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, '''Pregunta no encontrada''')
+		])
+		val opcion = respuesta.opcionElegida
+		if (opcion === null) {
 			return ResponseEntity.badRequest.body('''Error en la respuesta enviada en el body''')
 		}
-		usuario.responder(pregunta, opcion)
-		ResponseEntity.ok(mapper.writeValueAsString(usuario))
-	}
-	
-    @JsonView(View.Usuario.Perfil)
-	@GetMapping("/perfilDeUsuario/{id}")
-	def usuarioPorId(@PathVariable Integer id) {
-		if (id === 0) {
-			return ResponseEntity.badRequest.body('''Debe ingresar el parámetro id''')
-		}
-		val usuario = RepoUsuario.instance.getById(id.toString)
-		if (usuario === null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontró el usuario con id <«id»>''')
-		}
+		val usuario = repoUsuario.findById(idUser).map([ usuario |
+			usuario => [
+				usuario.responder(pregunta, respuesta)
+			]
+			repoUsuario.save(usuario)
+		]).orElseThrow([
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, '''No se encontró el usuario con id <«idUser»>''')
+		])
 		ResponseEntity.ok(usuario)
 	}
 
 	@JsonView(View.Usuario.Perfil)
+	@GetMapping("/perfilDeUsuario/{id}")
+	def usuarioPorId(@PathVariable Long id) {
+		if (id === 0) {
+			return ResponseEntity.badRequest.body('''Debe ingresar el parámetro id''')
+		}
+		val usuario = repoUsuario.findById(id).orElseThrow([
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, '''No se encontró el usuario con id <«id»>''')
+		])
+		ResponseEntity.ok(usuario)
+	}
+
+//	@JsonView(View.Usuario.Perfil)
 	@PutMapping(value="/perfilDeUsuario/{id}")
-	def actualizar(@RequestBody String body, @PathVariable Integer id) {
+	def actualizar(@RequestBody Usuario usuarioBody, @PathVariable Long id) {
 		if (id === null || id === 0) {
 			return ResponseEntity.badRequest.body('''Debe ingresar el parámetro id''')
 		}
-		val actualizado = mapper.readValue(body, Usuario)
-		if (actualizado === null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-				mapper.writeValueAsString('''Usuario no encontrado'''))
+		if (usuarioBody === null) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, '''Error en el cuerpo del body''')
 		}
-		if(id != actualizado.id) {
+		if (id != usuarioBody.id) {
 			return ResponseEntity.badRequest.body("Id en URL distinto del id que viene en el body")
 		}
-//		actualizado.validar
-		RepoUsuario.instance.modificar(actualizado)
-		ResponseEntity.ok(mapper.writeValueAsString(actualizado))
+		usuarioBody.validar
+		repoUsuario.findById(id).map([ usuario |
+			usuario => [
+				it.nombre = usuarioBody.nombre
+				it.apellido = usuarioBody.apellido
+				it.fechaDeNacimiento = usuarioBody.fechaDeNacimiento
+			]
+			repoUsuario.save(usuario)
+		]).orElseThrow([
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El usuario con identificador " + id + " no existe")
+		])
+
+//		ResponseEntity.ok(usuarioBody)
+		return ResponseEntity.ok.body("El usuario fue actualizado correctamente")
+
 	}
 
-	static def mapper() {
-		new ObjectMapper => [
-			configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-			configure(SerializationFeature.INDENT_OUTPUT, true)
-		]
-	}
-
+//	static def mapper() {
+//		new ObjectMapper => [
+//			configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+//			configure(SerializationFeature.INDENT_OUTPUT, true)
+//		]
+//	}
+//
 	@JsonView(View.Usuario.TablaNoAmigos)
 	@GetMapping(value="/usuarios/noAmigos/{id}")
-	def getUsuariosNoAmigos(@PathVariable String id) {
-		val usuarios = RepoUsuario.instance.getUsuariosNoAmigos(id)
-		if (usuarios.empty) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No tenes amigos para agregar''')
+	def getUsuariosNoAmigos(@PathVariable Long id) {
+		val usuarioLogueado = repoUsuario.findById(id)
+		.orElseThrow([
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El usuario con identificador " + id + " no existe")
+		])
+		val usuariosNoAmigos = repoUsuario.findAll().filter(usuario |  !usuarioLogueado.esAmigo(usuario) && usuarioLogueado != usuario).toList
+		if (usuariosNoAmigos.empty) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, '''No tenes amigos para agregar''')
 		}
-		ResponseEntity.ok(usuarios)
+		ResponseEntity.ok(usuariosNoAmigos)
 	}
 
 	@JsonView(View.Usuario.Perfil)
@@ -133,10 +151,4 @@ class UsuarioController {
 		ResponseEntity.ok(usuarioLogueado)
 	}
 
-}
-
-@Accessors
-class DataSession {
-	String userName
-	String password
 }

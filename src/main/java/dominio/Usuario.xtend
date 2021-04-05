@@ -20,6 +20,7 @@ import javax.persistence.OneToMany
 import javax.persistence.FetchType
 import javax.persistence.Column
 import javax.persistence.OrderColumn
+import javax.persistence.CascadeType
 
 @Entity
 @Accessors
@@ -32,26 +33,32 @@ class Usuario implements Entidad {
 	@JsonView(View.Pregunta.Table, View.Usuario.Login, View.Usuario.Perfil, View.Usuario.TablaNoAmigos)
 	@Column(length=50)
 	String nombre
+	
 	@JsonView(View.Pregunta.Table, View.Usuario.Login, View.Usuario.Perfil, View.Usuario.TablaNoAmigos)
 	@Column(length=50)
 	String apellido
+	
 	@JsonIgnore
-	@Column(length=50)
+	//@Column(length=50)
 	LocalDate fechaDeNacimiento
+	
 	@JsonView(View.Pregunta.Busqueda, View.Usuario.Login)
 	@Column(length=50)
 	String userName
+	
 	@Column(length=50)
 	String password
+	
 	@JsonIgnore
 	@OneToMany(fetch=FetchType.LAZY)
 	Set<Usuario> amigos = new HashSet<Usuario>
+	
 	@JsonView(View.Usuario.Login, View.Usuario.Perfil)
 	@Column(length=50)
 	int puntaje
+	
 	@JsonView(View.Usuario.Perfil)
-	@OneToMany(fetch=FetchType.LAZY)
-	@OrderColumn
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	List<Respuesta> respuestas = new ArrayList<Respuesta>
 	static String DATE_PATTERN = "yyyy-MM-dd"
 

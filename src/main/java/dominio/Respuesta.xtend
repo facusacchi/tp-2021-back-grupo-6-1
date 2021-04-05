@@ -20,11 +20,15 @@ class Respuesta {
 	
 	@JsonIgnore
 	LocalDate fechaRespuesta
+	
 	@JsonView(View.Usuario.Perfil)
 	int puntos
+	
 	@JsonView(View.Usuario.Perfil)
 	String pregunta 
+	
 	String opcionElegida
+	
 	static String DATE_PATTERN = "yyyy-MM-dd"
 	
 	@JsonView(View.Usuario.Perfil)
