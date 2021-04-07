@@ -1,11 +1,11 @@
 package appPregunta3
 
-import dominio.Usuario
-import repos.RepoUsuario
+import dominio.Usuario	
+import dao.RepoUsuario
 import java.time.LocalDate
 import dominio.Simple
 import java.time.LocalDateTime
-import repos.RepoPregunta
+import dao.RepoPregunta
 import dominio.DeRiesgo
 import dominio.Solidaria
 import dominio.Respuesta
@@ -239,7 +239,7 @@ class Bootstrap implements InitializingBean {
 //######################### IMPLEMENTATION METHODS ##########################################
 	
 	def void crearUsuario(Usuario usuario) {
-		val usuarioEnRepo = repoUsuario.findByUserName(usuario.userName)
+		val usuarioEnRepo = repoUsuario.findByUserName(usuario.userName).get
 		if (usuarioEnRepo !== null) {
 			usuario.id = usuarioEnRepo.id
 		}
@@ -248,7 +248,7 @@ class Bootstrap implements InitializingBean {
 	}
 	
 	def void crearPregunta(Pregunta pregunta) {
-		val preguntaEnRepo = repoPregunta.findByDescripcionIgnoreCase(pregunta.descripcion)
+		val preguntaEnRepo = repoPregunta.findByDescripcionIgnoreCase(pregunta.descripcion).get
 		if (preguntaEnRepo !== null) {
 			pregunta.id = preguntaEnRepo.id
 		}

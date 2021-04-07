@@ -1,11 +1,11 @@
 package appPregunta3.controller
 
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.RestController	
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.http.ResponseEntity
-import repos.RepoPregunta
+import dao.RepoPregunta
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import dominio.Pregunta
 import org.springframework.web.bind.annotation.PostMapping
-import repos.RepoUsuario
+import dao.RepoUsuario
 import com.fasterxml.jackson.annotation.JsonView
 import serializer.View
 import dominio.Solidaria

@@ -1,6 +1,6 @@
 package dominio
 
-import java.util.HashSet
+import java.util.HashSet	
 import java.util.Set
 import java.time.LocalDate
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -19,7 +19,6 @@ import javax.persistence.GeneratedValue
 import javax.persistence.OneToMany
 import javax.persistence.FetchType
 import javax.persistence.Column
-import javax.persistence.OrderColumn
 import javax.persistence.CascadeType
 
 @Entity
@@ -130,6 +129,5 @@ class Usuario implements Entidad {
 			throw new NullFieldException("Campos de usuario nulos")
 		}
 	}
-	
 }
 

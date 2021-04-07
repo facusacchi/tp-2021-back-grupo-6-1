@@ -1,4 +1,4 @@
-package repos
+package dao
 
 import dominio.Pregunta
 import java.util.List

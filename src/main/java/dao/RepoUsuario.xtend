@@ -1,4 +1,4 @@
-package repos
+package dao
 
 import dominio.Usuario
 import org.springframework.data.repository.CrudRepository

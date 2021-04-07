@@ -1,18 +1,18 @@
 package exceptions
 
-class NullFieldException extends Exception {
+class NullFieldException extends RuntimeException {
 	new(String messagge) {
 		super(messagge)
 	}
 }
 
-class NullCollectionException extends Exception {
+class NullCollectionException extends RuntimeException {
 	new(String messagge) {
 		super(messagge)
 	}	
 }
 
-class BusinessException extends Exception {
+class BusinessException extends RuntimeException {
 	new(String messagge) {
 		super(messagge)
 	}
