@@ -78,6 +78,21 @@ class UsuarioService {
 		usuariosNoAmigos	
 	}
 	
+	def agregarAmigo(Long idUser, Long nuevoAmigoId) {
+		validarId(idUser)
+		validarId(nuevoAmigoId)
+		val Usuario nuevoAmigo = repoUsuario.findById(nuevoAmigoId).orElseThrow([
+			throw new NotFoundException("Usuario con id: " + nuevoAmigoId + " no encontrado")
+		])
+		val Usuario usuarioLogueado = repoUsuario.findById(idUser).orElseThrow([
+			throw new NotFoundException("Usuario con id: " + idUser + " no encontrado")
+		])
+		nuevoAmigo.validar
+		usuarioLogueado.validar
+		usuarioLogueado.agregarAmigo(nuevoAmigo)
+		repoUsuario.save(usuarioLogueado)
+	}
+	
 	def validarId(Long id) {
 		if(id === null) {
 			throw new BadRequestException("Parámetros nulos en el path")

@@ -36,38 +36,28 @@ class UsuarioController {
 	}
 
 	@JsonView(View.Usuario.Perfil)
-	@GetMapping("/perfilDeUsuario/{id}")
+	@GetMapping("/perfilDeUsuario/{idUser}")
 	def buscarUsuarioPorId(@PathVariable Long idUser) {
 		val usuario = usuarioService.buscarUsuarioPorId(idUser)
 		ResponseEntity.ok(usuario)
 	}
 
-	@PutMapping(value="/perfilDeUsuario/{id}")
+	@PutMapping(value="/perfilDeUsuario/{idUser}")
 	def actualizarUsuario(@RequestBody Usuario usuarioBody, @PathVariable Long idUser) {
 		usuarioService.actualizarUsuario(idUser, usuarioBody)
 		ResponseEntity.ok.body("El usuario con id " + idUser + " fue actualizado correctamente")
 	}
 
 	@JsonView(View.Usuario.TablaNoAmigos)
-	@GetMapping(value="/usuarios/noAmigos/{id}")
+	@GetMapping(value="/usuarios/noAmigos/{idUser}")
 	def buscarUsuariosNoAmigos(@PathVariable Long idUser) {
 		val usuariosNoAmigos = usuarioService.buscarUsuariosNoAmigos(idUser)
 		ResponseEntity.ok(usuariosNoAmigos)
 	}
 
-	// AQUI FALTA TERMINAR EL POST
-//	@JsonView(View.Usuario.Perfil)
-//	@PutMapping(value="/usuarios/{id}/agregarAmigo/{nuevoAmigoId}")
-//	def agregarAmigo(@PathVariable String id, @PathVariable String nuevoAmigoId) {
-//		if (id === null || Integer.valueOf(id) === 0) {
-//			return ResponseEntity.badRequest.body('''Debe ingresar el parámetro id''')
-//		}
-//		val Usuario nuevoAmigo = RepoUsuario.instance.getById(nuevoAmigoId)
-//		val Usuario usuarioLogueado = RepoUsuario.instance.getById(id)
-//		nuevoAmigo.validar
-//		usuarioLogueado.validar
-//		usuarioLogueado.agregarAmigo(nuevoAmigo)
-//		RepoUsuario.instance.update(usuarioLogueado)
-//		ResponseEntity.ok(usuarioLogueado)
-//	}
+	@PutMapping(value="/usuarios/{idUser}/agregarAmigo/{nuevoAmigoId}")
+	def agregarAmigo(@PathVariable Long idUser, @PathVariable Long nuevoAmigoId) {
+		usuarioService.agregarAmigo(idUser, nuevoAmigoId)
+		ResponseEntity.ok.body("El usuario con id " + idUser + " fue actualizado correctamente")
+	}
 }
