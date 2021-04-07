@@ -11,3 +11,9 @@ spring:
         hibernate:
             format_sql: true
             ddl-auto: create-drop
+server:
+    servlet.encoding.charset: UTF-8
+    servlet.encoding.force: true
+    error:
+      include-stacktrace: on-trace-param
+      include-exception: true
