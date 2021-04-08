@@ -31,6 +31,7 @@ class PreguntaController {
 	@Autowired
 	RepoUsuario repoUsuario
 	
+	// VALIDAR PARAMETROS EN EL PATH NULOS
 	@GetMapping(value="/preguntas/{valorBusqueda}/{activas}/{idUser}")
 	@JsonView(value=View.Pregunta.Busqueda)
 	def getPreguntasPorString(@PathVariable String valorBusqueda, @PathVariable String activas, @PathVariable Long idUser) {
@@ -52,6 +53,7 @@ class PreguntaController {
 		ResponseEntity.ok(preguntas)
 	}
 	
+	// VALIDAR PARAMETROS EN EL PATH NULOS
 	@GetMapping("/pregunta/{id}")
 	@JsonView(value=View.Pregunta.Table)
 	def preguntaPorId(@PathVariable Long id) {
@@ -63,6 +65,7 @@ class PreguntaController {
 		ResponseEntity.ok(pregunta)
 	}
 	
+	// REVISAR ESTE ENDPOINT, NO TRAE LO QUE SE ESTA PIDIENDO, Y VALIDAR PARAMETROS EN EL PATH NULOS
 	@GetMapping("/preguntasAll/{activas}/{idUser}")
 	@JsonView(value=View.Pregunta.Busqueda)
 	def todasLasPreguntas(@PathVariable Boolean activas, @PathVariable Long idUser) {
@@ -78,6 +81,7 @@ class PreguntaController {
 		ResponseEntity.ok(preguntas)
 	}
 	
+	// VALIDAR PARAMETROS EN EL PATH NULOS
 	@PutMapping(value="/pregunta/{id}")
 	def actualizar(@RequestBody Pregunta preguntaModificada, @PathVariable Long id) {
 		
@@ -96,6 +100,7 @@ class PreguntaController {
 		ResponseEntity.ok(pregunta)
 	}
 	
+	// VALIDAR PARAMETROS EN EL PATH NULOS
 	@PostMapping(value="/{idAutor}/pregunta")
 	def crearPregunta(@RequestBody Pregunta bodyPregunta, @PathVariable Long idAutor) {
 		
@@ -115,6 +120,7 @@ class PreguntaController {
 		ResponseEntity.ok(bodyPregunta)
 	}
 	
+	// ESTO YA NO SE USA MAS
 	static def mapper() {
 		new ObjectMapper => [
 			configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
