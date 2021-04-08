@@ -14,6 +14,9 @@ interface RepoUsuario extends CrudRepository<Usuario, Long> {
 	@EntityGraph(attributePaths=#["amigos"])
 	override findAll()
 	
+	@EntityGraph(attributePaths=#["respuestas"])
+	override findById(Long id)
+	
 //	def List<Pregunta> search(String value, String activa, Usuario user) {
 //		val preguntas = preguntasNoRespondidasPor(user).filter[object | object.cumpleCondicionDeBusqueda(value)].toList
 //		if(activa == "true") {
