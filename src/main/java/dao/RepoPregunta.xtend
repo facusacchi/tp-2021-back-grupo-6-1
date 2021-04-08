@@ -9,7 +9,7 @@ import java.util.Optional
 
 interface RepoPregunta extends CrudRepository<Pregunta, Long> {
 	
-	def List<Pregunta> findByDescripcionAndActivaAndAutor(String descripcion, Boolean activa, Optional<Usuario> autor)
+	def List<Pregunta> findByDescripcionAndActivaAndAutor(String descripcion, Boolean activa, Usuario autor)
 	
 	def Optional<Pregunta> findByDescripcionIgnoreCase(String descripcion)
 	
