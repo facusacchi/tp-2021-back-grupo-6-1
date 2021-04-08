@@ -7,7 +7,9 @@ import exceptions.BadRequestException
 import dominio.Respuesta
 import dao.RepoPregunta
 import exceptions.NotFoundException
+import org.springframework.stereotype.Service
 
+@Service
 class UsuarioService {
 	@Autowired
 	RepoUsuario repoUsuario

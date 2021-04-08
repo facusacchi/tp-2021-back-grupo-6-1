@@ -1,6 +1,6 @@
 package appPregunta3
 
-import dominio.Usuario	
+import dominio.Usuario		
 import dao.RepoUsuario
 import java.time.LocalDate
 import dominio.Simple
