@@ -13,6 +13,8 @@ interface RepoPregunta extends CrudRepository<Pregunta, Long> {
 	
 	def Optional<Pregunta> findByDescripcionIgnoreCase(String descripcion)
 	
+	def Set<Pregunta> findByActivas(Boolean activas) 
+	
 //	
 //	def Set<Pregunta> allInstances(String activas, Usuario user) {
 //		if(activas == "true") {			

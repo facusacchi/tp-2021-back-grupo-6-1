@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonView
 import serializer.View
 import dominio.Solidaria
 import org.springframework.beans.factory.annotation.Autowired
+import exceptions.NotFoundException
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -33,9 +34,7 @@ class PreguntaController {
 	@GetMapping(value="/preguntas/{valorBusqueda}/{activas}/{idUser}")
 	@JsonView(value=View.Pregunta.Busqueda)
 	def getPreguntasPorString(@PathVariable String valorBusqueda, @PathVariable String activas, @PathVariable Long idUser) {
-		if(valorBusqueda === null || activas === null || idUser === null) {
-			return ResponseEntity.badRequest.body('''Parametros de busqueda incorrectos''')
-		}
+		
 		val user = this.repoUsuario.findById(idUser)
 		//val user = RepoUsuario.instance.getById(idUser)
 		if(user === null) {
@@ -55,29 +54,24 @@ class PreguntaController {
 	
 	@GetMapping("/pregunta/{id}")
 	@JsonView(value=View.Pregunta.Table)
-	def preguntaPorId(@PathVariable Integer id) {
-		if (id === 0) {
-			return ResponseEntity.badRequest.body('''Debe ingresar el parámetro id''')
-		}
-		val pregunta = RepoPregunta.instance.getById(id.toString)
-		if (pregunta === null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontró la pregunta con id <«id»>''')
-		}
+	def preguntaPorId(@PathVariable Long id) {
+		
+		val pregunta = repoPregunta.findById(id).orElseThrow([
+		throw new NotFoundException("Pregunta con id: " + id + " no encontrada")
+		])
 		pregunta.activa = pregunta.estaActiva
 		ResponseEntity.ok(pregunta)
 	}
 	
 	@GetMapping("/preguntasAll/{activas}/{idUser}")
 	@JsonView(value=View.Pregunta.Busqueda)
-	def todasLasPreguntas(@PathVariable String activas, @PathVariable String idUser) {
-		if(activas === null || idUser === null) {
-			return ResponseEntity.badRequest.body('''Parametro de busqueda incorrecto''')
-		}
-		val user = RepoUsuario.instance.getById(idUser)
-		if (user === null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontro usuario''')
-		}
-		val preguntas = RepoPregunta.instance.allInstances(activas, user)
+	def todasLasPreguntas(@PathVariable Boolean activas, @PathVariable Long idUser) {
+		
+		val user = repoUsuario.findById(idUser).orElseThrow([
+		throw new NotFoundException("Usuario con id: " + idUser + " no encontrado")
+		])
+		
+		val preguntas = repoPregunta.findByActivas(activas)
 		if (preguntas === null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontraron preguntas''')
 		}
@@ -85,42 +79,39 @@ class PreguntaController {
 	}
 	
 	@PutMapping(value="/pregunta/{id}")
-	def actualizar(@RequestBody Pregunta preguntaModificada, @PathVariable Integer id) {
-		if (id === null || id === 0) {
-			return ResponseEntity.badRequest.body('''Debe ingresar el parámetro id''')
-		}
-		val pregunta = RepoPregunta.instance.getById(id.toString)
-		if(pregunta === null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''Error, no se encontro la pregunta''')
-		}
+	def actualizar(@RequestBody Pregunta preguntaModificada, @PathVariable Long id) {
+		
+		val pregunta = repoPregunta.findById(id).orElseThrow([
+		throw new NotFoundException("Pregunta con id: " + id + " no encontrada")
+		])
+		
 		preguntaModificada.validar
-		RepoPregunta.instance.getById(id.toString) => [
-			it.descripcion = preguntaModificada.descripcion
-			it.opciones = preguntaModificada.opciones
-			it.respuestaCorrecta = preguntaModificada.respuestaCorrecta
-			it.puntos = preguntaModificada.puntos
+		pregunta => [
+			descripcion = preguntaModificada.descripcion
+			opciones = preguntaModificada.opciones
+			respuestaCorrecta = preguntaModificada.respuestaCorrecta
+			puntos = preguntaModificada.puntos
 		]
+		repoPregunta.save(pregunta)
 		ResponseEntity.ok(pregunta)
 	}
 	
 	@PostMapping(value="/{idAutor}/pregunta")
-	def crearPregunta(@RequestBody Pregunta bodyPregunta, @PathVariable Integer idAutor) {
-		if (idAutor === null || idAutor === 0) {
-			return ResponseEntity.badRequest.body('''Id en url invalido''')
-		}
+	def crearPregunta(@RequestBody Pregunta bodyPregunta, @PathVariable Long idAutor) {
+		
 		if(bodyPregunta === null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''Error en el body''')
 		}
-		val usuario = RepoUsuario.instance.getById(idAutor.toString)
-		if(usuario === null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body('''No se encontró el usuario con id < «idAutor» >''')
-		}
+		val usuario = repoUsuario.findById(idAutor).orElseThrow([
+		throw new NotFoundException("Usuario con id: " + idAutor + " no encontrado")
+		])
+		
 		bodyPregunta.validar
 		if(bodyPregunta instanceof Solidaria) {
 			bodyPregunta.validar(usuario)
 		}
 		bodyPregunta.autor = usuario
-		RepoPregunta.instance.create(bodyPregunta)
+		repoPregunta.save(bodyPregunta)
 		ResponseEntity.ok(bodyPregunta)
 	}
 	
