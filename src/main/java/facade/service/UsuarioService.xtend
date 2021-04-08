@@ -9,6 +9,7 @@ import dao.RepoPregunta
 import exceptions.NotFoundException
 import dominio.Pregunta
 import dominio.Entidad
+import java.util.List
 
 class UsuarioService {
 	@Autowired
@@ -18,9 +19,8 @@ class UsuarioService {
 	RepoPregunta repoPregunta
 	
 	def loguearUsuario(Usuario user) {
-		val usuario = repoUsuario.findByUserNameAndPassword(user.userName, user.password).orElseThrow([
-			throw new BadRequestException("Usuario o contraseña invalidos")
-		])
+		val usuario = repoUsuario.findByUserNameAndPassword(user.userName, user.password).get
+		validarRecurso(usuario, usuario.id)
 		usuario
 	}
 	
@@ -60,12 +60,11 @@ class UsuarioService {
 		val usuarioLogueado = repoUsuario.findById(idUser).get
 		validarRecurso(usuarioLogueado, idUser)
 		val usuariosNoAmigos = repoUsuario.findAll().filter(usuario |  !usuarioLogueado.esAmigo(usuario) && usuarioLogueado != usuario).toList
-		if (usuariosNoAmigos.empty) {
-			throw new NotFoundException("No se encontro lista de amigos para usuario con id: " + idUser)
-		}
+		validarListaDeUsuarios(usuariosNoAmigos)
 		usuariosNoAmigos
 	}
-	
+// ##############  METODOS DE VALIDACION  ################################################
+
 	def validarId(Long id) {
 		if(id === null) {
 			throw new BadRequestException("Parámetros nulos en el path")
@@ -78,6 +77,12 @@ class UsuarioService {
 		}
 		if(object instanceof Pregunta && object === null) {
 			throw new NotFoundException("Pregunta con id: " + idObject + " no encontrada")
+		}
+	}
+	
+	def validarListaDeUsuarios(List<Usuario> usuarios) {
+		if(usuarios.isEmpty) {
+			throw new NotFoundException("Lista de recursos no encontrada")
 		}
 	}
 	
