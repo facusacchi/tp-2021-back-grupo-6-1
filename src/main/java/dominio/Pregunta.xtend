@@ -27,6 +27,7 @@ import javax.persistence.OneToOne
 import javax.persistence.FetchType
 import javax.persistence.ElementCollection
 import javax.persistence.Transient
+import javax.persistence.ManyToOne
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -38,7 +39,7 @@ import javax.persistence.Transient
 )
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="tipo_pregunta",    
-                     discriminatorType=DiscriminatorType.INTEGER)
+                     discriminatorType=DiscriminatorType.STRING)
 @Accessors
 abstract class Pregunta implements Entidad {
 	
@@ -53,7 +54,7 @@ abstract class Pregunta implements Entidad {
 	@Column(length=150)
 	String descripcion
 	
-	@OneToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JsonView(View.Pregunta.Table, View.Pregunta.Busqueda)
 	Usuario autor
 	

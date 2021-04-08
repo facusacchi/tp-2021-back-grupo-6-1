@@ -20,6 +20,7 @@ import javax.persistence.OneToMany
 import javax.persistence.FetchType
 import javax.persistence.Column
 import javax.persistence.CascadeType
+import javax.persistence.ManyToMany
 
 @Entity
 @Accessors
@@ -49,7 +50,7 @@ class Usuario implements Entidad {
 	String password
 	
 	@JsonIgnore
-	@OneToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY)
 	Set<Usuario> amigos = new HashSet<Usuario>
 	
 	@JsonView(View.Usuario.Login, View.Usuario.Perfil)
