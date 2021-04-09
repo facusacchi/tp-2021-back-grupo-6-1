@@ -1,26 +1,28 @@
-package dominio
+package appPregunta3.dominio
 
-import java.util.HashSet	
-import java.util.Set
-import java.time.LocalDate
-import org.eclipse.xtend.lib.annotations.Accessors
-import java.util.ArrayList
-import java.util.List
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
-import java.time.format.DateTimeFormatter
-import java.time.LocalDateTime
 import com.fasterxml.jackson.annotation.JsonView
-import serializer.View
-import exceptions.NullFieldException
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.GeneratedValue
-import javax.persistence.OneToMany
-import javax.persistence.FetchType
-import javax.persistence.Column
+import appPregunta3.dominio.Entidad
+import appPregunta3.dominio.Respuesta
+import appPregunta3.exceptions.NullFieldException
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.ArrayList
+import java.util.HashSet
+import java.util.List
+import java.util.Set
 import javax.persistence.CascadeType
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 import javax.persistence.ManyToMany
+import javax.persistence.OneToMany
+import org.eclipse.xtend.lib.annotations.Accessors
+import appPregunta3.serializer.View
 
 @Entity
 @Accessors

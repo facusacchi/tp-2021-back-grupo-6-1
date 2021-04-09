@@ -1,4 +1,4 @@
-package exceptions
+package appPregunta3.exceptions
 
 import org.springframework.web.bind.annotation.ResponseStatus
 

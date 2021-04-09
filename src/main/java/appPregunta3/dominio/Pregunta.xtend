@@ -1,42 +1,42 @@
-package dominio
+package appPregunta3.dominio
 
-import java.time.LocalDateTime		
-import java.util.HashSet
-import java.util.Set
-import org.eclipse.xtend.lib.annotations.Accessors
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonProperty
-import java.time.format.DateTimeFormatter
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.JsonView
-import serializer.View
-import exceptions.NullFieldException
-import exceptions.NullCollectionException
-import exceptions.BusinessException
-import javax.persistence.Entity
-import javax.persistence.Inheritance
-import javax.persistence.InheritanceType
+import appPregunta3.exceptions.BusinessException
+import appPregunta3.exceptions.NullCollectionException
+import appPregunta3.exceptions.NullFieldException
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.HashSet
+import java.util.Set
+import javax.persistence.Column
 import javax.persistence.DiscriminatorColumn
 import javax.persistence.DiscriminatorType
-import javax.persistence.Id
-import javax.persistence.GeneratedValue
-import javax.persistence.Column
-import javax.persistence.OneToOne
-import javax.persistence.FetchType
 import javax.persistence.ElementCollection
-import javax.persistence.Transient
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.persistence.Inheritance
+import javax.persistence.InheritanceType
 import javax.persistence.ManyToOne
+import javax.persistence.Transient
+import org.eclipse.xtend.lib.annotations.Accessors
+import appPregunta3.serializer.View
+import appPregunta3.dominio.Respuesta
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes(
+@JsonSubTypes(#[
     @JsonSubTypes.Type(value = Simple, name = "simple"),
     @JsonSubTypes.Type(value = DeRiesgo, name = "deRiesgo"),
     @JsonSubTypes.Type(value = Solidaria, name = "solidaria")
-)
+])
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="tipo_pregunta",    
                      discriminatorType=DiscriminatorType.STRING)
@@ -44,18 +44,18 @@ import javax.persistence.ManyToOne
 abstract class Pregunta implements Entidad {
 	
 	@Id @GeneratedValue
-	@JsonView(View.Pregunta.Busqueda, View.Pregunta.Table)
+	@JsonView(#[View.Pregunta.Busqueda, View.Pregunta.Table])
 	Long id
 	
 	@JsonView(View.Pregunta.Table)
 	int puntos
 	
-	@JsonView(View.Pregunta.Busqueda, View.Pregunta.Table)
+	@JsonView(#[View.Pregunta.Busqueda, View.Pregunta.Table])
 	@Column(length=150)
 	String descripcion
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JsonView(View.Pregunta.Table, View.Pregunta.Busqueda)
+	@JsonView(#[View.Pregunta.Table, View.Pregunta.Busqueda])
 	Usuario autor
 	
 	@JsonView(View.Pregunta.Table)
@@ -120,12 +120,14 @@ abstract class Pregunta implements Entidad {
 	}
 }
 
+@Entity
 class Simple extends Pregunta {
 	new() {
 		this.puntos = 10
 	}
 }
 
+@Entity
 class DeRiesgo extends Pregunta {
 	
 	@Transient
@@ -145,6 +147,7 @@ class DeRiesgo extends Pregunta {
 	}
 }
 
+@Entity
 class Solidaria extends Pregunta {
 	new() {
 		this.puntos = puntos

@@ -1,10 +1,12 @@
-package dao
+package appPregunta3.dao
 
-import dominio.Usuario
+import appPregunta3.dominio.Usuario
 import org.springframework.data.repository.CrudRepository
 import java.util.Optional
 import org.springframework.data.jpa.repository.EntityGraph
+import org.springframework.stereotype.Repository
 
+@Repository
 interface RepoUsuario extends CrudRepository<Usuario, Long> {
 
 	def Optional<Usuario> findByUserNameAndPassword(String userName, String password);

@@ -1,12 +1,12 @@
-package dominio
+package appPregunta3.dominio
 
-import org.eclipse.xtend.lib.annotations.Accessors	
+import org.eclipse.xtend.lib.annotations.Accessors		
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.time.LocalDate
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.format.DateTimeFormatter
 import com.fasterxml.jackson.annotation.JsonView
-import serializer.View
+import appPregunta3.serializer.View
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id

@@ -1,12 +1,12 @@
-package facade.service
+package appPregunta3.facade.service
 
+import appPregunta3.dao.RepoPregunta	
+import appPregunta3.dao.RepoUsuario
+import appPregunta3.dominio.Respuesta
+import appPregunta3.dominio.Usuario
+import appPregunta3.exceptions.BadRequestException
+import appPregunta3.exceptions.NotFoundException
 import org.springframework.beans.factory.annotation.Autowired
-import dao.RepoUsuario
-import dominio.Usuario
-import exceptions.BadRequestException
-import dominio.Respuesta
-import dao.RepoPregunta
-import exceptions.NotFoundException
 import org.springframework.stereotype.Service
 
 @Service

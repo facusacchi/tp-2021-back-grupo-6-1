@@ -1,15 +1,15 @@
-package facade.service
+package appPregunta3.facade.service
 
-import org.springframework.beans.factory.annotation.Autowired
-import dao.RepoPregunta
-import org.springframework.stereotype.Service
-import exceptions.BadRequestException
-import dao.RepoUsuario
-import javassist.NotFoundException
-import dominio.Usuario
+import appPregunta3.dao.RepoPregunta	
+import appPregunta3.dao.RepoUsuario
+import appPregunta3.dominio.Pregunta
+import appPregunta3.dominio.Solidaria
+import appPregunta3.dominio.Usuario
+import appPregunta3.exceptions.BadRequestException
 import java.util.List
-import dominio.Pregunta
-import dominio.Solidaria
+import javassist.NotFoundException
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
 @Service
 class PreguntaService {

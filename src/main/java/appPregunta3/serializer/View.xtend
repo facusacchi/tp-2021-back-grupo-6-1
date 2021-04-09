@@ -1,4 +1,4 @@
-package serializer
+package appPregunta3.serializer
 
 class View {
 	static interface Pregunta {

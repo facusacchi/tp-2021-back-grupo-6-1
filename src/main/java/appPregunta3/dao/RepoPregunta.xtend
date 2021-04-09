@@ -1,19 +1,21 @@
-package dao
+package appPregunta3.dao
 
-import dominio.Pregunta
+import appPregunta3.dominio.Pregunta
 import java.util.List
 import java.util.Set
-import dominio.Usuario
+import appPregunta3.dominio.Usuario
 import org.springframework.data.repository.CrudRepository
 import java.util.Optional
+import org.springframework.stereotype.Repository
 
+@Repository
 interface RepoPregunta extends CrudRepository<Pregunta, Long> {
 	
 	def List<Pregunta> findByDescripcionAndActivaAndAutor(String descripcion, Boolean activa, Usuario autor)
 	
 	def Optional<Pregunta> findByDescripcionIgnoreCase(String descripcion)
 	
-	def Set<Pregunta> findByActivas(Boolean activas) 
+	def Set<Pregunta> findByActiva(Boolean activas) 
 	
 //	
 //	def Set<Pregunta> allInstances(String activas, Usuario user) {

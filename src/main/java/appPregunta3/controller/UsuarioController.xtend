@@ -1,19 +1,19 @@
 package appPregunta3.controller
 
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.PathVariable
-import dominio.Usuario
-import dominio.Respuesta
+import appPregunta3.facade.service.UsuarioService	
 import com.fasterxml.jackson.annotation.JsonView
-import serializer.View
+import appPregunta3.dominio.Respuesta
+import appPregunta3.dominio.Usuario
 import org.springframework.beans.factory.annotation.Autowired
-import facade.service.UsuarioService
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.CrossOrigin
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
+import appPregunta3.serializer.View
 
 @RestController
 @CrossOrigin(origins="http://localhost:3000")

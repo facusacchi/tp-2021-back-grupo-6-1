@@ -1,18 +1,18 @@
 package appPregunta3
 
-import dominio.Usuario		
-import dao.RepoUsuario
+import appPregunta3.dao.RepoPregunta
+import appPregunta3.dao.RepoUsuario
+import appPregunta3.dominio.DeRiesgo
+import appPregunta3.dominio.Pregunta
+import appPregunta3.dominio.Simple
+import appPregunta3.dominio.Solidaria
+import appPregunta3.dominio.Respuesta
+import appPregunta3.dominio.Usuario
 import java.time.LocalDate
-import dominio.Simple
 import java.time.LocalDateTime
-import dao.RepoPregunta
-import dominio.DeRiesgo
-import dominio.Solidaria
-import dominio.Respuesta
-import org.springframework.stereotype.Service
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Autowired
-import dominio.Pregunta
+import org.springframework.stereotype.Service
 
 @Service
 class Bootstrap implements InitializingBean {
@@ -239,19 +239,19 @@ class Bootstrap implements InitializingBean {
 //######################### IMPLEMENTATION METHODS ##########################################
 	
 	def void crearUsuario(Usuario usuario) {
-		val usuarioEnRepo = repoUsuario.findByUserName(usuario.userName).get
-		if (usuarioEnRepo !== null) {
-			usuario.id = usuarioEnRepo.id
-		}
+//		val usuarioEnRepo = repoUsuario.findByUserName(usuario.userName).get
+//		if (usuarioEnRepo !== null) {
+//			usuario.id = usuarioEnRepo.id
+//		}
 		repoUsuario.save(usuario)
 		println("Usuario " + usuario.userName + " creado")
 	}
 	
 	def void crearPregunta(Pregunta pregunta) {
-		val preguntaEnRepo = repoPregunta.findByDescripcionIgnoreCase(pregunta.descripcion).get
-		if (preguntaEnRepo !== null) {
-			pregunta.id = preguntaEnRepo.id
-		}
+//		val preguntaEnRepo = repoPregunta.findByDescripcionIgnoreCase(pregunta.descripcion).get
+//		if (preguntaEnRepo !== null) {
+//			pregunta.id = preguntaEnRepo.id
+//		}
 		repoPregunta.save(pregunta)
 		println("Usuario " + pregunta.descripcion + " creado")
 	}
