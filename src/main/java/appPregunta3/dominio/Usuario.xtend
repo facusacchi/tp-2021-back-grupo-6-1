@@ -1,11 +1,10 @@
 package appPregunta3.dominio
 
-import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnore	
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonView
 import appPregunta3.dominio.Entidad
 import appPregunta3.dominio.Respuesta
-import appPregunta3.exceptions.NullFieldException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -127,10 +126,5 @@ class Usuario implements Entidad {
 		respuestas.map[respuesta | respuesta.pregunta.toLowerCase].toList
 	}
 	
-//	def validar() {
-//		if(nombre === null || apellido === null || fechaDeNacimiento === null || userName === null) {
-//			throw new NullFieldException("Campos de usuario nulos")
-//		}
-//	}
 }
 

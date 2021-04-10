@@ -4,11 +4,12 @@ import appPregunta3.dao.RepoPregunta
 import appPregunta3.dao.RepoUsuario
 import appPregunta3.dominio.Respuesta
 import appPregunta3.dominio.Usuario
-import appPregunta3.exceptions.BadRequestException
-import appPregunta3.exceptions.NotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import static extension appPregunta3.validaciones.Validacion.*
+import static extension appPregunta3.validaciones.ValidacionUsuario.*
+import static extension appPregunta3.validaciones.ValidacionId.*
+import static extension appPregunta3.validaciones.ValidacionRespuesta.*
+import static extension appPregunta3.validaciones.ValidacionPregunta.*
 
 @Service
 class UsuarioService {
@@ -18,6 +19,8 @@ class UsuarioService {
 	@Autowired
 	RepoPregunta repoPregunta
 	
+//##########  METHDOS OF ENDPOINTS ###############################################################
+
 	def loguearUsuario(Usuario user) {
 		user.validarLogin
 		val usuario = repoUsuario.findByUserNameAndPassword(user.userName, user.password).get
@@ -26,73 +29,90 @@ class UsuarioService {
 	}
 	
 	def responder(Long idUser, Long idPregunta, Respuesta respuesta) {
-		idUser.validarId
-		idPregunta.validarId
-		respuesta.validarRecursoNulo
-		respuesta.validarCamposVacios
-		val pregunta = repoPregunta.findById(idPregunta).get
-		pregunta.validarRecursoNulo
-		val usuario = repoUsuario.findById(idUser).get
-		usuario.validarRecursoNulo
+		validarAntesDeResponder(idUser, idPregunta, respuesta)
+		val pregunta = buscarPregunta(idPregunta)
+		val usuario = buscarUsuario(idUser)
 		usuario.responder(pregunta, respuesta)
 		repoUsuario.save(usuario)		
 	}
 	
 	def buscarUsuarioPorId(Long idUser) {
-		validarId(idUser)
-		val usuario = repoUsuario.findById(idUser).orElseThrow([
-			throw new NotFoundException("Usuario con id: " + idUser + " no encontrado")
-		])
+		idUser.validarId
+		val usuario = buscarUsuario(idUser)
 		usuario
 	}	
 	
 	def actualizarUsuario(Long idUser, Usuario user) {
-		validarId(idUser)
-		user.validar
-		repoUsuario.findById(idUser).map([ usuario |
-			usuario => [
-				it.nombre = user.nombre
-				it.apellido = user.apellido
-				it.fechaDeNacimiento = user.fechaDeNacimiento
-			]
-			repoUsuario.save(usuario)
-		]).orElseThrow([
-			throw new NotFoundException("Usuario con id: " + idUser + " no encontrado")
-		])
+		validarAntesDeActualizar(idUser,user)
+		var usuario = buscarUsuario(idUser) 
+		actualizarCampos(usuario, user) 
+		repoUsuario.save(usuario)
 	}
 	
 	def buscarUsuariosNoAmigos(Long idUser) {
-		validarId(idUser)
-		val usuarioLogueado = repoUsuario.findById(idUser)
-		.orElseThrow([
-			throw new NotFoundException("Usuario con id: " + idUser + " no encontrado")
-		])
-		val usuariosNoAmigos = repoUsuario.findAll().filter(usuario |  !usuarioLogueado.esAmigo(usuario) && usuarioLogueado != usuario).toList
-		if (usuariosNoAmigos.empty) {
-			throw new NotFoundException("No se encontro lista de amigos para usuario con id: " + idUser)
-		}
-		usuariosNoAmigos	
+		idUser.validarId
+		val usuarioLogueado = buscarUsuario(idUser)
+		val usuariosNoAmigos = buscarUsuariosNoAmigosDe(usuarioLogueado)
+		usuariosNoAmigos.validarRecursoNulo
+		usuariosNoAmigos
 	}
 	
 	def agregarAmigo(Long idUser, Long nuevoAmigoId) {
-		validarId(idUser)
-		validarId(nuevoAmigoId)
-		val Usuario nuevoAmigo = repoUsuario.findById(nuevoAmigoId).orElseThrow([
-			throw new NotFoundException("Usuario con id: " + nuevoAmigoId + " no encontrado")
-		])
-		val Usuario usuarioLogueado = repoUsuario.findById(idUser).orElseThrow([
-			throw new NotFoundException("Usuario con id: " + idUser + " no encontrado")
-		])
-		nuevoAmigo.validar
-		usuarioLogueado.validar
+		validarAntesDeAgregarAmigo(idUser, nuevoAmigoId)
+		val nuevoAmigo = buscarUsuario(nuevoAmigoId)
+		val usuarioLogueado = buscarUsuario(idUser)
+		validarCamposDeUsuarios(nuevoAmigo, usuarioLogueado)
 		usuarioLogueado.agregarAmigo(nuevoAmigo)
 		repoUsuario.save(usuarioLogueado)
 	}
+
+//################################################################################################
 	
-//	def validarId(Long id) {
-//		if(id === null) {
-//			throw new BadRequestException("Parámetros nulos en el path")
-//		}
-//	}
+	def validarAntesDeResponder(Long idUser, Long idPregunta, Respuesta respuesta) {
+		idUser.validarId
+		idPregunta.validarId
+		respuesta.validarRecursoNulo
+		respuesta.validarCamposVacios
+	}
+	
+	def buscarPregunta(Long idPregunta) {
+		val pregunta = repoPregunta.findById(idPregunta).get
+		pregunta.validarRecursoNulo
+		pregunta
+	}
+	
+	def buscarUsuario(Long idUser) {		
+		val usuario = repoUsuario.findById(idUser).get
+		usuario.validarRecursoNulo
+		usuario
+	}
+	
+	def actualizarCampos(Usuario usuario, Usuario user) {
+		usuario.nombre = user.nombre
+		usuario.apellido = user.apellido
+		usuario.fechaDeNacimiento = user.fechaDeNacimiento
+	}
+	
+	def validarAntesDeActualizar(Long idUser, Usuario user) {
+		idUser.validarId
+		user.validarCamposVacios		
+	}
+	
+	def buscarUsuariosNoAmigosDe(Usuario usuarioLogueado) {
+		val usuariosNoAmigos = repoUsuario.findAll().filter(usuario |
+			!usuarioLogueado.esAmigo(usuario) && usuarioLogueado != usuario
+		).toSet
+		usuariosNoAmigos
+	}
+	
+	def validarAntesDeAgregarAmigo(Long idUser, Long nuevoAmigoId) {
+		idUser.validarId
+		nuevoAmigoId.validarId		
+	}
+	
+	def validarCamposDeUsuarios(Usuario nuevoAmigo, Usuario usuarioLogueado) {
+		nuevoAmigo.validarCamposVacios
+		usuarioLogueado.validarCamposVacios
+	}
 	
 }
