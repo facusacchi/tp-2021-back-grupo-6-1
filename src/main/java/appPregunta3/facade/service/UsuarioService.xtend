@@ -8,6 +8,7 @@ import appPregunta3.exceptions.BadRequestException
 import appPregunta3.exceptions.NotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import static extension appPregunta3.validaciones.Validacion.*
 
 @Service
 class UsuarioService {
@@ -18,30 +19,23 @@ class UsuarioService {
 	RepoPregunta repoPregunta
 	
 	def loguearUsuario(Usuario user) {
-		val usuario = repoUsuario.findByUserNameAndPassword(user.userName, user.password).orElseThrow([
-			throw new BadRequestException("Usuario o contraseña invalidos")
-		])
+		user.validarLogin
+		val usuario = repoUsuario.findByUserNameAndPassword(user.userName, user.password).get
+		usuario.validarRecursoNulo
 		usuario
 	}
 	
 	def responder(Long idUser, Long idPregunta, Respuesta respuesta) {
-		validarId(idUser)
-		validarId(idPregunta)
-		val pregunta = repoPregunta.findById(idPregunta).orElseThrow([
-			throw new NotFoundException("Pregunta con id: " + idPregunta + " no encontrada")
-		])
-		val opcion = respuesta.opcionElegida
-		if (opcion === null) {
-			throw new NotFoundException("Respuesta en el body nula")
-		}
-		repoUsuario.findById(idUser).map([ usuario |
-			usuario => [
-				usuario.responder(pregunta, respuesta)
-			]
-			repoUsuario.save(usuario)
-		]).orElseThrow([
-			throw new NotFoundException("Usuario con id: " + idUser + " no encontrado")
-		])
+		idUser.validarId
+		idPregunta.validarId
+		respuesta.validarRecursoNulo
+		respuesta.validarCamposVacios
+		val pregunta = repoPregunta.findById(idPregunta).get
+		pregunta.validarRecursoNulo
+		val usuario = repoUsuario.findById(idUser).get
+		usuario.validarRecursoNulo
+		usuario.responder(pregunta, respuesta)
+		repoUsuario.save(usuario)		
 	}
 	
 	def buscarUsuarioPorId(Long idUser) {
@@ -95,10 +89,10 @@ class UsuarioService {
 		repoUsuario.save(usuarioLogueado)
 	}
 	
-	def validarId(Long id) {
-		if(id === null) {
-			throw new BadRequestException("Parámetros nulos en el path")
-		}
-	}
+//	def validarId(Long id) {
+//		if(id === null) {
+//			throw new BadRequestException("Parámetros nulos en el path")
+//		}
+//	}
 	
 }

@@ -127,10 +127,10 @@ class Usuario implements Entidad {
 		respuestas.map[respuesta | respuesta.pregunta.toLowerCase].toList
 	}
 	
-	def validar() {
-		if(nombre === null || apellido === null || fechaDeNacimiento === null || userName === null) {
-			throw new NullFieldException("Campos de usuario nulos")
-		}
-	}
+//	def validar() {
+//		if(nombre === null || apellido === null || fechaDeNacimiento === null || userName === null) {
+//			throw new NullFieldException("Campos de usuario nulos")
+//		}
+//	}
 }
 
