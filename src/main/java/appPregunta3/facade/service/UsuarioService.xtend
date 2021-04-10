@@ -19,7 +19,7 @@ class UsuarioService {
 	@Autowired
 	RepoPregunta repoPregunta
 	
-//##########  METHDOS OF ENDPOINTS ###############################################################
+//##########  METHODS OF ENDPOINTS ###############################################################
 
 	def loguearUsuario(Usuario user) {
 		user.validarLogin
@@ -75,6 +75,10 @@ class UsuarioService {
 		respuesta.validarCamposVacios
 	}
 	
+	// REVISAR SI ESTOS DOS METODOS DE BUSQUEDA NO CONVIENE IMPLEMENTARLOS EN UNA CLASE 
+	// ABSTRACTA DE LA QUE EXTIENDAN LOS SERVICE CONCRETOS PARA NO REPETIRLOS EN CADA
+	// SERVICE
+	////////////////////////////////////////////////////////////////////////////////////////
 	def buscarPregunta(Long idPregunta) {
 		val pregunta = repoPregunta.findById(idPregunta).get
 		pregunta.validarRecursoNulo
@@ -86,6 +90,7 @@ class UsuarioService {
 		usuario.validarRecursoNulo
 		usuario
 	}
+	///////////////////////////////////////////////////////////////////////////////////////
 	
 	def actualizarCampos(Usuario usuario, Usuario user) {
 		usuario.nombre = user.nombre
