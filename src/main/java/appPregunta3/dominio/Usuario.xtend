@@ -41,7 +41,7 @@ class Usuario {
 	@JsonIgnore
 	LocalDate fechaDeNacimiento
 	
-	@JsonView(View.Pregunta.Busqueda, View.Usuario.Login)
+	@JsonView(View.Pregunta.Busqueda, View.Usuario.Login, View.Usuario.Perfil)
 	@Column(length=50)
 	String userName
 	
