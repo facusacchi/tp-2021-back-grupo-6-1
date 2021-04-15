@@ -3,7 +3,6 @@ package appPregunta3.dominio
 import com.fasterxml.jackson.annotation.JsonIgnore	
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonView
-import appPregunta3.dominio.Entidad
 import appPregunta3.dominio.Respuesta
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -25,7 +24,7 @@ import appPregunta3.serializer.View
 
 @Entity
 @Accessors
-class Usuario implements Entidad {
+class Usuario {
 	
 	@Id @GeneratedValue
 	@JsonView(View.Usuario.Login, View.Usuario.Perfil, View.Usuario.TablaNoAmigos)
@@ -40,7 +39,6 @@ class Usuario implements Entidad {
 	String apellido
 	
 	@JsonIgnore
-	//@Column(length=50)
 	LocalDate fechaDeNacimiento
 	
 	@JsonView(View.Pregunta.Busqueda, View.Usuario.Login)
@@ -92,7 +90,7 @@ class Usuario implements Entidad {
 		puntaje -= puntos
 	}
 
-	override cumpleCondicionDeBusqueda(String valorBusqueda) {
+	def cumpleCondicionDeBusqueda(String valorBusqueda) {
 		nombre.toLowerCase.contains(valorBusqueda.toLowerCase) || apellido.toLowerCase.equals(valorBusqueda.toLowerCase)
 	}
 

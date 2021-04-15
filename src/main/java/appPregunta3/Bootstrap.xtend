@@ -239,21 +239,13 @@ class Bootstrap implements InitializingBean {
 //######################### IMPLEMENTATION METHODS ##########################################
 	
 	def void crearUsuario(Usuario usuario) {
-//		val usuarioEnRepo = repoUsuario.findByUserName(usuario.userName).get
-//		if (usuarioEnRepo !== null) {
-//			usuario.id = usuarioEnRepo.id
-//		}
 		repoUsuario.save(usuario)
 		println("Usuario " + usuario.userName + " creado")
 	}
 	
 	def void crearPregunta(Pregunta pregunta) {
-//		val preguntaEnRepo = repoPregunta.findByDescripcionIgnoreCase(pregunta.descripcion).get
-//		if (preguntaEnRepo !== null) {
-//			pregunta.id = preguntaEnRepo.id
-//		}
 		repoPregunta.save(pregunta)
-		println("Usuario " + pregunta.descripcion + " creado")
+		println("Pregunta " + pregunta.descripcion + " creada")
 	}
 	
 		override afterPropertiesSet() throws Exception {

@@ -7,7 +7,7 @@ import appPregunta3.dominio.Solidaria
 import appPregunta3.dominio.Usuario
 import appPregunta3.exceptions.BadRequestException
 import java.util.List
-import javassist.NotFoundException
+import appPregunta3.exceptions.NotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -19,19 +19,22 @@ class PreguntaService {
 	@Autowired
 	RepoUsuario repoUsuario
 	
-	def getPreguntasPorString(String valorBusqueda, String activas, Long idUser) {
+	def getPreguntasPorString(String valorBusqueda, Boolean activas, Long idUser) {
 		validarId(idUser)
+		if (activas===null){
+			throw new BadRequestException("Parámetros nulos en el path")
+		}
 		val user = repoUsuario.findById(idUser).orElseThrow([
 			throw new NotFoundException("Usuario con id: " + idUser + " no encontrado")
 		])
-		var activa = false
-		if (activas =='true') {
-			activa = true
-		}
-		val preguntas = this.repoPregunta.findByDescripcionAndActivaAndAutor(valorBusqueda, activa, user).toList
-		if(preguntas.empty) {
-			throw new NotFoundException("Preguntas no encontradas")
-		}
+		val preguntas = this.repoPregunta.findByDescripcionContainsIgnoreCase(valorBusqueda).toList
+		val preguntasNoRespondidas = preguntas.filter[ pregunta | !user.preguntasRespondidas
+			.contains(pregunta.descripcion.toLowerCase)
+		].toList
+		if (activas){
+			val preguntasActivas = preguntasActivas(preguntasNoRespondidas)
+			return preguntasActivas
+		}	
 		preguntas
 	}
 	
@@ -99,7 +102,7 @@ class PreguntaService {
 		filtradas
 	}
 	
-		def preguntasActivas(List<Pregunta> preguntas) {
+	def preguntasActivas(List<Pregunta> preguntas) {
 		return preguntas.filter[pregunta | pregunta.estaActiva].toList
 	}
 	

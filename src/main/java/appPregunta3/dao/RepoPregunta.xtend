@@ -3,19 +3,23 @@ package appPregunta3.dao
 import appPregunta3.dominio.Pregunta
 import java.util.List
 import java.util.Set
-import appPregunta3.dominio.Usuario
 import org.springframework.data.repository.CrudRepository
 import java.util.Optional
 import org.springframework.stereotype.Repository
+import org.springframework.data.jpa.repository.EntityGraph
 
 @Repository
 interface RepoPregunta extends CrudRepository<Pregunta, Long> {
 	
-	def List<Pregunta> findByDescripcionAndActivaAndAutor(String descripcion, Boolean activa, Usuario autor)
+	@EntityGraph(attributePaths=#["autor"])
+	def List<Pregunta> findByDescripcionContainsIgnoreCase(String descripcion)
 	
-	def Optional<Pregunta> findByDescripcionIgnoreCase(String descripcion)
+	def Optional<Pregunta> findByDescripcionContains(String descripcion)
 	
-	def Set<Pregunta> findByActiva(Boolean activas) 
+	//def Set<Pregunta> findByActiva(Boolean activas) 
+	
+	@EntityGraph(attributePaths=#["opciones","autor"])
+	override Set<Pregunta> findAll()
 	
 //	
 //	def Set<Pregunta> allInstances(String activas, Usuario user) {

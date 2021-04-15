@@ -41,7 +41,7 @@ import appPregunta3.dominio.Respuesta
 @DiscriminatorColumn(name="tipo_pregunta",    
                      discriminatorType=DiscriminatorType.STRING)
 @Accessors
-abstract class Pregunta implements Entidad {
+abstract class Pregunta {
 	
 	@Id @GeneratedValue
 	@JsonView(#[View.Pregunta.Busqueda, View.Pregunta.Table])
@@ -62,7 +62,6 @@ abstract class Pregunta implements Entidad {
 	@Column(length=150)
 	String respuestaCorrecta
 	
-	//@Column(length=50)
 	@JsonIgnore
 	LocalDateTime fechaHoraCreacion
 	
@@ -71,9 +70,6 @@ abstract class Pregunta implements Entidad {
 	Set<String> opciones = new HashSet<String>
 	
 	static String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss"
-	
-	@JsonView(View.Pregunta.Table)
-	Boolean activa
 
 	@JsonProperty("fechaHoraCreacion")
 	def setFecha(String fecha) {
@@ -93,7 +89,7 @@ abstract class Pregunta implements Entidad {
 		fechaHoraCreacion.plusMinutes(5).isAfter(LocalDateTime.now())
 	}
 	
-	override cumpleCondicionDeBusqueda(String valorBusqueda) {
+	def cumpleCondicionDeBusqueda(String valorBusqueda) {
 		descripcion.toLowerCase.contains(valorBusqueda.toLowerCase)
 	}	
 

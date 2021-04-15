@@ -23,7 +23,7 @@ class PreguntaController {
 	
 	@GetMapping(value="/preguntas/{valorBusqueda}/{activas}/{idUser}")
 	@JsonView(value=View.Pregunta.Busqueda)
-	def getPreguntasPorString(@PathVariable String valorBusqueda, @PathVariable String activas, @PathVariable Long idUser) {
+	def getPreguntasPorString(@PathVariable String valorBusqueda, @PathVariable Boolean activas, @PathVariable Long idUser) {
 		val preguntas = this.preguntaService.getPreguntasPorString(valorBusqueda, activas, idUser)
 		ResponseEntity.ok(preguntas)
 	}
