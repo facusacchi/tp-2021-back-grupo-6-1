@@ -43,7 +43,6 @@ class PreguntaService {
 		val pregunta = repoPregunta.findById(id).orElseThrow([
 		throw new NotFoundException("Pregunta con id: " + id + " no encontrada")
 		])
-		//pregunta.activa = pregunta.estaActiva
 		pregunta
 	}
 	
@@ -53,9 +52,6 @@ class PreguntaService {
 		throw new NotFoundException("Usuario con id: " + idUser + " no encontrado")
 		])
 		val preguntas = filtrarPorActivasYNoRespondidas(activas, user)
-		if (preguntas.isEmpty) {
-			throw new NotFoundException("Preguntas no encontradas")
-		}
 		preguntas
 	}
 	
