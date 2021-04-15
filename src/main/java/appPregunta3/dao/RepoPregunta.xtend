@@ -21,6 +21,9 @@ interface RepoPregunta extends CrudRepository<Pregunta, Long> {
 	@EntityGraph(attributePaths=#["opciones","autor"])
 	override Set<Pregunta> findAll()
 	
+	@EntityGraph(attributePaths = #["opciones","autor"])
+	override findById(Long id)
+	
 //	
 //	def Set<Pregunta> allInstances(String activas, Usuario user) {
 //		if(activas == "true") {			
