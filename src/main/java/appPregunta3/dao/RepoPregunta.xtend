@@ -1,10 +1,9 @@
 package appPregunta3.dao
 
-import appPregunta3.dominio.Pregunta
+import appPregunta3.dominio.Pregunta	
 import java.util.List
 import java.util.Set
 import org.springframework.data.repository.CrudRepository
-import java.util.Optional
 import org.springframework.stereotype.Repository
 import org.springframework.data.jpa.repository.EntityGraph
 
@@ -13,10 +12,6 @@ interface RepoPregunta extends CrudRepository<Pregunta, Long> {
 	
 	@EntityGraph(attributePaths=#["autor"])
 	def List<Pregunta> findByDescripcionContainsIgnoreCase(String descripcion)
-	
-	def Optional<Pregunta> findByDescripcionContains(String descripcion)
-	
-	//def Set<Pregunta> findByActiva(Boolean activas) 
 	
 	@EntityGraph(attributePaths=#["opciones","autor"])
 	override Set<Pregunta> findAll()

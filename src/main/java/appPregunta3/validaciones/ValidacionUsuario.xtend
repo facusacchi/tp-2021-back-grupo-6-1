@@ -1,7 +1,6 @@
 package appPregunta3.validaciones
 
 import appPregunta3.dominio.Usuario	
-import appPregunta3.exceptions.NullFieldException
 import appPregunta3.exceptions.NotFoundException
 import appPregunta3.exceptions.BadRequestException
 import java.util.Set
@@ -15,8 +14,8 @@ class ValidacionUsuario {
 	}
 	
 	static def validarCamposVacios(Usuario usuario) {
-		if(usuario.nombre === null || usuario.apellido === null || usuario.fechaDeNacimiento === null || usuario.userName === null) {
-			throw new NullFieldException("Campos de usuario nulos. Requeridos: nombre, apellido, fechaDeNacimiento, userName")
+		if(usuario.nombre === null || usuario.apellido === null || usuario.fechaDeNacimiento === null) {
+			throw new BadRequestException("Campos de usuario nulos. Requeridos: nombre, apellido, fechaDeNacimiento")
 		}		
 	}
 	

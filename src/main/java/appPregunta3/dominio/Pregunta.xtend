@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.JsonView
 import appPregunta3.exceptions.BusinessException
-import appPregunta3.exceptions.NullCollectionException
-import appPregunta3.exceptions.NullFieldException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.HashSet
@@ -28,6 +26,7 @@ import javax.persistence.Transient
 import org.eclipse.xtend.lib.annotations.Accessors
 import appPregunta3.serializer.View
 import appPregunta3.dominio.Respuesta
+import appPregunta3.exceptions.BadRequestException
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -108,10 +107,10 @@ abstract class Pregunta {
 	
 	def validar() {
 		if(descripcion === null || respuestaCorrecta === null) {
-			throw new NullFieldException("Error al dejar campos nulos en la pregunta")
+			throw new BadRequestException("Error al dejar campos nulos en la pregunta")
 		}
 		if(opciones.isEmpty) {
-			throw new NullCollectionException("Error al dejar colecciones vacias en la pregunta")
+			throw new BadRequestException("Error al dejar colecciones vacias en la pregunta")
 		}
 	}
 }
