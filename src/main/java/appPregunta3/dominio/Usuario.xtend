@@ -103,7 +103,7 @@ class Usuario {
 	}
 
 	def esAmigo(Usuario usuario) {
-		amigos.contains(usuario)
+		amigos.map[amigo | amigo.id].contains(usuario.id)
 	}
 
 	def responder(Pregunta pregunta, Respuesta respuesta) {

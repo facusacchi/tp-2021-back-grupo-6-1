@@ -103,10 +103,17 @@ class UsuarioService {
 		user.validarCamposVacios		
 	}
 	
+//	def buscarUsuariosNoAmigosDe(Usuario usuarioLogueado) {
+//		val usuariosNoAmigos = repoUsuario.findAll.filter[usuario |
+//			!usuarioLogueado.esAmigo(usuario) && usuarioLogueado != usuario
+//		].toSet
+//		usuariosNoAmigos
+//	}}
+	
 	def buscarUsuariosNoAmigosDe(Usuario usuarioLogueado) {
-		val usuariosNoAmigos = repoUsuario.findAll().filter(usuario |
-			!usuarioLogueado.esAmigo(usuario) && usuarioLogueado != usuario
-		).toSet
+		val usuariosNoAmigos = repoUsuario.findAll.filter[usuario |
+			!usuarioLogueado.esAmigo(usuario) && usuarioLogueado.id != usuario.id
+		].toSet
 		usuariosNoAmigos
 	}
 	
