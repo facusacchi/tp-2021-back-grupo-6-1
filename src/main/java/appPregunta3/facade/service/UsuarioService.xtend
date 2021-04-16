@@ -10,6 +10,7 @@ import static extension appPregunta3.validaciones.ValidacionUsuario.*
 import static extension appPregunta3.validaciones.ValidacionId.*
 import static extension appPregunta3.validaciones.ValidacionRespuesta.*
 import static extension appPregunta3.validaciones.ValidacionPregunta.*
+import appPregunta3.exceptions.NotFoundException
 
 @Service
 class UsuarioService {
@@ -23,8 +24,9 @@ class UsuarioService {
 
 	def loguearUsuario(Usuario user) {
 		user.validarLogin
-		val usuario = repoUsuario.findByUserNameAndPassword(user.userName, user.password).get
-		usuario.validarRecursoNulo
+		val usuario = repoUsuario.findByUserNameAndPassword(user.userName, user.password).orElseThrow([
+			throw new NotFoundException("Usuario o contraseña incorrectos")
+		])
 		usuario
 	}
 	
@@ -86,8 +88,9 @@ class UsuarioService {
 	}
 	
 	def buscarUsuario(Long idUser) {		
-		val usuario = repoUsuario.findById(idUser).get
-		usuario.validarRecursoNulo
+		val usuario = repoUsuario.findById(idUser).orElseThrow([
+			throw new NotFoundException("Usuario no encontrado")
+		])
 		usuario
 	}
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -102,13 +105,6 @@ class UsuarioService {
 		idUser.validarId
 		user.validarCamposVacios		
 	}
-	
-//	def buscarUsuariosNoAmigosDe(Usuario usuarioLogueado) {
-//		val usuariosNoAmigos = repoUsuario.findAll.filter[usuario |
-//			!usuarioLogueado.esAmigo(usuario) && usuarioLogueado != usuario
-//		].toSet
-//		usuariosNoAmigos
-//	}}
 	
 	def buscarUsuariosNoAmigosDe(Usuario usuarioLogueado) {
 		val usuariosNoAmigos = repoUsuario.findAll.filter[usuario |

@@ -19,12 +19,6 @@ class ValidacionUsuario {
 		}		
 	}
 	
-	static def validarRecursoNulo(Usuario usuario) {
-		if (usuario === null) {
-			throw new NotFoundException("Usuario no encontrado")
-		}
-	}
-	
 	static def validarRecursoNulo(Set<Usuario> usuarios) {
 		if(usuarios.isEmpty) {
 			throw new NotFoundException("Amigos no encontrados")
