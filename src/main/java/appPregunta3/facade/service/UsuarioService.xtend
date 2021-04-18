@@ -35,7 +35,8 @@ class UsuarioService {
 		val pregunta = buscarPregunta(idPregunta)
 		val usuario = buscarUsuario(idUser)
 		usuario.responder(pregunta, respuesta)
-		repoUsuario.save(usuario)		
+		repoUsuario.save(usuario)
+		usuario	
 	}
 	
 	def buscarUsuarioPorId(Long idUser) {
@@ -49,6 +50,7 @@ class UsuarioService {
 		var usuario = buscarUsuario(idUser) 
 		actualizarCampos(usuario, user) 
 		repoUsuario.save(usuario)
+		usuario
 	}
 	
 	def buscarUsuariosNoAmigos(Long idUser) {
@@ -66,6 +68,7 @@ class UsuarioService {
 		validarCamposDeUsuarios(nuevoAmigo, usuarioLogueado)
 		usuarioLogueado.agregarAmigo(nuevoAmigo)
 		repoUsuario.save(usuarioLogueado)
+		usuarioLogueado
 	}
 
 //################################################################################################
