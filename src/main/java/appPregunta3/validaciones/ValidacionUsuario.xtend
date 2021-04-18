@@ -1,9 +1,7 @@
 package appPregunta3.validaciones
 
-import appPregunta3.dominio.Usuario	
-import appPregunta3.exceptions.NotFoundException
+import appPregunta3.dominio.Usuario		
 import appPregunta3.exceptions.BadRequestException
-import java.util.Set
 
 class ValidacionUsuario {	
 	
@@ -17,12 +15,6 @@ class ValidacionUsuario {
 		if(usuario.nombre === null || usuario.apellido === null || usuario.fechaDeNacimiento === null) {
 			throw new BadRequestException("Campos de usuario nulos. Requeridos: nombre, apellido, fechaDeNacimiento")
 		}		
-	}
-	
-	static def validarRecursoNulo(Set<Usuario> usuarios) {
-		if(usuarios.isEmpty) {
-			throw new NotFoundException("Amigos no encontrados")
-		}
 	}
 	
 }

@@ -1,12 +1,11 @@
 package appPregunta3.dominio
 
-import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnore	
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.JsonView
-import appPregunta3.exceptions.BusinessException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.HashSet
@@ -26,7 +25,6 @@ import javax.persistence.Transient
 import org.eclipse.xtend.lib.annotations.Accessors
 import appPregunta3.serializer.View
 import appPregunta3.dominio.Respuesta
-import appPregunta3.exceptions.BadRequestException
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -105,14 +103,6 @@ abstract class Pregunta {
 		respuesta.puntos = puntos
 	}
 	
-	def validar() {
-		if(descripcion === null || respuestaCorrecta === null) {
-			throw new BadRequestException("Error al dejar campos nulos en la pregunta")
-		}
-		if(opciones.isEmpty) {
-			throw new BadRequestException("Error al dejar colecciones vacias en la pregunta")
-		}
-	}
 }
 
 @Entity
@@ -153,10 +143,5 @@ class Solidaria extends Pregunta {
 		this.autor.restarPuntaje(puntos)
 	}
 	
-	def validar(Usuario autor) {
-		if(puntos > autor.puntaje) {
-			throw new BusinessException("El puntaje asignado a la pregunta debe ser menor al puntaje actual del autor")
-		}
-	}
 }
 

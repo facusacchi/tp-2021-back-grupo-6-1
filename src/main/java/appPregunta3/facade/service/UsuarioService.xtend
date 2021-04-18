@@ -1,24 +1,21 @@
 package appPregunta3.facade.service
 
-import appPregunta3.dao.RepoPregunta	
 import appPregunta3.dao.RepoUsuario
 import appPregunta3.dominio.Respuesta
 import appPregunta3.dominio.Usuario
+import appPregunta3.facade.service.TemplateService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import static extension appPregunta3.validaciones.ValidacionUsuario.*
 import static extension appPregunta3.validaciones.ValidacionId.*
 import static extension appPregunta3.validaciones.ValidacionRespuesta.*
-import static extension appPregunta3.validaciones.ValidacionPregunta.*
 import appPregunta3.exceptions.NotFoundException
 
 @Service
-class UsuarioService {
-	@Autowired
-	RepoUsuario repoUsuario
+class UsuarioService extends TemplateService {
 	
 	@Autowired
-	RepoPregunta repoPregunta
+	RepoUsuario repoUsuario
 	
 //##########  METHODS OF ENDPOINTS ###############################################################
 
@@ -47,7 +44,7 @@ class UsuarioService {
 	
 	def actualizarUsuario(Long idUser, Usuario user) {
 		validarAntesDeActualizar(idUser,user)
-		var usuario = buscarUsuario(idUser) 
+		val usuario = buscarUsuario(idUser) 
 		actualizarCampos(usuario, user) 
 		repoUsuario.save(usuario)
 		usuario
@@ -57,7 +54,6 @@ class UsuarioService {
 		idUser.validarId
 		val usuarioLogueado = buscarUsuario(idUser)
 		val usuariosNoAmigos = buscarUsuariosNoAmigosDe(usuarioLogueado)
-		usuariosNoAmigos.validarRecursoNulo
 		usuariosNoAmigos
 	}
 	
@@ -84,24 +80,13 @@ class UsuarioService {
 	// ABSTRACTA DE LA QUE EXTIENDAN LOS SERVICE CONCRETOS PARA NO REPETIRLOS EN CADA
 	// SERVICE
 	////////////////////////////////////////////////////////////////////////////////////////
-	def buscarPregunta(Long idPregunta) {
-		val pregunta = repoPregunta.findById(idPregunta).get
-		pregunta.validarRecursoNulo
-		pregunta
-	}
 	
-	def buscarUsuario(Long idUser) {		
-		val usuario = repoUsuario.findById(idUser).orElseThrow([
-			throw new NotFoundException("Usuario no encontrado")
-		])
-		usuario
-	}
 	///////////////////////////////////////////////////////////////////////////////////////
 	
-	def actualizarCampos(Usuario usuario, Usuario user) {
-		usuario.nombre = user.nombre
-		usuario.apellido = user.apellido
-		usuario.fechaDeNacimiento = user.fechaDeNacimiento
+	def actualizarCampos(Usuario userOld, Usuario userNew) {
+		userOld.nombre = userNew.nombre
+		userOld.apellido = userNew.apellido
+		userOld.fechaDeNacimiento = userNew.fechaDeNacimiento
 	}
 	
 	def validarAntesDeActualizar(Long idUser, Usuario user) {
