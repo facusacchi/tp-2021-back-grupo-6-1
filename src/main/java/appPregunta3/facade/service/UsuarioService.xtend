@@ -76,13 +76,6 @@ class UsuarioService extends TemplateService {
 		respuesta.validarCamposVacios
 	}
 	
-	// REVISAR SI ESTOS DOS METODOS DE BUSQUEDA NO CONVIENE IMPLEMENTARLOS EN UNA CLASE 
-	// ABSTRACTA DE LA QUE EXTIENDAN LOS SERVICE CONCRETOS PARA NO REPETIRLOS EN CADA
-	// SERVICE
-	////////////////////////////////////////////////////////////////////////////////////////
-	
-	///////////////////////////////////////////////////////////////////////////////////////
-	
 	def actualizarCampos(Usuario userOld, Usuario userNew) {
 		userOld.nombre = userNew.nombre
 		userOld.apellido = userNew.apellido
