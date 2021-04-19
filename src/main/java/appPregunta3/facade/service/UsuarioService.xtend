@@ -32,8 +32,9 @@ class UsuarioService extends TemplateService {
 		val pregunta = buscarPregunta(idPregunta)
 		val usuario = buscarUsuario(idUser)
 		usuario.responder(pregunta, respuesta)
+		val esCorrecta = pregunta.esCorrecta(respuesta.opcionElegida)
 		repoUsuario.save(usuario)
-		usuario	
+		esCorrecta
 	}
 	
 	def buscarUsuarioPorId(Long idUser) {

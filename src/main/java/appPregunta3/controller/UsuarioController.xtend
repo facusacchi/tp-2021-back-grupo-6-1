@@ -30,10 +30,10 @@ class UsuarioController {
 	}
 	
 	@JsonView(View.Usuario.Perfil)
-	@PutMapping(value="/perfilDeUsuario/{idUser}/{idPregunta}")
+	@PutMapping(value="/perfilDeUsuario/{idUser}/pregunta/{idPregunta}")
 	def responder(@PathVariable Long idUser, @PathVariable Long idPregunta, @RequestBody Respuesta respuesta) {
-		val usuario = usuarioService.responder(idUser, idPregunta, respuesta)
-		ResponseEntity.ok(usuario)
+		val esCorrecta = usuarioService.responder(idUser, idPregunta, respuesta)
+		ResponseEntity.ok(esCorrecta)
 	}
 
 	@JsonView(View.Usuario.Perfil)

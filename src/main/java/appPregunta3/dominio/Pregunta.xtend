@@ -45,7 +45,7 @@ abstract class Pregunta {
 	Long id
 	
 	@JsonView(View.Pregunta.Table)
-	int puntos
+	Integer puntos
 	
 	@JsonView(#[View.Pregunta.Busqueda, View.Pregunta.Table])
 	@Column(length=150)
@@ -89,7 +89,8 @@ abstract class Pregunta {
 	def cumpleCondicionDeBusqueda(String valorBusqueda) {
 		descripcion.toLowerCase.contains(valorBusqueda.toLowerCase)
 	}	
-
+	
+	//TODO: ESTE METODO DEBERIA ESTAR EN LA RESPUESTA, NO EN LA PREGUNTA
 	def boolean esCorrecta(String opcionElegida) {
 		this.respuestaCorrecta.toLowerCase == opcionElegida.toLowerCase 
 	}
