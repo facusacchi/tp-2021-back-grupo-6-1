@@ -22,13 +22,14 @@ class UsuarioController {
 	@Autowired
 	UsuarioService usuarioService
 
-	@PostMapping(value="/login")
 	@JsonView(value=View.Usuario.Login)
+	@PostMapping(value="/login")
 	def loguearUsuario(@RequestBody Usuario usuarioBody) {
 		val usuario = usuarioService.loguearUsuario(usuarioBody)		
 		ResponseEntity.ok(usuario)
 	}
-
+	
+	@JsonView(View.Usuario.Perfil)
 	@PutMapping(value="/perfilDeUsuario/{idUser}/{idPregunta}")
 	def responder(@PathVariable Long idUser, @PathVariable Long idPregunta, @RequestBody Respuesta respuesta) {
 		val usuario = usuarioService.responder(idUser, idPregunta, respuesta)
@@ -42,6 +43,7 @@ class UsuarioController {
 		ResponseEntity.ok(usuario)
 	}
 
+	@JsonView(View.Usuario.Perfil)
 	@PutMapping(value="/perfilDeUsuario/{idUser}")
 	def actualizarUsuario(@RequestBody Usuario usuarioBody, @PathVariable Long idUser) {
 		val usuario = usuarioService.actualizarUsuario(idUser, usuarioBody)
@@ -55,6 +57,7 @@ class UsuarioController {
 		ResponseEntity.ok(usuariosNoAmigos)
 	}
 
+	@JsonView(View.Usuario.Perfil)
 	@PutMapping(value="/usuarios/{idUser}/agregarAmigo/{nuevoAmigoId}")
 	def agregarAmigo(@PathVariable Long idUser, @PathVariable Long nuevoAmigoId) {
 		val usuario = usuarioService.agregarAmigo(idUser, nuevoAmigoId)
