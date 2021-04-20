@@ -90,11 +90,6 @@ abstract class Pregunta {
 		descripcion.toLowerCase.contains(valorBusqueda.toLowerCase)
 	}	
 	
-	//TODO: ESTE METODO DEBERIA ESTAR EN LA RESPUESTA, NO EN LA PREGUNTA
-	def boolean esCorrecta(String opcionElegida) {
-		this.respuestaCorrecta.toLowerCase == opcionElegida.toLowerCase 
-	}
-	
 	def agregarOpcion(String opcion) {
 		opciones.add(opcion)
 	}

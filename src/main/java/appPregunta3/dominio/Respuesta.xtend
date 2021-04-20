@@ -40,4 +40,8 @@ class Respuesta {
 	def formatter() {
 		DateTimeFormatter.ofPattern(DATE_PATTERN)
 	}
+	
+	def esCorrecta(String respuestaCorrecta) {
+		respuestaCorrecta.toLowerCase == opcionElegida.toLowerCase 
+	}
 }

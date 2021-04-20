@@ -108,7 +108,7 @@ class Usuario {
 
 	def responder(Pregunta pregunta, Respuesta respuesta) {
 		respuesta.fechaRespuesta = LocalDate.now
-		if (pregunta.esCorrecta(respuesta.opcionElegida) && pregunta.estaActiva) {
+		if (respuesta.esCorrecta(pregunta.respuestaCorrecta) && pregunta.estaActiva) {
 			pregunta.gestionarRespuestaDe(this, respuesta)
 		} else {
 			respuesta.puntos = 0
